@@ -1,0 +1,283 @@
+/* ===== shared node/endpoint layout ===== */
+.endpoint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  width: 110px;
+}
+
+/* ===== note bubbles ===== */
+.note-slot {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.note-on {
+  color: #6366f1;
+  border-color: #6366f1;
+  background: rgba(99,102,241,.12);
+  animation: note-pulse 1.2s ease-in-out infinite;
+}
+
+.note-off {
+  color: rgba(148,163,184,.45);
+  border-color: rgba(148,163,184,.18);
+}
+
+/* ===== activity zone ===== */
+.act-zone {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  overflow: visible;
+}
+
+.act-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.act-tag {
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.act-arrow {
+  font-size: 0.8rem;
+  color: rgba(148,163,184,.5);
+  line-height: 1;
+  align-self: center;
+}
+
+.act-keys-group {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.act-key-sm { opacity: 0; }
+.k1 { animation: key-fly 1.6s 0s    ease-in-out infinite; }
+.k2 { animation: key-fly 1.6s 0.2s  ease-in-out infinite; }
+.k3 { animation: key-fly 1.6s 0.4s  ease-in-out infinite; }
+
+/* ===== nodes ===== */
+.node {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 2px solid rgba(148,163,184,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: rgba(148,163,184,.7);
+}
+
+.node.active {
+  border-color: #6366f1;
+  box-shadow: 0 0 18px rgba(99,102,241,.55);
+  color: #6366f1;
+}
+
+.node-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(148,163,184,.6);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* ===== track + packet ===== */
+/* note-slot(22) + gap(4) + act-zone(36) + gap(4) + node-radius(30) = 96px */
+.track-area {
+  position: relative;
+  flex: 1;
+  height: 192px;
+  flex-shrink: 0;
+}
+
+.track {
+  position: absolute;
+  top: 96px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(148,163,184,.35) 0,
+    rgba(148,163,184,.35) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+}
+
+.packet {
+  position: absolute;
+  top: calc(96px - 15px);
+  left: 50%;
+  width: 36px;
+  height: 28px;
+  background: #0f172a;
+  border: 2px solid;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+/* ===== animation classes ===== */
+.act-pop-1      { animation: pop-in 0.35s cubic-bezier(.34,1.56,.64,1) both, float-y 2s 0.35s ease-in-out infinite; }
+.act-pop-2      { animation: pop-in 0.35s 0.15s cubic-bezier(.34,1.56,.64,1) both, float-y 2s 0.5s ease-in-out infinite; }
+.act-slide-in   { animation: slide-from-left 0.4s ease both; }
+.act-glow-orange { animation: glow-pulse-orange 1.2s ease-in-out infinite; }
+.act-glow-indigo { animation: glow-pulse-indigo 1.2s ease-in-out infinite; }
+.act-glow-green  { animation: glow-pulse-green  1.2s ease-in-out infinite; }
+.act-fade-cycle  { animation: fade-cycle 1.4s ease-in-out infinite; }
+.act-spin-once   { animation: spin-once  1.4s ease-in-out infinite; color: rgba(148,163,184,.5); }
+.act-unlock      { animation: unlock-shake 1.4s ease-in-out infinite; }
+.act-float-right { animation: float-right 1.4s ease-in-out infinite; }
+.act-float-out   { animation: float-out   1.4s ease-in-out infinite; }
+.act-float-in    { animation: float-in    1.4s ease-in-out infinite; }
+.act-absorb      { animation: absorb      1.4s ease-in-out infinite; }
+
+.anim-right { animation: transfer-right 1.4s ease-in-out infinite; }
+.anim-left  { animation: transfer-left  1.4s ease-in-out infinite; }
+.anim-pulse { animation: pulse-packet   1.2s ease-in-out infinite; }
+
+/* ===== keyframes ===== */
+@keyframes note-pulse    { 0%,100%{opacity:.75}  50%{opacity:1} }
+@keyframes pop-in        { from{transform:scale(0) translateY(6px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+@keyframes float-y       { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes slide-from-left { from{transform:translateX(-10px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+@keyframes glow-pulse-orange { 0%,100%{filter:drop-shadow(0 0 2px #f97316);opacity:.8} 50%{filter:drop-shadow(0 0 8px #f97316);opacity:1} }
+@keyframes glow-pulse-indigo { 0%,100%{filter:drop-shadow(0 0 2px #6366f1);opacity:.8} 50%{filter:drop-shadow(0 0 8px #6366f1);opacity:1} }
+@keyframes glow-pulse-green  { 0%,100%{filter:drop-shadow(0 0 2px #22c55e);opacity:.8} 50%{filter:drop-shadow(0 0 8px #22c55e);opacity:1} }
+
+@keyframes key-fly {
+  0%  {opacity:0;transform:translateY(-6px) scale(.6)}
+  25% {opacity:1;transform:translateY(0)    scale(1)}
+  70% {opacity:1;transform:translateY(0)    scale(1)}
+  100%{opacity:0;transform:translateY(4px)  scale(.6)}
+}
+
+@keyframes fade-cycle   { 0%,100%{opacity:.5;transform:scale(.9)} 50%{opacity:1;transform:scale(1.1)} }
+@keyframes spin-once    { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+@keyframes unlock-shake { 0%,100%{transform:rotate(0deg)} 20%{transform:rotate(-8deg)} 40%{transform:rotate(8deg)} 60%{transform:rotate(-4deg)} 80%{transform:rotate(4deg)} }
+
+@keyframes float-right { 0%,100%{transform:translateX(-4px);opacity:.3} 50%{transform:translateX(4px);opacity:1} }
+@keyframes float-out   { 0%,100%{transform:translateX(0);opacity:1}    50%{transform:translateX(-6px);opacity:.4} }
+@keyframes float-in    { 0%,100%{transform:translateX(6px);opacity:.3} 50%{transform:translateX(0);opacity:1} }
+@keyframes absorb      { 0%,100%{transform:scale(1);opacity:1}         60%{transform:scale(.6);opacity:.6} }
+
+@keyframes transfer-right {
+  0%  {left:0%;   opacity:0;transform:translate(-50%,0) scale(.6)}
+  15% {opacity:1;            transform:translate(-50%,0) scale(1)}
+  85% {opacity:1;            transform:translate(-50%,0) scale(1)}
+  100%{left:100%;opacity:0;transform:translate(-50%,0) scale(.6)}
+}
+@keyframes transfer-left {
+  0%  {left:100%;opacity:0;transform:translate(-50%,0) scale(.6)}
+  15% {opacity:1;           transform:translate(-50%,0) scale(1)}
+  85% {opacity:1;           transform:translate(-50%,0) scale(1)}
+  100%{left:0%;  opacity:0;transform:translate(-50%,0) scale(.6)}
+}
+@keyframes pulse-packet {
+  0%,100%{transform:translate(-50%,0) scale(.92);opacity:.65}
+  50%    {transform:translate(-50%,0) scale(1.1); opacity:1}
+}
+
+/* ===== file-write ===== */
+.act-file-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  animation: pop-in 0.35s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+.file-lines {
+  position: absolute;
+  left: 6px;
+  top: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.file-line {
+  height: 2px;
+  background: #22c55e;
+  border-radius: 1px;
+  width: 0;
+}
+
+.fl1 { animation: line-grow 0.4s 0.3s  ease both, line-pulse 1.2s 0.7s  ease-in-out infinite; width: 10px; }
+.fl2 { animation: line-grow 0.4s 0.55s ease both, line-pulse 1.2s 0.95s ease-in-out infinite; width: 8px; }
+.fl3 { animation: line-grow 0.4s 0.8s  ease both, line-pulse 1.2s 1.2s  ease-in-out infinite; width: 6px; }
+
+@keyframes line-grow  { from{width:0;opacity:0} to{opacity:1} }
+@keyframes line-pulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+
+/* ===== policy results ===== */
+.policy-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+.policy-allow { color: #22c55e; }
+.policy-deny  { color: #f87171; }
+
+/* ===== legend ===== */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 6px 0 5px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+/* ===== step label ===== */
+.step-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(148,163,184,.55);
+  min-height: 20px;
+  transition: color 0.3s;
+  text-align: center;
+}
+
+.step-label.done { color: #6366f1; }
