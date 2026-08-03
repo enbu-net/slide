@@ -42,7 +42,7 @@ clicks: 4
       leftAct: 'recv-ciphertext', rightAct: 'send-pubkeys' },
     { label: '全公開鍵で age 暗号化',
       direction: 'local', icon: 'lock',
-      leftNote: '暗号化中 (age multi-recipient)',
+      leftNote: '暗号化中',
       leftAct: 'encrypt' },
     { label: '暗号文を Registry に push',
       direction: 'left-to-right', icon: 'lock',

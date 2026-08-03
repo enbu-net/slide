@@ -29,9 +29,9 @@ defineProps<{
     <!-- node circle -->
     <div class="node" :class="[{ active }, size === 'large' ? 'node-lg' : '']">
       <!-- registry icon -->
-      <svg v-if="variant === 'registry'" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+      <svg v-if="variant === 'registry'" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
       <!-- user icon (default) -->
-      <svg v-else xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg v-else xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </div>
 
     <div class="node-label">{{ label }}</div>
@@ -45,20 +45,20 @@ defineProps<{
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
-  width: 110px;
+  width: 220px;
 }
 
 .note-slot {
-  height: 22px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .note {
-  font-size: 0.62rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 4px 14px;
   border-radius: 99px;
   border: 1px solid;
   white-space: nowrap;
@@ -78,8 +78,8 @@ defineProps<{
 }
 
 .node {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: #1e293b;
   border: 2px solid rgba(148,163,184,.3);
@@ -97,12 +97,12 @@ defineProps<{
 }
 
 .node-lg {
-  width: 68px !important;
-  height: 68px !important;
+  width: 92px !important;
+  height: 92px !important;
 }
 
 .node-label {
-  font-size: 0.62rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: rgba(148,163,184,.6);
   letter-spacing: 0.04em;

@@ -16,7 +16,7 @@ const props = defineProps<{
   trackTop?: number   // px offset for track/packet center (default 96)
 }>()
 
-const top = props.trackTop ?? 96
+const top = props.trackTop ?? 140
 const color = ICON_COLOR[props.icon] ?? '#6366f1'
 </script>
 
