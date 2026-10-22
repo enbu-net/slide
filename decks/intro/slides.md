@@ -14,7 +14,7 @@ est: 0:15
   <img src="./images/enbu.png" class="w-52 dance" alt="enbu">
   <div>
     <div class="text-8xl font-bold tracking-wide">enbu</div>
-    <div class="text-2xl mt-4">鍵を配らずに <code>.env</code> を共有する</div>
+    <div class="text-2xl mt-4">チームの機密情報を、仕組みで安全に</div>
     <div class="mt-8 text-sm op-60 font-mono">github.com/enbu-net/enbu</div>
   </div>
 </div>
@@ -39,42 +39,26 @@ title: enbu ってなに?
 est: 0:30
 ---
 
-<EnbuStage :zoom="1.2">
+<EnbuStage :zoom="1.05">
 
-<div class="text-2xl font-bold text-center mt-1 leading-relaxed">
-  チームの <span class="hl" :class="{ on: $clicks >= 1 }"><code>.env</code> を E2E 暗号化</span>して、<br>
-  <span class="hl" :class="{ on: $clicks >= 2 }">手持ちのストレージ</span>で共有するツール
+<div class="text-center text-lg op-70">enbu は</div>
+<div class="text-center text-4xl font-bold mt-1 leading-snug">
+  チームの機密情報を、<br>
+  <span class="hl" :class="{ on: $clicks >= 1 }">人の注意ではなく仕組みで</span>安全に共有する
 </div>
 
-<div class="flex items-center justify-center gap-3 mt-10">
-  <EnbuBox icon="🧑‍💻" title="Alice" class="w-32">
-    <div class="env">.env</div>
-  </EnbuBox>
-
-  <EnbuArrow v-click="1" label="enbu add" flow color="#dd2e44" size="6rem" />
-
-  <div v-click="1" class="relative">
-    <EnbuBox icon="🗄️" title="ストレージ" sub="OCI レジストリ / S3" class="w-44">
-      <div class="flex gap-1 mt-1 text-xl">🔒🔒🔒</div>
-    </EnbuBox>
-    <div v-click="3" class="callout">中身は読めない</div>
+<div class="flex justify-center"><div class="tri">
+  <svg class="absolute inset-0" viewBox="0 0 520 250">
+    <polygon v-click="2" points="260,22 40,228 480,228" fill="#fff1f2" stroke="#dd2e44" stroke-width="3" stroke-linejoin="round" />
+  </svg>
+  <div v-click="2" class="vtx" style="left: 260px; top: 0;">🔒 安全</div>
+  <div v-click="2" class="vtx" style="left: 40px; top: 228px;">🤝 共有しやすさ</div>
+  <div v-click="2" class="vtx" style="left: 480px; top: 228px;">🛠️ 運用しやすさ</div>
+  <div v-click="3" class="center">
+    <img src="./images/enbu.png" class="w-14" alt="">
+    <div class="text-sm font-bold">ぜんぶ両立</div>
   </div>
-
-  <div v-click="2" class="flex items-center gap-3">
-    <div class="flex flex-col gap-6">
-      <EnbuArrow label="enbu pull" flow color="#2563eb" size="6rem" />
-      <EnbuArrow label="enbu pull" flow color="#2563eb" size="6rem" />
-    </div>
-    <div class="flex flex-col gap-3">
-      <EnbuBox icon="🧑‍💻" title="Bob 🔑" class="w-32 py-1"><div class="env">.env</div></EnbuBox>
-      <EnbuBox icon="🧑‍💻" title="Carol 🔑" class="w-32 py-1"><div class="env">.env</div></EnbuBox>
-    </div>
-  </div>
-</div>
-
-<div v-click="4" class="text-center mt-8 text-lg">
-  パスワードの受け渡しは <b>なし</b>。復号できるのは <b>メンバー 1 人ずつの鍵</b> だけ
-</div>
+</div></div>
 
 </EnbuStage>
 
@@ -85,35 +69,170 @@ est: 0:30
   transition: background-size 0.6s ease;
 }
 .hl.on { background-size: 100% 100%; }
-.env {
-  margin-top: 0.3rem;
-  padding: 0.05rem 0.6rem;
-  font-family: var(--slidev-code-font-family, monospace);
-  font-size: 0.8rem;
-  background: #fef3c7;
-  border: 1px solid #f59e0b;
-  border-radius: 4px;
+.tri {
+  position: relative;
+  width: 520px;
+  height: 250px;
+  margin: 2rem auto 0;
 }
-.callout {
+.vtx {
   position: absolute;
-  left: 50%;
-  top: -2.4rem;
-  transform: translateX(-50%) rotate(-4deg);
-  padding: 0.15rem 0.7rem;
+  transform: translate(-50%, -50%);
+  padding: 0.3rem 0.9rem;
   white-space: nowrap;
   font-weight: bold;
-  color: #fff;
-  background: #dd2e44;
+  font-size: 1.05rem;
+  background: #fff;
+  border: 2px solid #dd2e44;
   border-radius: 999px;
+}
+.center {
+  position: absolute;
+  left: 260px;
+  top: 158px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
 
 <!--
-enbu を一言でいうと、チームの .env を暗号化して共有するツールです
-[click:1] 書く人は enbu add で、自分の手元で暗号化してからストレージに置きます
-[click:2] 読む人は enbu pull で取ってきて、自分の鍵で復号します。ストレージは GHCR みたいな OCI レジストリや S3 です
-[click:3] ストレージには暗号文しかないので、置き場所の管理者にも中身は読めません
-[click:4] チームで共有するパスワードはありません。1 人 1 本ずつ鍵を持つ、というのがポイントです
+enbu は、チームの機密情報を安全に共有するためのツールです
+[click:1] ポイントは、人が気を付けることに頼らず、仕組みで安全にすることです
+[click:2] 安全であること、共有しやすいこと、運用しやすいこと。ふつうはどれかを諦めがちな 3 つを
+[click:3] enbu はぜんぶ両立させることを目指しています
+-->
+
+---
+title: だれのため?
+est: 0:30
+---
+
+<EnbuStage :zoom="1.25">
+
+<div class="grid grid-cols-3 gap-5">
+  <div v-click="1" class="who">
+    <div class="face">🧑‍💻</div>
+    <div class="role">開発者</div>
+    <div class="pain">「最新の .env どれ?」<br>を毎回手で渡している</div>
+  </div>
+  <div v-click="2" class="who">
+    <div class="face">🚀</div>
+    <div class="role">スタートアップ・<br>小さいチーム</div>
+    <div class="pain">専用サービスの契約や<br>運用はまだ重い</div>
+  </div>
+  <div v-click="3" class="who">
+    <div class="face">🏢</div>
+    <div class="role">組織</div>
+    <div class="pain">「あの人しか分からない」<br>をなくしたい</div>
+  </div>
+</div>
+
+<div v-click="4" class="team">
+  <span>👋 招待</span><span class="arr">→</span><span>🔑 権限</span><span class="arr">→</span><span>➕ 追加 / ➖ 削除</span>
+  <div class="text-sm font-normal mt-1 op-80">メンバーの出入りまで、チームの運用ごと安全に</div>
+</div>
+
+</EnbuStage>
+
+<style>
+.who {
+  padding: 1rem 0.8rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 14px;
+  text-align: center;
+  background: #fff;
+}
+.face { font-size: 3rem; line-height: 1.2; }
+.role { font-size: 1.2rem; font-weight: bold; margin: 0.3rem 0 0.5rem; line-height: 1.3; }
+.pain {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #374151;
+}
+.team {
+  margin-top: 1.8rem;
+  padding: 0.8rem 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 12px;
+  background: #fff1f2;
+  border: 2px solid #dd2e44;
+}
+.team .arr { margin: 0 0.6rem; color: #dd2e44; }
+</style>
+
+<!--
+だれのためのツールかというと
+[click:1] まず、チームの開発者に .env を毎回手で渡している人
+[click:2] 専用のシークレット管理サービスを入れるほどではない、スタートアップや小さいチーム
+[click:3] そして、機密情報の管理が特定の人に頼りきりになっている組織です
+[click:4] 招待や権限、メンバーの追加と削除まで、チームの運用ごと安全にできることを目指しています
+-->
+
+---
+title: 目指すところ
+est: 0:30
+---
+
+<EnbuStage :zoom="1.25">
+
+<div class="flex items-center justify-center gap-10">
+  <div class="rings">
+    <div class="ring r3" v-click="2"><span>チームの機密情報</span></div>
+    <div class="ring r2" v-click="1"><span>設定ファイル・認証情報</span></div>
+    <div class="ring r1"><span><code>.env</code></span></div>
+  </div>
+  <div class="flex flex-col gap-4 w-60">
+    <div class="step-l">まずは <b>.env</b> から</div>
+    <div v-click="1" class="step-l">設定ファイルや<br>サービスの認証情報へ</div>
+    <div v-click="2" class="step-l strong">チームの機密情報を<br>まとめて扱える基盤へ</div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<style>
+.rings {
+  position: relative;
+  width: 21rem;
+  height: 21rem;
+}
+.ring {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid #dd2e44;
+  font-weight: bold;
+}
+.ring span { margin-top: 0.8rem; font-size: 0.9rem; }
+.r1 { width: 7rem; height: 7rem; align-items: center; background: #dd2e44; color: #fff; }
+.r1 span { margin: 0; font-size: 1.1rem; }
+.r1 code { color: #fff; background: transparent; }
+.r2 { width: 14rem; height: 14rem; background: #fecdd3; }
+.r3 { width: 21rem; height: 21rem; background: #fff1f2; }
+.step-l {
+  padding: 0.5rem 0.9rem;
+  border-left: 5px solid #fecdd3;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+.step-l.strong { border-left-color: #dd2e44; font-weight: bold; }
+</style>
+
+<!--
+目指しているところです。いまは .env から始めていますが
+[click:1] 設定ファイルや、サービスの認証情報にも広げて
+[click:2] 最終的には、チームの機密情報をまとめて安全に扱える基盤にしたいと考えています
 -->
 
 ---
@@ -290,11 +409,11 @@ est: 1:00
 -->
 
 ---
-title: enbu の考え方
+title: enbu のやり方
 est: 0:40
 ---
 
-<EnbuStage :zoom="1.3">
+<EnbuStage :zoom="1.15">
 
 <div class="grid grid-cols-3 gap-5 mt-4">
   <div v-click="1" class="idea">
@@ -314,9 +433,6 @@ est: 0:40
   </div>
 </div>
 
-<div v-click="4" class="motto">
-  人の注意ではなく、<span class="hl" :class="{ on: $clicks >= 4 }">仕組みで安全に</span>
-</div>
 
 </EnbuStage>
 
@@ -336,7 +452,7 @@ est: 0:40
   background: #fff;
 }
 .big { font-size: 3rem; line-height: 1.2; }
-.head { font-size: 1.25rem; font-weight: bold; margin: 0.3rem 0; }
+.head { font-size: 1.1rem; font-weight: bold; margin: 0.3rem 0; white-space: nowrap; }
 .body { font-size: 0.9rem; color: #4b5563; line-height: 1.5; }
 .motto {
   margin-top: 2.2rem;
@@ -347,11 +463,10 @@ est: 0:40
 </style>
 
 <!--
-enbu の考え方は 3 つです
+では enbu はどうやって実現しているのか。柱は 3 つです
 [click:1] まず 1 人 1 鍵。全員の公開鍵を宛先にして暗号化するので、共有パスワードがいりません
 [click:2] 置き場所は、すでに持っているストレージ。GitHub の GHCR や S3 が使えます
 [click:3] そしてストレージは信用しません。ストレージに書けるだけの人は、メンバーにもなれないし、データも差し込めません
-[click:4] 人が気を付けるのではなく、仕組みで安全にする。これが enbu のコンセプトです
 -->
 
 ---
@@ -949,61 +1064,43 @@ est: 0:40
 
 ---
 title: これから
-est: 0:40
+est: 0:30
 ---
 
-<EnbuStage :zoom="1.25">
+<EnbuStage :zoom="1.3">
 
-<div class="flex items-center justify-center gap-10 mt-2">
-  <div class="rings">
-    <div class="ring r3" v-click="2"><span>チームの機密情報</span></div>
-    <div class="ring r2" v-click="1"><span>設定ファイル・認証情報</span></div>
-    <div class="ring r1"><span><code>.env</code></span></div>
+<div class="flex items-center justify-center gap-6">
+  <div class="plan">
+    <div class="text-4xl">💃</div>
+    <div class="text-xl font-bold mt-1">enbu(OSS)</div>
+    <div class="text-sm op-80 mt-1">チームですぐ使える</div>
   </div>
-
-  <div v-click="3" class="cloud">
-    <div class="text-lg font-bold mb-2">☁️ enbu cloud(構想)</div>
-    <div class="grid grid-cols-2 gap-2">
+  <EnbuArrow v-click="1" color="#dd2e44" size="5rem" />
+  <div v-click="1" class="plan cloud">
+    <div class="text-4xl">☁️</div>
+    <div class="text-xl font-bold mt-1">enbu cloud(構想)</div>
+    <div class="grid grid-cols-2 gap-2 mt-3">
       <div class="pill">SSO</div>
       <div class="pill">SCIM</div>
       <div class="pill">監査ログ</div>
       <div class="pill">管理コンソール</div>
     </div>
-    <div class="text-xs op-70 mt-2">組織向け。OSS の enbu はそのまま</div>
   </div>
 </div>
+
+<div v-click="2" class="text-center mt-8 text-lg">組織の規模が大きくなっても、同じ仕組みのまま</div>
 
 </EnbuStage>
 
 <style>
-.rings {
-  position: relative;
-  width: 21rem;
-  height: 21rem;
-}
-.ring {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  border-radius: 50%;
-  border: 3px solid #dd2e44;
-  font-weight: bold;
-}
-.ring span { margin-top: 0.8rem; font-size: 0.9rem; }
-.r1 { width: 7rem; height: 7rem; align-items: center; background: #dd2e44; color: #fff; }
-.r1 span { margin: 0; font-size: 1.1rem; }
-.r1 code { color: #fff; background: transparent; }
-.r2 { width: 14rem; height: 14rem; background: #fecdd3; }
-.r3 { width: 21rem; height: 21rem; background: #fff1f2; }
-.cloud {
-  padding: 1rem 1.2rem;
-  border: 2px dashed #6b7280;
+.plan {
+  padding: 1rem 1.4rem;
+  text-align: center;
+  border: 2px solid #e5e7eb;
   border-radius: 14px;
-  background: #f9fafb;
+  background: #fff;
 }
+.plan.cloud { border: 2px dashed #6b7280; background: #f9fafb; }
 .pill {
   padding: 0.3rem 0.8rem;
   text-align: center;
@@ -1015,10 +1112,9 @@ est: 0:40
 </style>
 
 <!--
-これからの話です。いまは .env から始めていますが
-[click:1] 設定ファイルやサービスの認証情報にも広げて
-[click:2] チームの機密情報をまとめて扱える基盤にしていきたいと考えています
-[click:3] さらに、組織向けに SSO や SCIM、監査ログを備えた enbu cloud も構想しています
+これからの話です。enbu は OSS として、チームですぐに使えます
+[click:1] それに加えて、組織向けに SSO や SCIM、監査ログ、管理コンソールを備えた enbu cloud を構想しています
+[click:2] 組織が大きくなっても、同じ仕組みのまま使い続けられるようにしたいと考えています
 -->
 
 ---
@@ -1029,8 +1125,8 @@ est: 0:30
 <div class="h-full flex items-center justify-center gap-10" style="zoom: 1.3">
   <img src="./images/enbu.png" class="w-36" alt="">
   <div class="flex flex-col gap-3 text-xl">
-    <div v-click="1">🔐 1 人 1 鍵で E2E 暗号化。共有パスワードなし</div>
-    <div v-click="2">🗄️ 置き場所は手持ちの OCI レジストリ / S3</div>
+    <div v-click="1">🛡️ チームの機密情報を、仕組みで安全に共有</div>
+    <div v-click="2">🔐 1 人 1 鍵。共有パスワードなし</div>
     <div v-click="3">✍️ ストレージは信用せず、署名で検証</div>
     <div v-click="4" class="mt-4 text-base font-mono op-70">github.com/enbu-net/enbu</div>
   </div>
@@ -1038,8 +1134,8 @@ est: 0:30
 
 <!--
 まとめです
-[click:1] enbu は 1 人 1 鍵の E2E 暗号化で、共有パスワードがいりません
-[click:2] 置き場所は、すでに持っているストレージ
+[click:1] enbu は、チームの機密情報を、人の注意ではなく仕組みで安全に共有するためのツールです
+[click:2] 1 人 1 鍵なので、共有パスワードがいりません
 [click:3] そのストレージは信用せず、署名で検証します
 [click:4] ぜひ使ってみてください。ありがとうございました
 -->
