@@ -236,7 +236,7 @@ est: 0:30
 -->
 
 ---
-title: いまの .env の配り方
+title: よくある方法① チャットで送る
 est: 0:40
 ---
 
@@ -307,7 +307,7 @@ est: 0:40
 </style>
 
 <!--
-まず背景です。.env、みなさんどうやって配ってますか
+まず背景です。.env、みなさんどうやって配ってますか。よくある方法を 4 つ見ていきます
 [click:1] よくあるのがチャットに貼る方法。でも 1 と大文字の I と小文字の l、見分けがつかないんですよね
 [click:2] 値を変えたら、全員に連絡して、全員に手で更新してもらう必要があります
 [click:3] しかもチャットは E2E 暗号化ではありません。zip を暗号化しても、パスワードをチャットで送ったら意味がない
@@ -315,18 +315,313 @@ est: 0:40
 -->
 
 ---
-title: ほかの手法
+title: よくある方法② シークレット管理サービス
+est: 0:40
+---
+
+<EnbuStage :zoom="1.05">
+
+<div class="flex gap-6 items-center">
+  <div class="flex-1 flex flex-col items-center gap-3">
+    <div class="flex items-center gap-3">
+      <div class="flex flex-col gap-2">
+        <div class="member">🧑‍💻 <span class="acct" :class="{ on: $clicks >= 2 }">👤</span></div>
+        <div class="member">🧑‍💻 <span class="acct" :class="{ on: $clicks >= 2 }">👤</span></div>
+        <div class="member">🧑‍💻 <span class="acct" :class="{ on: $clicks >= 2 }">👤</span></div>
+      </div>
+      <EnbuArrow label="ログイン" flow color="#6b7280" size="4.5rem" />
+      <div class="svc">
+        <div class="text-3xl">☁️</div>
+        <div class="font-bold">サービス事業者</div>
+        <div class="text-xs op-70">1Password / Doppler /<br>AWS Secrets Manager など</div>
+        <div class="vault" :class="{ warn: $clicks >= 3 }">🔑 <span v-if="$clicks >= 3">事業者側で復号できることも</span><span v-else>.env を預ける</span></div>
+        <div class="bill" :class="{ on: $clicks >= 1 }">💳 月額 × 人数</div>
+      </div>
+    </div>
+    <div v-click="2" class="admin">🛠️ 管理者: 招待・権限・退職時の削除をサービス上で別に管理</div>
+  </div>
+
+  <div class="flex flex-col gap-3 w-72">
+    <div v-click="1" class="tag">💳 <span>人数分の<b>契約と費用</b></span></div>
+    <div v-click="2" class="tag">👤 <span>アカウントの発行と<b>棚卸し</b>が別に必要</span></div>
+    <div v-click="3" class="tag">🏢 <span>E2E 暗号化かは<b>サービス次第</b></span></div>
+    <div v-click="4" class="tag">🔗 <span>サービスに<b>ロックイン</b>。<br>止まると取り出せない</span></div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<style>
+.member {
+  padding: 0.25rem 0.6rem;
+  font-size: 1.4rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+.acct { font-size: 1rem; opacity: 0.25; transition: opacity 0.4s; }
+.acct.on { opacity: 1; }
+.svc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.7rem 1rem;
+  border: 2px solid #1f2937;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+  line-height: 1.3;
+}
+.vault {
+  margin-top: 0.3rem;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  transition: all 0.4s;
+}
+.vault.warn { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+.bill {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  opacity: 0.25;
+  transition: opacity 0.4s;
+}
+.bill.on { opacity: 1; color: #dd2e44; }
+.admin {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  background: #f3f4f6;
+}
+.tag {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  border-left: 5px solid #dd2e44;
+  background: #fff1f2;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+</style>
+
+<!--
+次に、専用のシークレット管理サービス。1Password や Doppler、AWS の Secrets Manager などです
+[click:1] 機能はそろっていますが、基本的に人数分の契約とお金がかかります
+[click:2] メンバー全員にアカウントを発行して、人が抜けたら消して、という管理も別に必要です
+[click:3] それに、E2E 暗号化かどうかはサービス次第です。事業者側で復号できる作りのものも多い
+[click:4] 一度入れるとそのサービスに縛られて、止まったら取り出せなくなります
+-->
+
+---
+title: よくある方法③ 自前で Vault を立てる
+est: 0:40
+---
+
+<EnbuStage :zoom="1.05">
+
+<div class="flex gap-6 items-center">
+  <div class="flex-1 flex items-center justify-center gap-3">
+    <EnbuBox icon="👥" title="チーム" class="w-24" />
+    <EnbuArrow label="API" flow color="#6b7280" size="4rem" />
+    <div class="server">
+      <div class="text-3xl">🖥️</div>
+      <div class="font-bold">Vault サーバー</div>
+      <div class="text-xs op-70">HashiCorp Vault / OpenBao など</div>
+      <div class="chores">
+        <div v-click="1" class="chore">🔄 更新・監視</div>
+        <div v-click="1" class="chore">💾 バックアップ</div>
+        <div v-click="2" class="chore">🔐 unseal 鍵</div>
+        <div v-click="1" class="chore">📈 冗長化</div>
+      </div>
+      <div v-click="4" class="inside">🔓 サーバーの中では平文</div>
+    </div>
+    <div v-click="3" class="ops">🧑‍🔧<div class="text-xs mt-1">詳しい人</div></div>
+  </div>
+
+  <div class="flex flex-col gap-3 w-72">
+    <div v-click="1" class="tag">🖥️ <span>サーバーを立てて<b>守り続ける</b>必要</span></div>
+    <div v-click="2" class="tag">🔐 <span>起動のたびに使う<b>unseal 鍵</b>の管理</span></div>
+    <div v-click="3" class="tag">🧑‍🔧 <span>詳しい人がいないと回らない<br>(<b>属人化</b>)</span></div>
+    <div v-click="4" class="tag">🔓 <span>サーバーは復号できる。<br><b>E2E 暗号化ではない</b></span></div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<style>
+.server {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid #1f2937;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+}
+.chores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+}
+.chore {
+  padding: 0.15rem 0.5rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  border-radius: 6px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+}
+.inside {
+  margin-top: 0.4rem;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+}
+.ops {
+  font-size: 2rem;
+  text-align: center;
+  padding: 0.4rem 0.6rem;
+  border: 2px dashed #dc2626;
+  border-radius: 12px;
+}
+.tag {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  border-left: 5px solid #dd2e44;
+  background: #fff1f2;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+</style>
+
+<!--
+お金をかけたくないなら、HashiCorp Vault のようなシークレット管理サーバーを自分で立てる手もあります
+[click:1] ただ、サーバーを立てたら終わりではなく、更新やバックアップ、冗長化を続ける必要があります
+[click:2] Vault は起動のたびに unseal という鍵が必要で、この鍵の管理がまた悩みの種です
+[click:3] 結局、詳しい人がいないと回らない。属人化してしまいます
+[click:4] そして、サーバーの中では復号されるので、E2E 暗号化ではありません
+-->
+
+---
+title: よくある方法④ Git に暗号化してコミット
+est: 0:40
+---
+
+<EnbuStage :zoom="1.05">
+
+<div class="flex gap-6 items-center">
+  <div class="flex-1 flex flex-col items-center gap-5">
+    <div class="flex items-center gap-1">
+      <div class="commit">
+        <div class="cid">a1f3</div><div>🔒 v1</div>
+      </div>
+      <div class="link" />
+      <div class="commit">
+        <div class="cid">7c2e</div><div>🔒 v2</div>
+      </div>
+      <div class="link" />
+      <div class="commit">
+        <div class="cid">e94b</div><div>🔒 v3</div>
+      </div>
+      <div class="text-xs op-70 ml-2">git log</div>
+    </div>
+    <div v-click="2" class="forever">🕰️ 古い暗号文も、ずっと履歴に残る</div>
+    <div class="flex items-center gap-2">
+      <EnbuBox icon="🧑‍💻" title="Alice" class="w-20 py-1" />
+      <EnbuArrow v-click="1" label="🔑 共通鍵" color="#d97706" size="3.5rem" />
+      <EnbuBox v-click="1" icon="🧑‍💻" title="Bob" class="w-20 py-1" />
+      <EnbuArrow v-click="1" label="🔑 共通鍵" color="#d97706" size="3.5rem" />
+      <EnbuBox v-click="1" icon="🧑‍💻" title="Carol" class="w-20 py-1" :class="{ left: $clicks >= 3 }" />
+    </div>
+    <div v-click="3" class="text-sm">👋 Carol が抜けても、手元の鍵で v1〜v3 を読める</div>
+  </div>
+
+  <div class="flex flex-col gap-3 w-72">
+    <div v-click="1" class="tag">🗝️ <span>鍵をどう配るか問題<br>(git-crypt は<b>全員で同じ鍵</b>)</span></div>
+    <div v-click="2" class="tag">🕰️ <span>暗号文が<b>履歴に永遠に残る</b>。<br>将来破られたら過去も読める</span></div>
+    <div v-click="3" class="tag">👋 <span>抜けた人も<b>過去の値を読める</b></span></div>
+    <div v-click="4" class="tag">🔀 <span>暗号文どうしは<b>マージできない</b></span></div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<style>
+.commit {
+  padding: 0.3rem 0.7rem;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.95rem;
+  text-align: center;
+}
+.cid {
+  font-family: var(--slidev-code-font-family, monospace);
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+.link { width: 1.6rem; height: 3px; background: #1f2937; }
+.forever {
+  padding: 0.25rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 6px;
+  background: #fee2e2;
+  border: 1px solid #dc2626;
+  color: #991b1b;
+}
+.left { opacity: 0.5; border-style: dashed; }
+.tag {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  border-left: 5px solid #dd2e44;
+  background: #fff1f2;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+</style>
+
+<!--
+最後に、暗号化して Git にコミットしてしまう方法。sops や git-crypt などです
+[click:1] まず、復号の鍵をどう配るかという問題が残ります。git-crypt だと全員で同じ鍵を持ち回ります
+[click:2] そして暗号文は Git の履歴に永遠に残ります。将来アルゴリズムが破られたら、過去の分まで読まれてしまう
+[click:3] メンバーが抜けても、その人の手元の鍵で、履歴にある過去の値を読めてしまいます
+[click:4] それに、暗号文どうしは Git でマージできないので、同時に編集するとぶつかります
+-->
+
+---
+title: 4 つの方法を比べると
 est: 1:00
 ---
 
-<EnbuStage :zoom="1.3">
+<EnbuStage :zoom="1.1">
 
 <table class="cmp">
   <thead>
     <tr>
       <th></th>
       <th>💬<br>チャットで送る</th>
-      <th v-click="1">☁️<br>シークレット管理<br>サービス<div class="ex">1Password, AWS など</div></th>
+      <th v-click="1">☁️<br>シークレット管理<br>サービス<div class="ex">1Password, Doppler, AWS など</div></th>
+      <th v-click="1">🖥️<br>自前の<br>Vault</th>
       <th v-click="2">📦<br>Git に暗号化して<br>コミット<div class="ex">sops, git-crypt など</div></th>
       <th v-click="3" class="me">💃<br>enbu</th>
     </tr>
@@ -335,13 +630,15 @@ est: 1:00
     <tr>
       <td>E2E 暗号化</td>
       <td class="ng">×</td>
-      <td v-click="1" class="ok">○</td>
+      <td v-click="1" class="mid">△</td>
+      <td v-click="1" class="ng">×</td>
       <td v-click="2" class="ok">○</td>
       <td v-click="3" class="me ok">○</td>
     </tr>
     <tr>
       <td>新しい契約や運用がいらない</td>
       <td class="ok">○</td>
+      <td v-click="1" class="ng">×</td>
       <td v-click="1" class="ng">×</td>
       <td v-click="2" class="ok">○</td>
       <td v-click="3" class="me ok">○</td>
@@ -350,12 +647,14 @@ est: 1:00
       <td>共有の鍵を配らなくていい</td>
       <td class="ng">×</td>
       <td v-click="1" class="ok">○</td>
+      <td v-click="1" class="ok">○</td>
       <td v-click="2" class="mid">△</td>
       <td v-click="3" class="me ok">○</td>
     </tr>
     <tr>
       <td>暗号文が消せる</td>
       <td class="ng">×</td>
+      <td v-click="1" class="ok">○</td>
       <td v-click="1" class="ok">○</td>
       <td v-click="2" class="ng">×</td>
       <td v-click="3" class="me ok">○</td>
@@ -402,9 +701,9 @@ est: 1:00
 </style>
 
 <!--
-ではほかの手法と比べてみます。チャットは手軽ですが、暗号化も鍵の受け渡しもダメです
-[click:1] 専用のシークレット管理サービスを使えば機能はそろいます。ただ契約やアカウント管理が必要で、小さいチームには重い
-[click:2] じゃあ Git に暗号化して入れればいい、という手もあります。でも鍵を配る必要があることが多いし、暗号文が Git の履歴にずっと残ります。将来アルゴリズムが破られたら、過去の分まで読まれてしまう
+4 つの方法を並べてみます。チャットは手軽ですが、暗号化も鍵の受け渡しもダメです
+[click:1] サービスや Vault は機能がそろう代わりに、契約か運用のどちらかが重く、E2E 暗号化とも限りません
+[click:2] Git に暗号化して入れる方法は、鍵を配る必要があって、暗号文が履歴にずっと残ります
 [click:3] enbu は、いま使っているストレージだけで、この全部を満たすことを目指しています
 -->
 
