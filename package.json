@@ -4,14 +4,17 @@
   "private": true,
   "packageManager": "pnpm@11.17.0",
   "scripts": {
-    "build": "slidev build",
-    "dev": "slidev --open",
+    "build": "node scripts/build-decks.mjs",
+    "dev": "slidev decks/intro/slides.md --open",
+    "dev:intro": "slidev decks/intro/slides.md --open",
+    "dev:workflow": "slidev decks/workflow/slides.md --open",
     "export": "slidev export"
   },
   "dependencies": {
-    "@slidev/cli": "^52.18.0",
+    "@slidev/cli": "^53.0.0",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
+    "budoux": "^0.9.3",
     "vue": "^3.5.33"
   }
 }
