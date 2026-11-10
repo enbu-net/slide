@@ -16,12 +16,15 @@ const audio = new Audio()
 // ブラウザが操作前の再生を止めたとき、押して始めるボタンを出す
 const blocked = ref(false)
 let timer: ReturnType<typeof setTimeout> | undefined
+// 何回目の再生か。ページ移動で古い再生の結果が届いても無視する
+let attempt = 0
 
 function src(page: number, index: number) {
   return `${import.meta.env.BASE_URL}voice/s${String(page).padStart(2, '0')}_${index}.mp3`
 }
 
 function stop() {
+  attempt++
   audio.pause()
   clearTimeout(timer)
 }
@@ -34,9 +37,13 @@ function play() {
   if (index < 0)
     return
   audio.src = src(currentPage.value, index)
+  const mine = attempt
   audio.play().then(() => {
-    blocked.value = false
+    if (mine === attempt)
+      blocked.value = false
   }).catch((e: unknown) => {
+    if (mine !== attempt || (e instanceof DOMException && e.name === 'AbortError'))
+      return
     blocked.value = true
     console.warn('読み上げを再生できません', audio.src, e)
   })

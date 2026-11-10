@@ -34,8 +34,8 @@ pnpm build          # すべてのデッキを dist/<名前>/ にビルドし、
 
 `decks/sechack/` は intro の外枠と部品をコピーしたもの。外枠を直すときは両方そろえる。
 
-sechack はノートをあかねボイスで読み上げられる。URL に `?voice` を付けるか `v` キーで読み上げ、`?voice=auto` なら読み終わると次へ進む。
-音声は `decks/sechack/public/voice/` にあり、ノートを変えたら [aoikane](https://github.com/a-kaibu/aoikane) で作り直す。
+sechack はノートをあかねボイスで読み上げられる。URL に `?voice` を付けるか `v` キーで読み上げ、`?voice=auto` なら読み終わると次へ進む。デモのスライド(`voiceHold: true`)では自動で進まないので、動画が終わったら手で次へ進める。
+音声は `decks/sechack/public/voice/` にあり、ノートを変えたら [aoikane](https://github.com/a-kaibu/aoikane) と FFmpeg で作り直す。
 各スライドの `est` も実測値(セリフ + 0.6 秒)に直し、デモに残りを割り当てて合計 10 分にそろえる。
 
 ```sh

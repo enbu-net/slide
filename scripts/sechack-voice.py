@@ -15,6 +15,7 @@ import json
 import os
 import re
 import subprocess
+import tempfile
 import threading
 import urllib.request
 import wave
@@ -40,9 +41,11 @@ parts = re.split(r'\n(?=---\ntitle: )', text)
 
 
 def segments(part):
+    """ノートのセリフ。composables/liveSlide.ts の parseComments と同じく、空でない 1 行が 1 セリフ。"""
     notes = re.findall(r'<!--\n(.*?)\n-->', part, re.S)
     note = notes[-1] if notes else ''
-    return [s.strip().replace('\n', '') for s in re.split(r'\[click:\d+\]\s*', note) if s.strip()]
+    lines = (line.strip() for line in note.split('\n'))
+    return [re.sub(r'^\[click(?::\d+|\+\d+)?\]\s*', '', line) for line in lines if line]
 
 
 os.makedirs(OUT, exist_ok=True)
@@ -59,6 +62,7 @@ counter = iter(range(10 ** 9))
 
 
 def synth(job):
+    """1 セリフを合成して(前回と同じ文章なら使い回し)mp3 にし、長さ(秒)を返す。"""
     name, seg = job
     wav = os.path.join(CACHE, name + '.wav')
     txt = wav + '.txt'
@@ -113,5 +117,14 @@ for part, est in zip(parts, ests):
     if n != 1:
         raise SystemExit('est のないスライドがあります: ' + part.split('\n', 3)[1])
     out.append(new)
-open(SLIDES, 'w', encoding='utf-8').write('\n'.join(out))
+# 途中で失敗しても slides.md を壊さないよう、同じフォルダの一時ファイルに書いてから置き換える
+fd, tmp = tempfile.mkstemp(dir=DECK, prefix='.slides-', suffix='.md')
+try:
+    with os.fdopen(fd, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(out))
+    os.chmod(tmp, os.stat(SLIDES).st_mode)
+    os.replace(tmp, SLIDES)
+finally:
+    if os.path.exists(tmp):
+        os.remove(tmp)
 print(f'合計 {sum(ests)} 秒(デモ {ests[demo]} 秒)')
