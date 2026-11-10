@@ -1,14 +1,23 @@
 name: Deploy to GitHub Pages
 
+# main と、開いている PR のプレビューをまとめて公開する(PR は /pr/<番号>/)。
+# Pages は「GitHub Actions から公開」なので、公開は毎回サイト全体の差し替えになる。
+# PR のビルドは preview.yml が読み取り権限だけで行い、ここでは成果物の静的ファイルを集めるだけ。
+# workflow_run は main の文脈で動くので、github-pages 環境の「main からだけ」の制限にも合う。
 on:
   push:
     branches: [main]
+  workflow_run:
+    workflows: [Build PR preview]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
+  pull-requests: read
 
 concurrency:
   group: pages
@@ -19,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
 
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
 
@@ -30,6 +42,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm run build --base /slide/
+
+      - run: node scripts/collect-previews.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGES_URL: https://${{ github.repository_owner }}.github.io/slide
 
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
