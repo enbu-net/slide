@@ -431,7 +431,7 @@ est: 0:20
 
 <EnbuStage :zoom="1.3">
 
-<div class="lead">鍵は 1 人 1 つ。<span class="hl" :class="{ on: $clicks >= 1 }">PC から出ない</span></div>
+<div class="lead">鍵は 1 人 1 つ。<span class="hl" :class="{ on: $clicks >= 1 }">PC から出ない</span><span class="sub">チップ(TPM など)がある PC の場合。ない PC は OS の鍵の保管庫へ</span></div>
 
 <div class="flex items-center justify-center gap-8">
   <div class="device">
@@ -472,8 +472,8 @@ est: 0:20
 </style>
 
 <!--
-ここからデモの裏側です。鍵は 1 人 1 つずつで、PC のセキュリティチップの中にあります
-[click:1] チップから鍵を取り出す方法はないので、ディスクを丸ごとコピーされても、鍵はついていきません
+ここからデモの裏側です。鍵は 1 人 1 つずつで、PC にセキュリティチップがあれば、その中で作ります
+[click:1] チップから鍵を取り出す方法はないので、ディスクを丸ごとコピーされても、鍵はついていきません。チップがない PC では、OS の鍵の保管庫、Windows なら資格情報マネージャーに入れます
 -->
 
 ---
