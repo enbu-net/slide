@@ -34,6 +34,15 @@ pnpm build          # すべてのデッキを dist/<名前>/ にビルドし、
 
 `decks/sechack/` は intro の外枠と部品をコピーしたもの。外枠を直すときは両方そろえる。
 
+sechack はノートをあかねボイスで読み上げられる。URL に `?voice` を付けるか `v` キーで読み上げ、`?voice=auto` なら読み終わると次へ進む。
+音声は `decks/sechack/public/voice/` にあり、ノートを変えたら [aoikane](https://github.com/a-kaibu/aoikane) で作り直す。
+各スライドの `est` も実測値(セリフ + 0.6 秒)に直し、デモに残りを割り当てて合計 10 分にそろえる。
+
+```sh
+aoikane serve --listen 127.0.0.1:18080   # 別の端末で
+python3 scripts/sechack-voice.py
+```
+
 [yashikota/biim-slide](https://github.com/yashikota/biim-slide) の外枠をそのまま使っている。
 
 - 各スライドの frontmatter に `est`(予定時間)を書く。右下のスプリット表に累計で出る

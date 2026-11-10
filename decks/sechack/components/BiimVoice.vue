@@ -45,7 +45,7 @@ function play() {
 audio.addEventListener('ended', () => {
   // デモ動画のように、読み終わっても進めたくないページは frontmatter に voiceHold: true
   if (auto && !frontmatter.value.voiceHold)
-    timer = setTimeout(() => next(), 400)
+    timer = setTimeout(() => next(), 600) // est はセリフの長さ + 0.6 秒で計算している
 })
 
 watch([currentPage, clicks], play)

@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""decks/sechack のノートを、あかねボイス(aoikane)で読み上げ音声にして、est を実測値に合わせる。
+
+  aoikane serve --listen 127.0.0.1:18080   # 別の端末で(複数立てると並列で速い)
+  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--gap 0.6] [--total 600]
+
+- ノートを [click:N] ごとに区切り、public/voice/sNN_J.mp3(NN = ページ、J = 何個目のセリフ)に書く。
+  文章が前回と同じ区切りは作り直さない(.cache/ に wav と文章を置く)。
+- 各スライドの est を「セリフの長さ + 区切りごとの間(--gap 秒)」にし、
+  デモのスライドに残りを割り当てて、合計をちょうど --total 秒にする。
+- 要るもの: aoikane(github.com/a-kaibu/aoikane)と ffmpeg。
+"""
+import argparse
+import json
+import os
+import re
+import subprocess
+import threading
+import urllib.request
+import wave
+from concurrent.futures import ThreadPoolExecutor
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DECK = os.path.join(ROOT, 'decks', 'sechack')
+SLIDES = os.path.join(DECK, 'slides.md')
+OUT = os.path.join(DECK, 'public', 'voice')
+CACHE = os.path.join(ROOT, '.cache', 'sechack-voice')
+VOICE = 'KotonohaAkane_ns_48'
+DEMO_TITLE = 'デモ'
+
+ap = argparse.ArgumentParser()
+ap.add_argument('--url', action='append', help='aoikane serve の URL(複数可)')
+ap.add_argument('--gap', type=float, default=0.6, help='区切りごとの間(秒)。BiimVoice の自動送りと合わせる')
+ap.add_argument('--total', type=int, default=600, help='合計の秒数')
+args = ap.parse_args()
+urls = args.url or ['http://127.0.0.1:18080']
+
+text = open(SLIDES, encoding='utf-8').read()
+parts = re.split(r'\n(?=---\ntitle: )', text)
+
+
+def segments(part):
+    notes = re.findall(r'<!--\n(.*?)\n-->', part, re.S)
+    note = notes[-1] if notes else ''
+    return [s.strip().replace('\n', '') for s in re.split(r'\[click:\d+\]\s*', note) if s.strip()]
+
+
+os.makedirs(OUT, exist_ok=True)
+os.makedirs(CACHE, exist_ok=True)
+jobs = []
+for i, part in enumerate(parts):
+    for j, seg in enumerate(segments(part)):
+        jobs.append((f's{i + 1:02d}_{j}', seg))
+
+# localhost の aoikane にはプロキシを通さない
+opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+lock = threading.Lock()
+counter = iter(range(10 ** 9))
+
+
+def synth(job):
+    name, seg = job
+    wav = os.path.join(CACHE, name + '.wav')
+    txt = wav + '.txt'
+    if not (os.path.exists(wav) and os.path.exists(txt) and open(txt, encoding='utf-8').read() == seg):
+        with lock:
+            url = urls[next(counter) % len(urls)]
+        req = urllib.request.Request(
+            url.rstrip('/') + '/v1/synthesize',
+            data=json.dumps({'text': seg, 'voice': VOICE}).encode(),
+            headers={'Content-Type': 'application/json'},
+        )
+        data = opener.open(req, timeout=1800).read()
+        open(wav, 'wb').write(data)
+        open(txt, 'w', encoding='utf-8').write(seg)
+        print('synth', name, flush=True)
+    mp3 = os.path.join(OUT, name + '.mp3')
+    subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', wav, '-ac', '1', '-ar', '24000',
+                    '-codec:a', 'libmp3lame', '-b:a', '48k', mp3], check=True)
+    w = wave.open(wav)
+    return name, w.getnframes() / w.getframerate()
+
+
+with ThreadPoolExecutor(len(urls)) as ex:
+    durations = dict(ex.map(synth, jobs))
+
+# 使われなくなった音声を消す
+names = {name for name, _ in jobs}
+for f in os.listdir(OUT):
+    if f.endswith('.mp3') and f[:-4] not in names:
+        os.remove(os.path.join(OUT, f))
+
+ests = []
+demo = None
+for i, part in enumerate(parts):
+    title = re.search(r'^title: (.*)$', part, re.M).group(1) if i else ''
+    segs = segments(part)
+    sec = sum(durations[f's{i + 1:02d}_{j}'] for j in range(len(segs))) + args.gap * len(segs)
+    if title == DEMO_TITLE:
+        demo = i
+        ests.append(0)
+    else:
+        ests.append(round(sec))
+if demo is None:
+    raise SystemExit(f'title: {DEMO_TITLE} のスライドが見つかりません')
+ests[demo] = args.total - sum(ests)
+if ests[demo] <= 0:
+    raise SystemExit(f'デモを除いても {sum(ests)} 秒あり、{args.total} 秒に収まりません')
+
+out = []
+for part, est in zip(parts, ests):
+    new, n = re.subn(r'^est: .*$', f'est: {est // 60}:{est % 60:02d}', part, count=1, flags=re.M)
+    if n != 1:
+        raise SystemExit('est のないスライドがあります: ' + part.split('\n', 3)[1])
+    out.append(new)
+open(SLIDES, 'w', encoding='utf-8').write('\n'.join(out))
+print(f'合計 {sum(ests)} 秒(デモ {ests[demo]} 秒)')
