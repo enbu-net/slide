@@ -92,4 +92,7 @@ withDefaults(defineProps<{
 }
 .down .track { transform: rotate(90deg); }
 .up .track { transform: rotate(-90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .dot { animation: none; }
+}
 </style>

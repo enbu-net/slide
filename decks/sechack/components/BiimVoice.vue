@@ -13,6 +13,8 @@ const params = new URLSearchParams(location.search || location.hash.split('?')[1
 const enabled = ref(params.has('voice'))
 const auto = params.get('voice') === 'auto'
 const audio = new Audio()
+// ブラウザが操作前の再生を止めたとき、押して始めるボタンを出す
+const blocked = ref(false)
 let timer: ReturnType<typeof setTimeout> | undefined
 
 function src(page: number, index: number) {
@@ -32,7 +34,12 @@ function play() {
   if (index < 0)
     return
   audio.src = src(currentPage.value, index)
-  audio.play().catch(() => {})
+  audio.play().then(() => {
+    blocked.value = false
+  }).catch((e: unknown) => {
+    blocked.value = true
+    console.warn('読み上げを再生できません', audio.src, e)
+  })
 }
 
 audio.addEventListener('ended', () => {
@@ -60,7 +67,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <span v-if="enabled" class="biim-voice" :title="auto ? '読み上げ(自動送り)' : '読み上げ'">🔊</span>
+  <button v-if="enabled && blocked" class="biim-voice start" @click="play">▶ 読み上げを始める</button>
+  <span v-else-if="enabled" class="biim-voice" :title="auto ? '読み上げ(自動送り)' : '読み上げ'">🔊</span>
 </template>
 
 <style scoped>
@@ -70,5 +78,14 @@ onBeforeUnmount(() => {
   bottom: 0.2rem;
   font-size: 0.9rem;
   opacity: 0.7;
+}
+.biim-voice.start {
+  padding: 0.1rem 0.6rem;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  background: var(--biim-bg, #fff);
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
 }
 </style>

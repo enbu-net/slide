@@ -28,6 +28,9 @@ est: 0:10
   0%, 100% { transform: rotate(-6deg); }
   50% { transform: rotate(6deg) translateY(-6px); }
 }
+@media (prefers-reduced-motion: reduce) {
+  .dance { animation: none; }
+}
 </style>
 
 <!--
