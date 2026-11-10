@@ -5,6 +5,7 @@ enbu のスライド置き場。[Slidev](https://sli.dev/) で作っていて、
 | デッキ | 内容 | URL |
 |---|---|---|
 | `decks/intro/` | enbu の紹介(biim スタイル) | https://enbu-net.github.io/slide/intro/ |
+| `decks/sechack/` | SecHack365 の 10 分発表(biim スタイル、1 ページ 1 メッセージ) | https://enbu-net.github.io/slide/sechack/ |
 | `decks/workflow/` | `init` / `add` / `pull` / `sync` の流れのアニメーション | https://enbu-net.github.io/slide/workflow/ |
 
 https://enbu-net.github.io/slide/ に一覧が出る。
@@ -14,6 +15,7 @@ https://enbu-net.github.io/slide/ に一覧が出る。
 ```sh
 pnpm install
 pnpm dev:intro      # 紹介スライドを開く
+pnpm dev:sechack    # SecHack365 の 10 分発表を開く
 pnpm dev:workflow   # workflow のスライドを開く
 pnpm build          # すべてのデッキを dist/<名前>/ にビルドし、dist/index.html に一覧を作る
 ```
@@ -24,7 +26,9 @@ pnpm build          # すべてのデッキを dist/<名前>/ にビルドし、
 `components/`、`layouts/`、`global-top.vue`、`style.css` などを読むので、デッキごとに部品と見た目が分かれている。
 `decks/<名前>/` を足せば `pnpm build` が自動で拾う。ルーターは hash モードなので、リロードしても 404 にならない。
 
-### intro(biim スタイル)
+### intro / sechack(biim スタイル)
+
+`decks/sechack/` は intro の外枠と部品をコピーしたもの。外枠を直すときは両方そろえる。
 
 [yashikota/biim-slide](https://github.com/yashikota/biim-slide) の外枠をそのまま使っている。
 
