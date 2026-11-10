@@ -31,7 +31,18 @@ est: 0:10
 </style>
 
 <!--
-はい、enbu という、チームで機密情報を共有するためのツールを作っているので、その話をします
+enbu という、チームで機密情報を共有する道具の話をします
+-->
+
+---
+title: §1 シークレットの話
+est: 0:05
+---
+
+<EnbuSection :n="1" />
+
+<!--
+まず、機密情報の話
 -->
 
 ---
@@ -41,41 +52,35 @@ est: 0:20
 
 <EnbuStage :zoom="1.2">
 
-<div class="lead">シークレット = <span class="hl" :class="{ on: $clicks >= 1 }">知っていれば誰でも使える</span>鍵</div>
+<div class="lead">機密情報 = <span class="hl" :class="{ on: $clicks >= 1 }">知られたら困る</span>もの</div>
 
-<div class="flex items-center justify-center gap-6">
-  <div class="env">
-    <div class="text-xs op-70 mb-1">📄 .env</div>
-    <div class="font-mono">API_KEY=sk-9x…</div>
-    <div class="font-mono">DB_PASSWORD=hunter2</div>
-  </div>
-  <EnbuArrow v-click="1" label="コピーすれば" color="#dc2626" size="5rem" />
-  <div v-click="1" class="flex flex-col items-center gap-1">
-    <div class="big-emoji">😈</div>
-    <div class="text-sm">他人でも</div>
-  </div>
-  <EnbuArrow v-click="1" color="#dc2626" size="3rem" />
-  <div v-click="1" class="flex gap-3">
-    <EnbuBox icon="💳" title="API を使い放題" tone="bad" class="w-32" />
-    <EnbuBox icon="🗄️" title="DB を丸ごと" tone="bad" class="w-32" />
-  </div>
+<div class="grid grid-cols-4 gap-4">
+  <div class="card"><div class="big-emoji">🔑</div><div class="font-bold mt-1">API キー</div><div class="text-sm op-80">使い放題にされる</div></div>
+  <div class="card"><div class="big-emoji">🗝️</div><div class="font-bold mt-1">パスワード</div><div class="text-sm op-80">DB を丸ごと</div></div>
+  <div class="card"><div class="big-emoji">⚙️</div><div class="font-bold mt-1">設定ファイル</div><div class="text-sm op-80">.env など</div></div>
+  <div class="card"><div class="big-emoji">📄</div><div class="font-bold mt-1">機密文書</div><div class="text-sm op-80">顧客情報など</div></div>
+</div>
+
+<div v-click="1" class="flex justify-center mt-6">
+  <div class="warn">😈 コピーされたら、他人でもそのまま使える。漏れた事実は取り消せない</div>
 </div>
 
 </EnbuStage>
 
 <style>
-.env {
-  padding: 0.8rem 1rem;
-  border: 2px solid #1f2937;
-  border-radius: 10px;
-  background: #fef3c7;
-  line-height: 1.7;
+.warn {
+  padding: 0.4rem 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  background: #fee2e2;
+  border: 2px solid #b91c1c;
+  color: #7f1d1d;
 }
 </style>
 
 <!--
-まずシークレットの話です。API キーやパスワードのことで、開発ではよく .env というファイルにまとめて置きます
-[click:1] これは鍵と同じで、持っていれば誰でも使えてしまいます。コピーされたら、他人が API を使い放題、データベースも丸ごと見られます
+API キーやパスワード、設定ファイル、顧客情報。知られたら困るものを、誰もが扱っています
+[click:1] コピーされたら他人がそのまま使えて、漏れたら取り消せません
 -->
 
 ---
@@ -112,8 +117,8 @@ est: 0:20
 </style>
 
 <!--
-なので、本来は誰にも見せてはいけません
-[click:1] でもチームで開発するには、仲間にはこの鍵を渡さないと動かせません。輪の内側の人にだけ見せて、外の人には見せたくない
+だから本来は、誰にも見せてはいけない
+[click:1] でも仲間には見せないと、開発が進みません
 -->
 
 ---
@@ -134,141 +139,329 @@ est: 0:15
 </EnbuStage>
 
 <!--
-つまり、見せてはいけないものを、限られた人にだけ見せたい。そもそも矛盾した話なんですね。だから今は、みんなどこかで無理をしています。よくある方法を 3 つ見ます
+見せてはいけないものを、限られた人にだけ見せる。そもそも矛盾した話です
+-->
+
+---
+title: §2 今のやり方
+est: 0:05
+---
+
+<EnbuSection :n="2" />
+
+<!--
+では今、どうしているか
 -->
 
 ---
 title: チャットで送る
-est: 0:20
+est: 0:30
 ---
 
-<EnbuStage :zoom="1.3">
+<EnbuStage :zoom="1.15">
 
-<div class="lead">チャットに貼ると、<span class="hl" :class="{ on: $clicks >= 1 }">ずっと残る</span></div>
+<div class="lead">チャットに貼ると、<span class="hl" :class="{ on: $clicks >= 2 }">ずっと残る</span></div>
 
-<div class="flex items-center justify-center gap-6">
+<div class="flex items-start justify-center gap-6">
   <div class="chat">
-    <div class="chat-head"># dev-team</div>
-    <div class="msg"><b>Alice</b><code>API_KEY=sk-9x...</code></div>
-    <div class="msg"><b>Bob</b>ありがとう!</div>
+    <div class="chat-head"><span class="flex items-center gap-2"><img src="./images/logos/slack.svg" class="logo-chip" alt="Slack"># dev-team</span><span v-click="2" class="search">🔍 API_KEY <b>1 件</b></span></div>
+    <div class="day">2025 年 4 月 1 日</div>
+    <div class="msg" :class="{ found: $clicks >= 2 }"><b>Alice</b>本番のキーです<code>API_KEY=sk-live-9x2fQ7</code></div>
+    <div class="msg"><b>Bob</b>顧客リストも置いときます<span class="file">📎 顧客リスト.xlsx</span></div>
+    <div v-click="1" class="day">— 1 年後 —</div>
+    <div v-click="1" class="msg join">➕ Carol が参加しました</div>
   </div>
-  <div v-click="1" class="flex flex-col items-center gap-2">
-    <div class="text-sm op-70">1 年後も</div>
-    <div class="flex gap-2 text-3xl"><span>👀</span><span>👀</span><span>👀</span></div>
-    <div class="text-sm op-70">誰が見たか分からない</div>
+  <div v-click="3" class="stat">
+    <div class="num">2.4%</div>
+    <div>企業の Slack チャンネルの 2.4% に、シークレットが残っていた</div>
+    <div class="src">GitGuardian「State of Secrets Sprawl 2025」</div>
   </div>
 </div>
 
 </EnbuStage>
 
-<style>
-.chat {
-  width: 18rem;
-  border: 2px solid #d1d5db;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-}
-.chat-head { padding: 0.4rem 1rem; font-weight: bold; background: #4a154b; color: #fff; }
-.msg {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  padding: 0.55rem 1rem;
-  border-top: 1px solid #f3f4f6;
-  font-size: 0.95rem;
-}
-.msg b { font-size: 0.8rem; }
-</style>
-
 <!--
-一番多いのは、Discord や Slack に貼る方法です。楽ですね
-[click:1] でもメッセージはずっと残ります。1 年後に入った人も読めますし、誰が見たのかも分かりません
+一番多いのは、Slack や Discord に貼る方法
+[click:1] 1 年後、新しく Carol が入ってきて
+[click:2] 検索すると、昔のキーがそのまま出てきます
+[click:3] 企業の Slack の 2.4% のチャンネルに、実際に残っていたそうです
 -->
 
 ---
-title: Git にコミットしちゃう
-est: 0:20
+title: チャットは値が化ける
+est: 0:30
 ---
 
-<EnbuStage :zoom="1.3">
+<EnbuStage :zoom="1.12">
 
-<div class="lead">Git は、<span class="hl" :class="{ on: $clicks >= 1 }">消しても覚えている</span></div>
+<div class="lead">貼った値は、<span class="hl" :class="{ on: $clicks >= 1 }">化ける</span>し、<span class="hl" :class="{ on: $clicks >= 2 }">古くなる</span></div>
 
-<div class="flex items-center justify-center gap-1">
-  <div class="commit"><div class="cid">a1f3</div><div>📄 .env を追加</div></div>
-  <div class="link" />
-  <div class="commit" :class="{ del: $clicks >= 1 }"><div class="cid">7c2e</div><div>🗑️ .env を削除</div></div>
-  <div class="link" />
-  <div class="commit"><div class="cid">e94b</div><div>…</div></div>
-</div>
-
-<div v-click="1" class="flex justify-center mt-6">
-  <div class="dig">🔍 <code>git log</code> で a1f3 を見れば、まだ読める</div>
+<div class="flex items-start justify-center gap-5">
+  <div class="chat dc">
+    <div class="chat-head"><span class="flex items-center gap-2"><img src="./images/logos/discord.svg" class="logo-chip" alt="Discord"># dev</span></div>
+    <div class="typed"><span class="text-xs">送ったテキスト</span><code>DB_PASSWORD=pa__ss__word</code></div>
+    <div class="msg"><b>Alice</b><span class="mono">DB_PASSWORD=pa<u>ss</u>word</span></div>
+    <div v-click="1" class="msg"><b>Bob</b>コピーしたけど <span class="mono bad">password</span> で入れない…</div>
+  </div>
+  <div v-click="2" class="chat dc">
+    <div class="chat-head"><span># dev</span></div>
+    <div class="msg"><b>Alice</b><span class="mono">API_KEY=sk-live-<s>9x2f</s></span></div>
+    <div class="msg"><b>Alice</b>キー変えました <span class="mono">sk-live-<s>Q7mk</s></span></div>
+    <div class="msg"><b>Alice</b>すみません、こっちが最新 <span class="mono">sk-live-Zp4c</span></div>
+    <div class="msg"><b>Bob</b>まだ 1 個目のを使ってた…</div>
+  </div>
 </div>
 
 </EnbuStage>
 
 <style>
-.commit {
-  padding: 0.4rem 0.8rem;
-  border: 2px solid #1f2937;
-  border-radius: 8px;
+.typed { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.4rem 1rem; background: #f3f4f6; color: #374151; }
+.mono { font-family: var(--slidev-code-font-family, monospace); font-size: 0.85rem; }
+.mono.bad { color: #b91c1c; font-weight: bold; }
+</style>
+
+<!--
+Discord では、アンダースコア 2 つで囲むと下線になります
+[click:1] コピーすると記号が消えて、動きません
+[click:2] 値を変えるたびに貼り直しで、古い値を使う人が出ます
+-->
+
+---
+title: SOPS ですり替え
+est: 0:40
+---
+
+<EnbuStage :zoom="1.08">
+
+<div class="lead">Git で暗号化しても、<span class="hl" :class="{ on: $clicks >= 2 }">中身をすり替えられる</span><span class="sub flex items-center justify-center gap-2"><img src="./images/logos/sops.png" class="logo-chip" alt="SOPS">SOPS:値を暗号化して <img src="./images/logos/git.svg" class="logo-chip" alt="Git"> Git にコミットする道具</span></div>
+
+<div class="flex items-start justify-center gap-5">
+  <div class="term">
+    <div class="term-head"><i /><i /><i /></div>
+    <div class="cm"># 😈 Mallory: 鍵はない。リポジトリに書き込めるだけ</div>
+    <div><span class="ps">$</span> cat .sops.yaml</div>
+    <div class="out">  - age: age1w39g…, age1a4ft… <span class="cm"># 公開鍵は丸見え</span></div>
+    <div v-click="1"><span class="ps">$</span> echo 'API_URL=https://evil.example' \</div>
+    <div v-click="1">&nbsp;&nbsp;| sops encrypt … > .env.enc</div>
+    <div v-click="1"><span class="ps">$</span> git commit -am "update secrets"</div>
+    <div v-click="2" class="cm mt-2"># 🧑‍💻 Alice</div>
+    <div v-click="2"><span class="ps">$</span> sops decrypt .env.enc</div>
+    <div v-click="2" class="out leak">API_URL=https://evil.example</div>
+    <div v-click="2" class="cm"># エラーも警告も出ない</div>
+  </div>
+  <div v-click="3" class="stat">
+    <div class="num">🔒 ≠ ㊞</div>
+    <div>暗号化は「読めなくする」だけ。<b>誰が書いたか</b>は確かめない</div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<!--
+次は、SOPS で暗号化して Git に置く方法。実際に試しました。Mallory は鍵がなく、書き込めるだけ
+[click:1] 宛先の公開鍵で、自分の値を暗号化してコミット
+[click:2] Alice が開くと、警告なしに偽の値が出てきます
+[click:3] 暗号化は読めなくするだけで、誰が書いたかは確かめません
+-->
+
+---
+title: SOPS は手作業が多い
+est: 0:30
+---
+
+<EnbuStage :zoom="1.12">
+
+<div class="lead">メンバーが変わるたびに、<span class="hl" :class="{ on: $clicks >= 2 }">全部手作業</span></div>
+
+<div class="flex items-start justify-center gap-6">
+  <div class="steps">
+    <div class="text-sm font-bold mb-1">👋 1 人入る・抜けるたびに</div>
+    <div>① 公開鍵を集める(チャットで…)</div>
+    <div>② .sops.yaml を書き換える</div>
+    <div>③ 全部のファイルで <code>sops updatekeys</code></div>
+    <div>④ 抜けた人が見た値を全部変える</div>
+    <div>⑤ コミットして、全員に pull してもらう</div>
+  </div>
+  <div v-click="1" class="term w-80">
+    <div class="term-head"><i /><i /><i /></div>
+    <div class="cm"># 2 人が別々のキーを変えただけ</div>
+    <div><span class="ps">$</span> git merge bob</div>
+    <div class="out leak">CONFLICT (content): Merge conflict in .env.enc</div>
+    <div class="cm"># 暗号文どうしを手で直すことになる</div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<style>
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.7rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
   background: #fff;
-  text-align: center;
-}
-.commit.del { border-style: dashed; color: #6b7280; }
-.cid { font-family: var(--slidev-code-font-family, monospace); font-size: 0.7rem; color: #6b7280; }
-.link { width: 1.6rem; height: 3px; background: #1f2937; }
-.dig {
-  padding: 0.4rem 1rem;
-  font-weight: bold;
-  border-radius: 8px;
-  background: #fee2e2;
-  border: 2px solid #dc2626;
-  color: #991b1b;
+  font-size: 0.95rem;
 }
 </style>
 
 <!--
-次に、うっかり Git にコミットしちゃうパターン
-[click:1] 慌てて消しても、Git は履歴を全部覚えているので、昔のコミットを見れば読めます。公開リポジトリなら、キーを探して回るボットに数分で拾われることもあります
+人が出入りするたびに、鍵を集めて暗号化し直し
+[click:1] 2 人が別々の値を変えただけで、暗号文がコンフリクトします
+[click:2] 全部、手作業です
 -->
 
 ---
 title: 専用サービス
-est: 0:20
+est: 0:35
 ---
 
-<EnbuStage :zoom="1.25">
+<EnbuStage :zoom="1.1">
 
-<div class="lead">専用サービスは安全。<br><span v-click="1">でも、<span class="hl" :class="{ on: $clicks >= 1 }">お金とアカウント</span>が増える</span></div>
+<div class="lead">専用サービスは安全。でも、<span class="hl" :class="{ on: $clicks >= 2 }">人数分のお金</span>がかかる</div>
 
-<div class="flex items-center justify-center gap-4">
-  <div class="flex flex-col gap-2">
-    <div class="member">🧑‍💻 <span v-click="1">👤 💳</span></div>
-    <div class="member">👩‍💻 <span v-click="1">👤 💳</span></div>
-    <div class="member">🤝 <span v-click="1" class="text-gray-600">👤? 社外</span></div>
+<div class="flex items-start justify-center gap-5">
+  <div class="quote">
+    <div class="quote-head">🧾 5 人のチームで 1 年使うと(1 ドル = 150 円)</div>
+    <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/1password.svg" class="logo-chip" alt=""><span>1Password Teams<small>10 人まで定額</small></span></span><b>約 4.5 万円</b></div>
+    <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/1password.svg" class="logo-chip" alt=""><span>1Password Business<small>1 人 $8.99/月</small></span></span><b>約 8.1 万円</b></div>
+    <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/doppler.svg" class="logo-chip" alt=""><span>Doppler Team<small>1 人 $21/月</small></span></span><b>約 19 万円</b></div>
+    <div class="note">2026 年 11 月時点、各社公式サイトの価格</div>
   </div>
-  <EnbuArrow label="ログイン" flow size="4rem" />
-  <EnbuBox icon="☁️" title="専用サービス" sub="1Password / Secrets Manager など" class="w-52" />
+  <div class="flex flex-col gap-3">
+    <div v-click="1" class="member">🤝 社外の人を 1 人足すと<br><b>+1.6 万〜3.8 万円/年</b></div>
+    <div v-click="2" class="member">🎓 学生 5 人なら<br><b>1 人 9 千〜3.8 万円/年</b></div>
+  </div>
 </div>
 
 </EnbuStage>
 
 <style>
+.quote {
+  width: 25rem;
+  border: 2px solid #1f2937;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  color: #111827;
+}
+.quote-head { padding: 0.4rem 1rem; font-weight: bold; font-size: 0.9rem; background: #f3f4f6; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+.row small { display: block; font-size: 0.75rem; color: #4b5563; }
+.row b { font-size: 1.2rem; white-space: nowrap; }
+.note { padding: 0.3rem 1rem; font-size: 0.7rem; color: #4b5563; border-top: 1px solid #e5e7eb; }
 .member {
-  padding: 0.25rem 0.7rem;
-  font-size: 1.3rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 1rem;
+  line-height: 1.5;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   background: #fff;
+  color: #111827;
 }
 </style>
 
 <!--
-1Password や AWS の Secrets Manager のような専用サービスもあります。安全で機能もそろっています
-[click:1] ただ、人数分のアカウントとお金が必要です。学生チームや個人には重いし、業務委託のような社外の人に渡すのも面倒です。結局どの方法でも、誰かが取り残されます
+1Password のような専用サービスは安全ですが、5 人で年に 4 万から 19 万円
+[click:1] 社外の人を足すと、さらに増えます
+[click:2] 学生チームには重いですね
+-->
+
+---
+title: 今のやり方のまとめ
+est: 0:25
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">安全と手軽さが、<span class="hl" :class="{ on: $clicks >= 1 }">両立していない</span></div>
+
+<table class="cmp">
+  <thead><tr><th></th><th>後から入った人・<br>抜けた人に見えない</th><th>勝手に<br>すり替えられない</th><th>手間が少ない</th><th>お金・<br>アカウントが要らない</th></tr></thead>
+  <tbody>
+    <tr><td><img src="./images/logos/slack.svg" class="logo-chip" alt=""> チャット</td><td class="ng">✗</td><td class="ng">✗</td><td class="ng">✗ 貼り直し</td><td class="ok">○</td></tr>
+    <tr><td><img src="./images/logos/sops.png" class="logo-chip" alt=""> SOPS + Git</td><td class="ng">△ 手作業</td><td class="ng">✗</td><td class="ng">✗</td><td class="ok">○</td></tr>
+    <tr><td><img src="./images/logos/1password.svg" class="logo-chip" alt=""> 専用サービス</td><td class="ok">○</td><td class="ok">○</td><td class="ok">○</td><td class="ng">✗</td></tr>
+    <tr v-click="2" class="want"><td>💃 ほしいもの</td><td class="ok">○</td><td class="ok">○</td><td class="ok">○</td><td class="ok">○</td></tr>
+  </tbody>
+</table>
+
+</EnbuStage>
+
+<style>
+.cmp { margin: 0 auto; border-collapse: collapse; background: #fff; font-size: 0.95rem; }
+.cmp th, .cmp td { padding: 0.4rem 0.8rem; border: 1px solid #d1d5db; text-align: center; }
+.cmp th { font-size: 0.8rem; line-height: 1.3; background: #f3f4f6; }
+.cmp td:first-child { text-align: left; font-weight: bold; white-space: nowrap; }
+.cmp .ok { color: #15803d; font-weight: bold; }
+.cmp .ng { color: #b91c1c; font-weight: bold; }
+.cmp .want td { background: #fff1f2; }
+</style>
+
+<!--
+どれも、どこかに丸がつきません
+[click:1] 安全と手軽さが両立せず、人の注意と手作業に頼っています
+[click:2] 手軽で、安全で、安いもの。それを作りました
+-->
+
+---
+title: §3 enbu
+est: 0:05
+---
+
+<EnbuSection :n="3" />
+
+<!--
+それが enbu です
+-->
+
+---
+title: enbu とは
+est: 0:25
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">今あるアカウントと置き場所で、<br><span class="hl" :class="{ on: $clicks >= 1 }">機密情報を安全に保管・共有</span></div>
+
+<div class="flex items-center justify-center gap-8">
+  <img src="./images/enbu.png" class="w-28" alt="enbu">
+  <div class="flex flex-col gap-2">
+    <div class="feat">👤 アカウントを増やさない。<img src="./images/logos/github.svg" class="logo-chip" alt=""> GitHub や S3 をそのまま使う</div>
+    <div class="feat">🔑 鍵の手動管理なし</div>
+    <div class="feat">🧰 暗号化・履歴・共有・取得を 1 つの仕組みで</div>
+    <div class="feat">🖥️ GUI(デスクトップ / VS Code)と CLI</div>
+    <div v-click="1" class="feat goal">🛡️ 目指すのは Secure by Default:人の注意や手作業に頼らない</div>
+  </div>
+</div>
+
+</EnbuStage>
+
+<style>
+.feat {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.9rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 1rem;
+}
+.feat.goal { border-color: #dd2e44; background: #fff1f2; font-weight: bold; }
+</style>
+
+<!--
+今ある GitHub や S3 を使って、アカウントも鍵の手作業も増やさず、暗号化から共有までをまとめて扱います
+[click:1] 目指すのは、人の注意に頼らない Secure by Default です
 -->
 
 ---
@@ -313,77 +506,106 @@ est: 0:25
 </style>
 
 <!--
-enbu はどうするか。1 人 1 つずつ鍵を持っていて
-[click:1] その全員の鍵で開けられるように鍵をかけた中身だけを、もう持っている GitHub や S3 に置きます
-[click:2] なので、追加のお金も、新しいアカウントもいりません
+1 人 1 つずつ鍵を持ち
+[click:1] 全員の鍵で開けられる暗号文だけを、置き場所に置きます
+[click:2] だから追加のお金もアカウントもいりません
 -->
 
 ---
-title: enbu がしないこと
-est: 0:20
+title: §4 だれに嬉しい?
+est: 0:05
 ---
 
-<EnbuStage :zoom="1.2">
-
-<div class="lead">一度見た値は、<span class="hl" :class="{ on: $clicks >= 1 }">頭から消せない</span><span class="sub">できないことは、できないと決めている</span></div>
-
-<div class="flex items-center justify-center gap-5">
-  <EnbuBox icon="👋" title="Bob を外す" class="w-32" />
-  <EnbuArrow size="3rem" />
-  <EnbuBox icon="🔒" title="新しい値" sub="もう読めない" tone="good" class="w-32" />
-  <div v-click="1" class="flex items-center gap-5">
-    <EnbuBox icon="🧠" title="前に見た値" sub="覚えている" tone="bad" class="w-32" />
-    <EnbuArrow color="#dd2e44" size="3rem" />
-    <EnbuBox icon="🔄" title="値を変える" tone="accent" class="w-32" />
-  </div>
-</div>
-
-</EnbuStage>
+<EnbuSection :n="4" />
 
 <!--
-逆に、enbu がしないことも決めています。Bob を外すと、新しい値はもう読めません
-[click:1] でも、Bob が前に見た値は頭に残っています。これはどんな仕組みでも消せないので、外したら値そのものを変えてください。ほかにも、CI やボットに勝手に読ませる機能や、Git の操作は、あえて入れていません
+だれに嬉しいか
 -->
 
 ---
-title: だれに嬉しい?
+title: 個人開発者
 est: 0:30
 ---
 
-<EnbuStage :zoom="1.3">
+<EnbuStage :zoom="1.15">
 
-<div class="lead">お金もアカウントも増やさず、<br><span class="hl" :class="{ on: $clicks >= 3 }">誰にでも渡せる</span></div>
+<div class="lead">🧑‍💻 個人開発者・初学者:<span class="hl" :class="{ on: $clicks >= 1 }">消しても戻せる、漏らさない</span></div>
 
-<div class="grid grid-cols-3 gap-5">
-  <div v-click="1" class="card">
-    <div class="big-emoji">🧑‍💻</div>
-    <div class="font-bold mt-1">個人開発者</div>
-    <div class="text-sm op-80">PC が壊れても戻せる</div>
-  </div>
-  <div v-click="2" class="card">
-    <div class="big-emoji">🎓</div>
-    <div class="font-bold mt-1">学生チーム</div>
-    <div class="text-sm op-80">無料。Discord に貼らない</div>
-  </div>
-  <div v-click="3" class="card">
-    <div class="big-emoji">🏢</div>
-    <div class="font-bold mt-1">企業</div>
-    <div class="text-sm op-80">社外の人にも。終わったら外す</div>
-  </div>
+<div class="persona">
+  <div class="col now"><div class="h">😩 今</div><div>.env は今の PC の中だけ</div><div>消したら、作り直し</div><div>うっかり Git にコミット</div></div>
+  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>消しても、クラウドから戻せる</div><div>変更の履歴が自動で残る</div><div>.gitignore を自動で設定し、うっかり公開を防ぐ</div><div>GUI で簡単。CLI もあるので AI でも操作できる</div></div>
+  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>合鍵がない。<b>全部の PC を同時に失うと誰も開けない</b></div><div>→ 2 台以上登録しておく</div></div>
 </div>
 
 </EnbuStage>
 
 <!--
-誰に嬉しいか
-[click:1] 個人開発者なら、PC が壊れても戻せます
-[click:2] 学生チームなら、無料で、Discord にキーを貼らなくてよくなります
-[click:3] 企業なら、業務委託のような社外の人にも渡せて、終わったら外すだけ。誰にでも渡せる、というのが一番の嬉しさです
+個人開発者や初学者は、.env を消したり、うっかりコミットしたり
+[click:1] enbu なら、クラウドから戻せて履歴も残り、.gitignore も自動です
+[click:2] ただ合鍵はないので、PC は 2 台以上登録してください
+-->
+
+---
+title: 学生チーム
+est: 0:30
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">🎓 学生チーム:<span class="hl" :class="{ on: $clicks >= 1 }">無料で、いつも最新</span></div>
+
+<div class="persona">
+  <div class="col now"><div class="h">😩 今</div><div>Slack や Discord に貼る</div><div>どれが最新か分からない</div><div>卒業生もずっと読める</div></div>
+  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>チャットに貼る代わりに、安全に手軽に共有</div><div>enbu が唯一の正(SSoT)→ どれが最新か迷わない</div><div>無料で使える</div><div>卒業したら外せる</div></div>
+  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>全員がアプリを入れる</div><div>管理者が 1 台ずつ承認する</div><div>外したら、値は自分で変える</div></div>
+</div>
+
+</EnbuStage>
+
+<!--
+学生チームは、チャットに貼って、どれが最新か分かりません
+[click:1] enbu が唯一の正しい値になり、無料で、卒業したら外せます
+[click:2] ただ全員がアプリを入れて、1 台ずつ承認が要ります
+-->
+
+---
+title: 企業
+est: 0:30
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">🏢 企業:<span class="hl" :class="{ on: $clicks >= 1 }">今の基盤のまま、社外の人とも</span></div>
+
+<div class="persona">
+  <div class="col now"><div class="h">😩 今</div><div>業務委託にもサービスの席を買う</div><div>zip + パスワード別送のメール</div><div>終わった後に外し忘れる</div></div>
+  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>今あるアカウント基盤で導入できる</div><div>社外とのやり取りに。クラウドストレージの代わりにも</div><div>業務委託やインターンも、承認して、終わったら外す</div></div>
+  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>SSO や環境ごとの細かい権限はまだない</div><div>CI が勝手に読む仕組みはない</div><div>誰が読んだかの記録は取れない</div></div>
+</div>
+
+</EnbuStage>
+
+<!--
+企業は、社外の人に席を買うか、zip とパスワード別送
+[click:1] enbu なら今の基盤のまま、承認して、終わったら外すだけ
+[click:2] ただ SSO はなく、誰が読んだかの記録も取れません
+-->
+
+---
+title: §5 デモ
+est: 0:05
+---
+
+<EnbuSection :n="5" />
+
+<!--
+では、動かしてみます
 -->
 
 ---
 title: デモ
 est: 2:00
+voiceHold: true
 ---
 
 <EnbuStage :zoom="1.2">
@@ -417,108 +639,18 @@ est: 2:00
 </style>
 
 <!--
-では実際に見てもらいます。Alice と Bob の 2 人で、それぞれ別の GitHub アカウントです
-まず Alice がワークスペースを作って、API キーを入れます。チャットに貼る代わりに、ここに入れるだけです
-次に Bob が参加します。この時点では Bob はまだ何も読めません。画面に出る指紋を、通話や対面で Alice に読み上げてもらいます
-Alice は指紋が同じか確かめて承認します。すると Bob の手元に .env ができました
-最後に Alice がキーを変えます。Bob は連絡をもらわなくても、同期するだけで新しい値になります
+Alice が値を入れ、Bob が参加して指紋を確認、承認すると Bob に .env が届きます。値を変えても、Bob は同期するだけです
 -->
 
 ---
-title: 鍵は PC から出ない
-est: 0:20
+title: §6 デモの裏側
+est: 0:05
 ---
 
-<EnbuStage :zoom="1.3">
-
-<div class="lead">鍵は 1 人 1 つ。<span class="hl" :class="{ on: $clicks >= 1 }">PC から出ない</span><span class="sub">チップ(TPM など)に鍵を作った場合。そうでなければ OS の鍵の保管庫へ</span></div>
-
-<div class="flex items-center justify-center gap-8">
-  <div class="device">
-    <div class="text-sm font-bold mb-2">💻 PC</div>
-    <div class="chip">
-      <div class="text-xs">セキュリティチップ</div>
-      <div class="text-3xl mt-1">🔑</div>
-    </div>
-  </div>
-  <div v-click="1" class="flex items-center gap-3">
-    <EnbuArrow label="ディスクを丸ごとコピー" color="#dc2626" size="7rem" />
-    <div class="copy">
-      <div class="text-sm font-bold mb-2">😈 コピー</div>
-      <div class="chip empty"><div class="text-3xl">∅</div></div>
-    </div>
-  </div>
-</div>
-
-</EnbuStage>
-
-<style>
-.device, .copy {
-  padding: 0.8rem 1rem;
-  border: 3px solid #1f2937;
-  border-radius: 14px;
-  background: #fff;
-  text-align: center;
-}
-.copy { border-color: #dc2626; border-style: dashed; }
-.chip {
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
-  color: #fff;
-  background: repeating-linear-gradient(45deg, #1f2937 0 10px, #273244 10px 20px);
-  box-shadow: 0 0 0 4px #dd2e44;
-}
-.chip.empty { background: #f3f4f6; color: #9ca3af; box-shadow: none; }
-</style>
+<EnbuSection :n="6" />
 
 <!--
-ここからデモの裏側です。鍵は 1 人 1 つずつで、ふつうは PC のセキュリティチップの中で作ります
-[click:1] チップから鍵を取り出す方法はないので、ディスクを丸ごとコピーされても、鍵はついていきません。チップが使えない PC や、あえて選んだ場合は、OS の鍵の保管庫、Windows なら資格情報マネージャーに入れます。そのときはこの守りはありません
--->
-
----
-title: メンバー表にはハンコ
-est: 0:20
----
-
-<EnbuStage :zoom="1.25">
-
-<div class="lead">メンバー表には、<span class="hl" :class="{ on: $clicks >= 2 }">管理者のハンコ</span><span class="sub">ハンコ = 電子署名。本人にしか押せない</span></div>
-
-<div class="flex items-center justify-center gap-2">
-  <div class="ctl"><div>👑 Alice</div><div class="stamp">㊞</div></div>
-  <EnbuArrow v-click="1" label="Alice が押す" color="#16a34a" size="4.5rem" />
-  <div v-click="1" class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div class="stamp">㊞</div></div>
-  <EnbuArrow v-click="2" label="Alice が押す" color="#16a34a" size="4.5rem" />
-  <div v-click="2" class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div>🧑‍🎓 Carol</div><div class="stamp">㊞</div></div>
-</div>
-
-</EnbuStage>
-
-<style>
-.ctl {
-  position: relative;
-  min-width: 7rem;
-  padding: 0.5rem 0.8rem;
-  border: 2px solid #1f2937;
-  border-radius: 8px;
-  background: #fff;
-  line-height: 1.6;
-}
-.stamp {
-  position: absolute;
-  right: -0.6rem;
-  bottom: -0.7rem;
-  font-size: 1.6rem;
-  color: #dc2626;
-  transform: rotate(-12deg);
-}
-</style>
-
-<!--
-誰がメンバーかという表は、管理者のハンコ、つまり電子署名つきで鎖のようにつながっています
-[click:1] Bob を入れるときは、Alice がハンコを押した新しい表を作ります。さっきのデモの承認がこれです
-[click:2] こうして表がつながっていきます。暗号化の宛先は、この表からしか作りません
+デモの裏側
 -->
 
 ---
@@ -561,8 +693,64 @@ est: 0:15
 </style>
 
 <!--
-置き場所に送るのは、暗号文とハンコだけです。開けられるのは自分の PC の中だけ
-[click:1] 置き場所そのものは信用しない、という前提で作っています。GitHub や S3 の中の人にも、中身は読めません
+置き場所に送るのは、暗号文とハンコだけ
+[click:1] 置き場所そのものは、信用しません
+-->
+
+---
+title: メンバー表にはハンコ
+est: 0:20
+---
+
+<EnbuStage :zoom="1.25">
+
+<div class="lead">メンバー表には、<span class="hl" :class="{ on: $clicks >= 2 }">管理者のハンコ</span><span class="sub">ハンコ = 電子署名。本人にしか押せない</span></div>
+
+<div class="flex items-center justify-center gap-2">
+  <div class="ctl"><div>👑 Alice</div><div class="stamp">㊞</div></div>
+  <EnbuArrow v-click="1" label="Alice が押す" color="#16a34a" size="4.5rem" />
+  <div v-click="1" class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div class="stamp">㊞</div></div>
+  <EnbuArrow v-click="2" label="Alice が押す" color="#16a34a" size="4.5rem" />
+  <div v-click="2" class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div>🧑‍🎓 Carol</div><div class="stamp">㊞</div></div>
+</div>
+
+</EnbuStage>
+
+<style>
+.ctl {
+  position: relative;
+  min-width: 7rem;
+  padding: 0.5rem 0.8rem;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+  background: #fff;
+  line-height: 1.6;
+}
+.stamp {
+  position: absolute;
+  right: -0.6rem;
+  bottom: -0.7rem;
+  font-size: 1.6rem;
+  color: #dc2626;
+  transform: rotate(-12deg);
+}
+</style>
+
+<!--
+メンバー表には、管理者のハンコ、電子署名が押されています
+[click:1] さっきの承認は、ハンコを押した新しい表を作ること
+[click:2] 暗号化の宛先は、この表からしか作りません
+-->
+
+---
+title: §7 攻撃にどう耐えるか
+est: 0:05
+---
+
+<EnbuSection :n="7" />
+
+<!--
+攻撃する側から見てみます
 -->
 
 ---
@@ -599,8 +787,8 @@ est: 0:15
 </style>
 
 <!--
-SecHack なので、攻撃する側の目線でも見てみます。置き場所に書き込める Mallory が、自分をメンバーにした表を置いたとします
-[click:1] 管理者のハンコがないので、無視されます。置き場所に書けることと、メンバーであることは別物です
+SOPS ではすり替えが通りました。enbu で Mallory が偽物を置くと
+[click:1] ハンコがないので、無視されます
 -->
 
 ---
@@ -641,8 +829,154 @@ est: 0:15
 </style>
 
 <!--
-次に、置き場所の中身を古い版に巻き戻して、前の値を使わせようとする攻撃
-[click:1] 手元に、どこまで見たかの記録があるので、それより古ければ止まります
+古い版に戻す攻撃は
+[click:1] 手元の記録より古ければ止まります
+-->
+
+---
+title: 守れないもの
+est: 0:30
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">メンバー本人が裏切ったら、<span class="hl" :class="{ on: $clicks >= 1 }">止められない</span><span class="sub">内部の攻撃者や、乗っ取られたメンバーの PC</span></div>
+
+<div class="flex items-center justify-center gap-4">
+  <EnbuBox icon="👩‍💻" title="Bob(メンバー)" sub="正しく復号できる" class="w-40" />
+  <EnbuArrow label="値をコピー" color="#b91c1c" size="5rem" />
+  <EnbuBox icon="😈" title="外へ持ち出す" tone="bad" class="w-36" />
+</div>
+
+<div v-click="2" class="flex justify-center gap-6 mt-6">
+  <div class="can"><b class="ok-mark">できること</b><br>外す・値を変える・承認の記録</div>
+  <div class="can"><b class="ng-mark">できないこと</b><br>持ち出しを防ぐ・誰が読んだか知る</div>
+</div>
+
+</EnbuStage>
+
+<style>
+.can { padding: 0.5rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; text-align: center; line-height: 1.6; }
+</style>
+
+<!--
+ただ、読めるメンバー本人が裏切ったら
+[click:1] 持ち出しは止められません
+[click:2] できるのは、外して、値を変えるところまでです
+-->
+
+---
+title: §8 作るときの工夫
+est: 0:05
+---
+
+<EnbuSection :n="8" />
+
+<!--
+作るときの工夫
+-->
+
+---
+title: 工夫は 3 つ
+est: 0:15
+---
+
+<EnbuStage :zoom="1.25">
+
+<div class="lead">工夫したのは 3 つ</div>
+
+<div class="grid grid-cols-3 gap-5">
+  <div class="card"><div class="big-emoji">㊞</div><div class="font-bold mt-1">① 署名付きの状態管理</div></div>
+  <div class="card"><div class="big-emoji">🔀</div><div class="font-bold mt-1">② 共同編集の競合処理</div></div>
+  <div class="card"><div class="big-emoji">🔑</div><div class="font-bold mt-1">③ 秘密鍵の安全な運用</div></div>
+</div>
+
+</EnbuStage>
+
+<!--
+工夫は 3 つです
+-->
+
+---
+title: すべての版にハンコ
+est: 0:25
+---
+
+<EnbuStage :zoom="1.2">
+
+<div class="lead">① すべての版に、<span class="hl" :class="{ on: $clicks >= 1 }">書いた人のハンコ</span></div>
+
+<div class="flex items-center justify-center gap-2">
+  <div class="ver">v1<div class="who">🧑‍💻 Alice ㊞</div></div><div class="link" />
+  <div class="ver">v2<div class="who">👩‍💻 Bob ㊞</div></div><div class="link" />
+  <div class="ver">v3<div class="who">🧑‍💻 Alice ㊞</div></div>
+</div>
+
+<div v-click="1" class="text-center mt-8 text-lg">前の版も署名に含める → <b>偽物・差し替え・巻き戻し</b>が分かる</div>
+
+</EnbuStage>
+
+<style>
+.ver { padding: 0.5rem 1rem; border: 2px solid #1f2937; border-radius: 8px; background: #fff; font-weight: bold; text-align: center; }
+.who { font-size: 0.8rem; font-weight: normal; color: #b91c1c; }
+.link { width: 2rem; height: 3px; background: #1f2937; }
+</style>
+
+<!--
+1 つ目。値の版にも全部、書いた人のハンコを押して、前の版とつなげます
+[click:1] だから偽物や巻き戻しが分かります
+-->
+
+---
+title: enbu は分散システム
+est: 0:30
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">② enbu には、<span class="hl" :class="{ on: $clicks >= 1 }">順番を決めるサーバーがない</span></div>
+
+<div class="flex items-center justify-center gap-10">
+  <div class="text-center">
+    <div class="text-sm font-bold mb-2">☁️ 専用サービス</div>
+    <div class="hub">
+      <div class="node">🧑‍💻</div><div class="node">👩‍💻</div><div class="node">🧑‍🎓</div>
+      <div class="center">🖥️ サーバーが<br>順番を決める</div>
+    </div>
+  </div>
+  <div v-click="1" class="text-center">
+    <div class="text-sm font-bold mb-2">💃 enbu</div>
+    <div class="hub p2p">
+      <div class="node">🧑‍💻</div><div class="node">👩‍💻</div><div class="node">🧑‍🎓</div>
+      <div class="center dumb">📦 置くだけ<br>(信用しない)</div>
+    </div>
+  </div>
+</div>
+
+<div v-click="2" class="text-center mt-5 text-lg">各 PC が、自分で正しいかを判断する = <b>分散システム</b></div>
+
+</EnbuStage>
+
+<style>
+.hub {
+  display: grid;
+  grid-template-columns: repeat(3, 3.4rem);
+  gap: 0.5rem 1.2rem;
+  justify-content: center;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+}
+.node { font-size: 2rem; text-align: center; }
+.center { grid-column: 1 / 4; padding: 0.4rem; border: 2px solid #1f2937; border-radius: 8px; font-size: 0.9rem; font-weight: bold; }
+.center.dumb { border-style: dashed; border-color: #6b7280; color: #374151; font-weight: normal; }
+</style>
+
+<!--
+2 つ目は競合。専用サービスでは、サーバーが順番を決めます
+[click:1] enbu の置き場所は、置くだけ
+[click:2] 各 PC が自分で判断する、分散システムです
 -->
 
 ---
@@ -686,9 +1020,48 @@ est: 0:15
 </style>
 
 <!--
-攻撃ではないですが、よくある事故です
-[click:1] Alice と Bob が同時に書いても、上書きせず両方を残します
-[click:2] そして Git のように自動で合わせます。同じところを別の値にしていたら、勝手に決めずに人に選んでもらいます
+2 人が同時に書いても
+[click:1] 上書きせず両方残し
+[click:2] 自動で合わせます。同じ所なら人に選んでもらいます
+-->
+
+---
+title: まれな順番だけ壊れる
+est: 0:30
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">壊れるのは、<span class="hl" :class="{ on: $clicks >= 1 }">まれな順番のときだけ</span></div>
+
+<div class="flex items-center justify-center gap-8">
+  <div class="text-center">
+    <div class="grid-dots">
+      <span v-for="i in 48" :key="i" class="d" :class="{ red: i === 37 && $clicks >= 1, tried: [1, 2, 3].includes(i) }" />
+    </div>
+    <div class="text-sm mt-2">書く・読む・承認・通信が切れる…の並び方</div>
+  </div>
+  <div class="flex flex-col gap-2 text-lg">
+    <div><span class="sw tried" /> 手で試せるのは数通り</div>
+    <div v-click="1"><span class="sw red" /> バグはここだけ</div>
+  </div>
+</div>
+
+<div v-click="2" class="text-center mt-5 text-lg">🧪 だから、並び方ごと機械に試させる → <b>DST</b></div>
+
+</EnbuStage>
+
+<style>
+.grid-dots { display: grid; grid-template-columns: repeat(12, 1.1rem); gap: 0.35rem; padding: 0.7rem; border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; }
+.d, .sw { display: inline-block; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: #e5e7eb; vertical-align: middle; }
+.d.tried, .sw.tried { background: #2563eb; }
+.d.red, .sw.red { background: #b91c1c; }
+</style>
+
+<!--
+出来事の並び方は、ものすごい数
+[click:1] バグはまれな並び方でだけ出ます
+[click:2] そこで DST です
 -->
 
 ---
@@ -736,8 +1109,8 @@ est: 0:25
 </style>
 
 <!--
-ここからは作るときに工夫したところです。セキュリティのツールは、変なタイミングで壊れるのが一番怖い。そこで DST というテストをしています
-[click:1] enbu 本体と暗号は本物のまま、置き場所と時計と PC だけを作り物にした仮想の世界で、チームを何千回も動かすリハーサルです
+DST は、決定的シミュレーションテスト
+[click:1] 本体と暗号は本物、置き場所と時計と PC は作り物の世界で、何千回も動かします
 -->
 
 ---
@@ -783,56 +1156,72 @@ est: 0:20
 </style>
 
 <!--
-誰がいつ操作するか、どこで通信が落ちるかは、サイコロで決めます
-[click:1] 失敗したら、同じサイコロの目でもう一度動かせば、まったく同じ失敗が起きます。たまにしか起きないバグも追いかけられます
-[click:2] これを毎晩 1,024 通り、5 つの OS で回しています
+並び方はサイコロで決めます
+[click:1] 同じ目なら、同じ失敗をもう一度起こせます
+[click:2] 毎晩 1,024 通りを、5 つの OS で回しています
 -->
 
 ---
-title: 形式検証
-est: 0:25
+title: 鍵は PC から出ない
+est: 0:20
 ---
 
-<EnbuStage :zoom="1.2">
+<EnbuStage :zoom="1.3">
 
-<div class="lead">形式検証 = <span class="hl" :class="{ on: $clicks >= 1 }">ありうる動きを全部、機械が調べる</span></div>
+<div class="lead">③ 鍵は 1 人 1 つ。<span class="hl" :class="{ on: $clicks >= 1 }">PC から出ない</span><span class="sub">チップ(TPM など)に鍵を作った場合。そうでなければ OS の鍵の保管庫へ</span></div>
 
-<div class="flex items-center justify-center gap-10">
-  <div class="text-center">
-    <div class="text-sm font-bold mb-2">🧪 テスト</div>
-    <div class="tree">
-      <span class="dot on" /><span class="dot" /><span class="dot on" /><span class="dot" /><span class="dot" /><span class="dot on" /><span class="dot" /><span class="dot" />
+<div class="flex items-center justify-center gap-8">
+  <div class="device">
+    <div class="text-sm font-bold mb-2">💻 PC</div>
+    <div class="chip">
+      <div class="text-xs">セキュリティチップ</div>
+      <div class="text-3xl mt-1">🔑</div>
     </div>
-    <div class="text-xs op-70 mt-1">選んだ例だけ</div>
   </div>
-  <div v-click="1" class="text-center">
-    <div class="text-sm font-bold mb-2">🤖 形式検証(TLA+)</div>
-    <div class="tree">
-      <span class="dot on" /><span class="dot on" /><span class="dot on" /><span class="dot on" /><span class="dot on" /><span class="dot on" /><span class="dot on" /><span class="dot on" />
+  <div v-click="1" class="flex items-center gap-3">
+    <EnbuArrow label="ディスクを丸ごとコピー" color="#dc2626" size="7rem" />
+    <div class="copy">
+      <div class="text-sm font-bold mb-2">😈 コピー</div>
+      <div class="chip empty"><div class="text-3xl">∅</div></div>
     </div>
-    <div class="text-xs op-70 mt-1">決めた範囲を全部</div>
   </div>
 </div>
 
 </EnbuStage>
 
 <style>
-.tree {
-  display: grid;
-  grid-template-columns: repeat(4, 1.6rem);
-  gap: 0.5rem;
-  padding: 0.8rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+.device, .copy {
+  padding: 0.8rem 1rem;
+  border: 3px solid #1f2937;
+  border-radius: 14px;
   background: #fff;
+  text-align: center;
 }
-.dot { width: 1.6rem; height: 1.6rem; border-radius: 50%; background: #e5e7eb; }
-.dot.on { background: #dd2e44; }
+.copy { border-color: #dc2626; border-style: dashed; }
+.chip {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  color: #fff;
+  background: repeating-linear-gradient(45deg, #1f2937 0 10px, #273244 10px 20px);
+  box-shadow: 0 0 0 4px #dd2e44;
+}
+.chip.empty { background: #f3f4f6; color: #9ca3af; box-shadow: none; }
 </style>
 
 <!--
-もう一つが形式検証です。テストは、選んだ例しか試せません
-[click:1] 形式検証では、メンバー表や同期のルールを数式のモデルにして、決めた範囲の中のありうる動きを全部、機械に調べさせます。わざと壊したモデルが、ちゃんと引っかかるかも確かめています
+3 つ目は秘密鍵。鍵は PC のセキュリティチップの中で作ります
+[click:1] ディスクを丸ごとコピーされても、鍵はついていきません
+-->
+
+---
+title: §9 これから
+est: 0:05
+---
+
+<EnbuSection :n="9" />
+
+<!--
+これから
 -->
 
 ---
@@ -869,8 +1258,8 @@ est: 0:25
 </style>
 
 <!--
-これからの話です。今 .env を使っているなら、enbu import を 1 回するだけで乗り換えられます
-[click:1] 次は、使う時だけ有効になるシークレット、怪しい動きを見つける監査、漏えいのスキャンを作っていきます
+今の .env は、enbu import 1 回で移せます
+[click:1] 次は、使う時だけ有効なシークレットや監査を作ります
 -->
 
 ---
@@ -887,5 +1276,5 @@ est: 0:15
 </div>
 
 <!--
-まとめです。見せてはいけないものを、限られた人にだけ見せる。それを人の注意ではなく、仕組みで安全にするのが enbu です。ぜひ使ってみてください。以上になります。ありがとうございました。
+見せてはいけないものを、仕組みで、限られた人にだけ。それが enbu です。ありがとうございました
 -->

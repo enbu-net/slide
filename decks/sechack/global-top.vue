@@ -17,6 +17,7 @@ useBiimControls() // タイマーのキー操作(s / r / 最後で停止)とス�
       <BiimIcon class="biim-icon" />
       <BiimSpeech class="biim-speech">
         <BiimSpeechText />
+        <BiimVoice />
       </BiimSpeech>
 
       <!-- 右端: 上(ページ番号)は低い固定の高さ、下(固定タイトル・タイマー)は残り -->
