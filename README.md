@@ -9,6 +9,10 @@ enbu のスライド置き場。[Slidev](https://sli.dev/) で作っていて、
 
 https://enbu-net.github.io/slide/ に一覧が出る。
 
+開いている PR のスライドは https://enbu-net.github.io/slide/pr/<PR 番号>/ で見られる(一覧は https://enbu-net.github.io/slide/pr/)。
+PR ごとに `preview.yml` が読み取り権限だけでビルドし、`deploy.yml` が main と開いている PR の成果物をまとめて公開し直す(`scripts/collect-previews.mjs`)。
+閉じた PR のプレビューは次の公開で消える。フォークからの PR は載せない。
+
 ## 使い方
 
 ```sh

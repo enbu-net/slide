@@ -1,0 +1,41 @@
+name: Build PR preview
+
+# PR のスライドをビルドして、静的ファイルだけを成果物(preview)として残す。
+# 権限は読み取りだけ。公開は deploy.yml が main の文脈で行い、PR のコードは実行しない。
+# closed でも動くのは、PR を閉じたときに deploy.yml を起こしてプレビューを消すため。
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run build --base /slide/pr/${{ github.event.pull_request.number }}/
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: preview
+          path: dist
+          retention-days: 30
