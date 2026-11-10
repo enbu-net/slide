@@ -248,7 +248,7 @@ est: 0:20
   <div class="flex flex-col gap-2">
     <div class="member">🧑‍💻 <span v-click="1">👤 💳</span></div>
     <div class="member">👩‍💻 <span v-click="1">👤 💳</span></div>
-    <div class="member">🤝 <span v-click="1" class="op-50">👤? 社外</span></div>
+    <div class="member">🤝 <span v-click="1" class="text-gray-600">👤? 社外</span></div>
   </div>
   <EnbuArrow label="ログイン" flow size="4rem" />
   <EnbuBox icon="☁️" title="専用サービス" sub="1Password / Secrets Manager など" class="w-52" />
@@ -576,7 +576,7 @@ est: 0:15
 
 <div class="flex items-center justify-center gap-6">
   <div class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div class="stamp">㊞</div></div>
-  <div class="ctl evil" :class="{ out: $clicks >= 1 }"><div>😈 Mallory</div><div class="text-xs op-70">「私もメンバー」</div></div>
+  <div class="ctl evil" :class="{ out: $clicks >= 1 }"><div>😈 Mallory</div><div class="text-xs">「私もメンバー」</div></div>
   <div v-click="1" class="text-2xl ng-mark">✗ 無視</div>
 </div>
 
@@ -595,7 +595,7 @@ est: 0:15
 }
 .stamp { position: absolute; right: -0.6rem; bottom: -0.7rem; font-size: 1.6rem; color: #dc2626; transform: rotate(-12deg); }
 .evil { border-color: #dc2626; border-style: dashed; background: #fef2f2; }
-.evil.out { opacity: 0.35; text-decoration: line-through; }
+.evil.out { color: #4b5563; background: #f3f4f6; border-color: #9ca3af; text-decoration: line-through; }
 </style>
 
 <!--
@@ -731,8 +731,8 @@ est: 0:25
 .real, .fake { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 1rem; }
 .real { border: 2px solid #16a34a; background: #f0fdf4; }
 .fake { border: 2px dashed #d97706; background: #fffbeb; }
-.real-k { color: #16a34a; font-weight: bold; }
-.fake-k { color: #d97706; font-weight: bold; }
+.real-k { color: #15803d; font-weight: bold; }
+.fake-k { color: #b45309; font-weight: bold; }
 </style>
 
 <!--

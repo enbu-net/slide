@@ -21,7 +21,7 @@ const { currentSlideNo, total } = useNav()
   font-weight: bold;
 }
 .rest {
-  color: #9ca3af; /* 灰色 */
+  color: var(--biim-muted);
 }
 .sep {
   margin: 0 0.15em;

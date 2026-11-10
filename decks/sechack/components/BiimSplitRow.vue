@@ -8,7 +8,7 @@ const COUNTDOWN_MS = 5000
 
 // 1 スライド分の行: ページ番号 / 予定との差 / 予定時間(累計)。
 // 差は累計の予定とタイマー値の差。いまのスライドは、予定の 5 秒前からカウントダウンし(緑の -)、
-// 超えたらそのままカウントアップする(赤の +)。スライドを終えると、その時点の差で確定する。
+// 超えたらそのままカウントアップする(赤の +)。色は style.css の --biim-good / --biim-bad。スライドを終えると、その時点の差で確定する。
 const props = defineProps<{
   no: number
   /** このスライドまでの予定時間の累計(秒) */
@@ -63,10 +63,10 @@ const delta = computed(() => {
   font-size: 0.85rem; /* 予定時間は白 */
 }
 .over {
-  color: #f87171;
+  color: var(--biim-bad);
 }
 .under {
-  color: #4ade80;
+  color: var(--biim-good);
 }
 .current {
   background: rgba(156, 163, 175, 0.25);

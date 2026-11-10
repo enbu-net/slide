@@ -586,7 +586,7 @@ est: 0:40
   border: 1px solid #dc2626;
   color: #991b1b;
 }
-.left { opacity: 0.5; border-style: dashed; }
+.left { color: #4b5563; border-style: dashed; background: #f3f4f6; }
 .tag {
   display: flex;
   gap: 0.6rem;
@@ -901,13 +901,13 @@ est: 0:50
   transition: all 0.4s;
 }
 .stanza.added { background: #f0fdf4; }
-.stanza.removed { text-decoration: line-through; color: #9ca3af; background: #f3f4f6; }
+.stanza.removed { text-decoration: line-through; color: #4b5563; background: #f3f4f6; }
 .new {
   margin-left: 0.3rem;
   padding: 0 0.3rem;
   font-size: 0.65rem;
   color: #fff;
-  background: #16a34a;
+  background: #15803d;
   border-radius: 4px;
 }
 .file-body {
@@ -1001,7 +1001,7 @@ est: 1:00
 .ctl-id {
   font-family: var(--slidev-code-font-family, monospace);
   font-size: 0.7rem;
-  color: #6b7280;
+  color: #4b5563;
   border-bottom: 1px solid #e5e7eb;
   margin-bottom: 0.15rem;
 }
@@ -1349,7 +1349,7 @@ est: 0:40
 }
 .ps { color: #22c55e; margin-right: 0.4rem; }
 .out { color: #9ca3af; }
-.cm { color: #6b7280; }
+.cm { color: #9ca3af; }
 </style>
 
 <!--

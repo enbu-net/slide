@@ -29,6 +29,6 @@ const genre = computed(() => configs.genre ?? '')
 }
 .biim-deck-info-genre {
   font-size: 0.7rem;
-  color: #9ca3af; /* 灰色 */
+  color: var(--biim-muted);
 }
 </style>

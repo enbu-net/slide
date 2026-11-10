@@ -43,10 +43,10 @@ withDefaults(defineProps<{
 }
 .sub {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #4b5563; /* 色付きの箱の上でも 4.5:1 以上 */
 }
 .accent { border-color: #dd2e44; background: #fff1f2; }
 .good { border-color: #16a34a; background: #f0fdf4; }
-.bad { border-color: #9ca3af; background: #f3f4f6; color: #6b7280; }
+.bad { border-color: #9ca3af; background: #f3f4f6; color: #4b5563; }
 .muted { border-style: dashed; }
 </style>
