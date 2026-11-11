@@ -609,7 +609,7 @@ est: 0:03
 
 ---
 title: デモ
-est: 1:10
+est: 1:09
 voiceHold: true
 ---
 
@@ -659,12 +659,12 @@ Alice が Bob に .env を渡します。見てほしいのは、一度も貼ら
 
 ---
 title: いま見たこと
-est: 0:12
+est: 0:13
 ---
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">いま見たのは、<span class="hl" :class="{ on: $clicks >= 1 }">人の注意に頼らない共有</span></div>
+<div class="lead">いま見たのは、<span class="hl" :class="{ on: $clicks >= 1 }">貼らない・貼り直さない共有</span></div>
 
 <table class="seen">
   <tbody>
@@ -686,7 +686,7 @@ est: 0:12
 
 <!--
 貼らずに渡せて、変えても同期だけ。アカウントも増えません
-[click:1] 全部、人の注意に頼らずに起きています
+[click:1] 人が確かめるのは、承認する時の指紋だけです
 -->
 
 ---

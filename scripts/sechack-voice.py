@@ -75,8 +75,11 @@ def synth(job):
             headers={'Content-Type': 'application/json'},
         )
         data = opener.open(req, timeout=1800).read()
-        open(wav + '.tmp', 'wb').write(data)
-        os.replace(wav + '.tmp', wav)
+        # 同じ文章を別のスレッドが同時に書いても壊れないよう、書き手ごとの一時ファイルから置き換える
+        fd, tmp = tempfile.mkstemp(dir=CACHE, suffix='.wav')
+        with os.fdopen(fd, 'wb') as f:
+            f.write(data)
+        os.replace(tmp, wav)
         print('synth', name, flush=True)
     mp3 = os.path.join(OUT, name + '.mp3')
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', wav, '-ac', '1', '-ar', '24000',
