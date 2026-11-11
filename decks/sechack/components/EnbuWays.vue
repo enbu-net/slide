@@ -2,7 +2,7 @@
 // §2「今のやり方」の 3 つ。big なら一覧として大きく、そうでなければ各スライドの上に置く目印として、いまの話を強調する
 import slack from '../images/logos/slack.svg'
 import discord from '../images/logos/discord.svg'
-import sops from '../images/logos/sops.png'
+import sops from '../images/logos/sops.svg'
 import git from '../images/logos/git.svg'
 import onePassword from '../images/logos/1password.svg'
 import doppler from '../images/logos/doppler.svg'

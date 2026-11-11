@@ -261,7 +261,7 @@ est: 0:32
 
 <EnbuWays :now="2" />
 
-<div class="lead">Git で暗号化しても、<span class="hl" :class="{ on: $clicks >= 2 }">中身をすり替えられる</span><span class="sub flex items-center justify-center gap-2"><img src="./images/logos/sops.png" class="logo-chip" alt="SOPS">SOPS:値を暗号化して <img src="./images/logos/git.svg" class="logo-chip" alt="Git"> Git にコミットする道具</span></div>
+<div class="lead">Git で暗号化しても、<span class="hl" :class="{ on: $clicks >= 2 }">中身をすり替えられる</span><span class="sub flex items-center justify-center gap-2"><img src="./images/logos/sops.svg" class="logo-chip" alt="SOPS">SOPS:値を暗号化して <img src="./images/logos/git.svg" class="logo-chip" alt="Git"> Git にコミットする道具</span></div>
 
 <div class="flex items-start justify-center gap-5">
   <div class="term">
@@ -430,7 +430,7 @@ est: 0:18
   <div class="c ng"><b>✗</b><small>貼り直し</small></div>
   <div class="c ok"><b>✓</b></div>
 
-  <div class="rh"><img src="./images/logos/sops.png" class="logo-chip" alt="">SOPS + Git</div>
+  <div class="rh"><img src="./images/logos/sops.svg" class="logo-chip" alt="">SOPS + Git</div>
   <div class="c mid"><b>△</b><small>手作業</small></div>
   <div class="c ng"><b>✗</b></div>
   <div class="c ng"><b>✗</b></div>
@@ -443,7 +443,7 @@ est: 0:18
   <div class="c ng"><b>✗</b><small>人数分</small></div>
 
   <template v-if="$clicks >= 2">
-    <div class="rh want">💃 ほしいもの</div>
+    <div class="rh want"><img src="./images/enbu.png" class="logo-chip" alt="">enbu</div>
     <div class="c ok want"><b>✓</b></div>
     <div class="c ok want"><b>✓</b></div>
     <div class="c ok want"><b>✓</b></div>
@@ -493,14 +493,14 @@ est: 0:18
 .ok { background: #dcfce7; color: #166534; }
 .ng { background: #fee2e2; color: #991b1b; }
 .mid { background: #fef3c7; color: #92400e; }
-.rh.want { margin-top: 0.35rem; color: #be123c; }
-.c.want { margin-top: 0.35rem; background: #fff1f2; color: #be123c; outline: 2px solid #dd2e44; outline-offset: -2px; }
+.rh.want { margin-top: 0.35rem; font-size: 1.35rem; }
+.c.want { margin-top: 0.35rem; outline: 3px solid #15803d; outline-offset: -3px; }
 </style>
 
 <!--
 どれも、どこかに丸がつきません
 [click:1] 安全と手軽さが両立せず、人の注意と手作業に頼っています
-[click:2] 手軽で、安全で、安いもの。それを作りました
+[click:2] 全部に丸がつくものとして、enbu を作りました
 -->
 
 ---
