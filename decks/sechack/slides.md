@@ -158,11 +158,31 @@ est: 0:04
 -->
 
 ---
+title: 今のやり方は 3 つ
+est: 0:00
+---
+
+<EnbuStage :zoom="1.1">
+
+<div class="lead">機密情報の渡し方は、<span class="hl" :class="{ on: $clicks >= 1 }">大きく 3 つ</span></div>
+
+<EnbuWays big />
+
+</EnbuStage>
+
+<!--
+今の渡し方は、大きく 3 つ
+[click:1] チャットに貼る、暗号化して Git に置く、専用サービスに預ける。順に見ます
+-->
+
+---
 title: チャットで送る
 est: 0:27
 ---
 
 <EnbuStage :zoom="1.15">
+
+<EnbuWays :now="1" />
 
 <div class="lead">チャットに貼ると、<span class="hl" :class="{ on: $clicks >= 2 }">ずっと残る</span></div>
 
@@ -185,7 +205,7 @@ est: 0:27
 </EnbuStage>
 
 <!--
-一番多いのは、Slack や Discord に貼る方法
+1 つ目、Slack や Discord などのチャットに貼る方法
 [click:1] 1 年後、新しく Carol が入ってきて
 [click:2] 検索すると、昔のキーがそのまま出てきます
 [click:3] 企業の Slack の 2.4% のチャンネルに、実際に残っていたそうです
@@ -198,7 +218,9 @@ est: 0:18
 
 <EnbuStage :zoom="1.12">
 
-<div class="lead">貼った値は、<span class="hl" :class="{ on: $clicks >= 1 }">化ける</span>し、<span class="hl" :class="{ on: $clicks >= 2 }">古くなる</span></div>
+<EnbuWays :now="1" />
+
+<div class="lead">チャットだと、値が<span class="hl" :class="{ on: $clicks >= 1 }">化ける</span>し、<span class="hl" :class="{ on: $clicks >= 2 }">古くなる</span></div>
 
 <div class="flex items-start justify-center gap-5">
   <div class="chat dc">
@@ -225,7 +247,7 @@ est: 0:18
 </style>
 
 <!--
-Discord では、アンダースコア 2 つで囲むと下線になります
+チャットは記号を書式に変えます。Discord だと、アンダースコアで囲むと下線になります
 [click:1] コピーすると記号が消えて、動きません
 [click:2] 値を変えるたびに貼り直しで、古い値を使う人が出ます
 -->
@@ -236,6 +258,8 @@ est: 0:32
 ---
 
 <EnbuStage :zoom="1.15">
+
+<EnbuWays :now="2" />
 
 <div class="lead">Git で暗号化しても、<span class="hl" :class="{ on: $clicks >= 2 }">中身をすり替えられる</span><span class="sub flex items-center justify-center gap-2"><img src="./images/logos/sops.png" class="logo-chip" alt="SOPS">SOPS:値を暗号化して <img src="./images/logos/git.svg" class="logo-chip" alt="Git"> Git にコミットする道具</span></div>
 
@@ -262,7 +286,7 @@ est: 0:32
 </EnbuStage>
 
 <!--
-次は、SOPS で暗号化して Git に置く方法。実際に試しました。Mallory は鍵がなく、書き込めるだけ
+2 つ目、SOPS で暗号化して Git に置く方法。実際に試しました。Mallory は鍵がなく、書き込めるだけ
 [click:1] 宛先の公開鍵で、自分の値を暗号化してコミット
 [click:2] Alice が開くと、警告なしに偽の値が出てきます
 [click:3] 暗号化は読めなくするだけで、誰が書いたかは確かめません
@@ -274,6 +298,8 @@ est: 0:16
 ---
 
 <EnbuStage :zoom="1.12">
+
+<EnbuWays :now="2" />
 
 <div class="lead">メンバーが変わるたびに、<span class="hl" :class="{ on: $clicks >= 2 }">全部手作業</span></div>
 
@@ -322,6 +348,8 @@ est: 0:19
 ---
 
 <EnbuStage :zoom="1.1">
+
+<EnbuWays :now="3" />
 
 <div class="lead">専用サービスは安全。でも、<span class="hl" :class="{ on: $clicks >= 2 }">人数分のお金</span>がかかる</div>
 
@@ -375,7 +403,7 @@ est: 0:19
 </style>
 
 <!--
-1Password のような専用サービスは安全ですが、5 人で年に 4 万から 19 万円
+3 つ目、1Password のような専用サービスは安全ですが、5 人で年に 4 万から 19 万円
 [click:1] 社外の人を足すと、さらに増えます
 [click:2] 学生チームには重いですね
 -->
@@ -389,26 +417,84 @@ est: 0:18
 
 <div class="lead">安全と手軽さが、<span class="hl" :class="{ on: $clicks >= 1 }">両立していない</span></div>
 
-<table class="cmp">
-  <thead><tr><th></th><th>抜けた人に<br>見えない</th><th>すり替え<br>られない</th><th>手間が<br>少ない</th><th>無料・<br>アカウント不要</th></tr></thead>
-  <tbody>
-    <tr><td><img src="./images/logos/slack.svg" class="logo-chip" alt=""> チャット</td><td class="ng">✗</td><td class="ng">✗</td><td class="ng">✗ 貼り直し</td><td class="ok">○</td></tr>
-    <tr><td><img src="./images/logos/sops.png" class="logo-chip" alt=""> SOPS + Git</td><td class="ng">△ 手作業</td><td class="ng">✗</td><td class="ng">✗</td><td class="ok">○</td></tr>
-    <tr><td><img src="./images/logos/1password.svg" class="logo-chip" alt=""> 専用サービス</td><td class="ok">○</td><td class="ok">○</td><td class="ok">○</td><td class="ng">✗</td></tr>
-    <tr v-click="2" class="want"><td>💃 ほしいもの</td><td class="ok">○</td><td class="ok">○</td><td class="ok">○</td><td class="ok">○</td></tr>
-  </tbody>
-</table>
+<div class="cmp">
+  <div />
+  <div class="ch"><div class="ci">🚪</div>抜けた人に<br>見えない</div>
+  <div class="ch"><div class="ci">🛡️</div>すり替え<br>られない</div>
+  <div class="ch"><div class="ci">⚡</div>手間が<br>少ない</div>
+  <div class="ch"><div class="ci">💸</div>無料・<br>登録不要</div>
+
+  <div class="rh"><img src="./images/logos/slack.svg" class="logo-chip" alt="">チャット</div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c ng"><b>✗</b><small>貼り直し</small></div>
+  <div class="c ok"><b>✓</b></div>
+
+  <div class="rh"><img src="./images/logos/sops.png" class="logo-chip" alt="">SOPS + Git</div>
+  <div class="c mid"><b>△</b><small>手作業</small></div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c ok"><b>✓</b></div>
+
+  <div class="rh"><img src="./images/logos/1password.svg" class="logo-chip" alt="">専用サービス</div>
+  <div class="c ok"><b>✓</b></div>
+  <div class="c ok"><b>✓</b></div>
+  <div class="c ok"><b>✓</b></div>
+  <div class="c ng"><b>✗</b><small>人数分</small></div>
+
+  <template v-if="$clicks >= 2">
+    <div class="rh want">💃 ほしいもの</div>
+    <div class="c ok want"><b>✓</b></div>
+    <div class="c ok want"><b>✓</b></div>
+    <div class="c ok want"><b>✓</b></div>
+    <div class="c ok want"><b>✓</b></div>
+  </template>
+</div>
 
 </EnbuStage>
 
 <style>
-.cmp { margin: 0 auto; border-collapse: collapse; background: #fff; font-size: 1.2rem; }
-.cmp th, .cmp td { padding: 0.3rem 0.7rem; border: 1px solid #d1d5db; text-align: center; }
-.cmp th { font-size: 1.15rem; line-height: 1.3; background: #f3f4f6; }
-.cmp td:first-child { text-align: left; font-weight: bold; white-space: nowrap; }
-.cmp .ok { color: #15803d; font-weight: bold; }
-.cmp .ng { color: #b91c1c; font-weight: bold; }
-.cmp .want td { background: #fff1f2; }
+.cmp {
+  display: grid;
+  grid-template-columns: auto repeat(4, 8.2rem);
+  gap: 0.35rem;
+  justify-content: center;
+  align-items: stretch;
+}
+.ch {
+  padding: 0.2rem 0.3rem 0.35rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  line-height: 1.25;
+  text-align: center;
+  color: #1f2937;
+}
+.ci { font-size: 1.6rem; line-height: 1.2; }
+.rh {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0.9rem 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  border-radius: 10px;
+  line-height: 1.1;
+}
+.c b { font-size: 1.8rem; }
+.c small { font-size: 1rem; font-weight: bold; }
+.ok { background: #dcfce7; color: #166534; }
+.ng { background: #fee2e2; color: #991b1b; }
+.mid { background: #fef3c7; color: #92400e; }
+.rh.want { margin-top: 0.35rem; color: #be123c; }
+.c.want { margin-top: 0.35rem; background: #fff1f2; color: #be123c; outline: 2px solid #dd2e44; outline-offset: -2px; }
 </style>
 
 <!--
