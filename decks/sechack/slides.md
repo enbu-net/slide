@@ -609,7 +609,7 @@ est: 0:03
 
 ---
 title: デモ
-est: 1:09
+est: 0:51
 voiceHold: true
 ---
 
@@ -1261,6 +1261,47 @@ est: 0:14
 <!--
 3 つ目は秘密鍵。鍵は PC のセキュリティチップの中で作ります
 [click:1] ディスクを丸ごとコピーされても、鍵はついていきません
+-->
+
+---
+title: 量子コンピュータにも備える
+est: 0:18
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">今の暗号文を、<span class="hl" :class="{ on: $clicks >= 1 }">未来の量子コンピュータ</span>からも守る<span class="sub">今コピーして、将来解く攻撃(Harvest Now, Decrypt Later)</span></div>
+
+<div class="flex items-center justify-center gap-3">
+  <EnbuBox icon="😈" title="今" sub="暗号文をコピー" tone="bad" class="w-44" />
+  <EnbuArrow label="何年も保存" color="#b91c1c" size="4rem" />
+  <EnbuBox icon="⚛️" title="将来" sub="量子コンピュータで解く" tone="bad" class="w-44" />
+</div>
+
+<div v-click="1" class="flex justify-center mt-4">
+  <div class="pq">🔐 新しい鍵は二重がけ:<b>ML-KEM-768</b>(耐量子)+ <b>X25519 / P-256</b>(今の暗号)</div>
+</div>
+<div v-click="2" class="flex justify-center mt-2">
+  <div class="pq tpm">🔑 TPM はまだ ML-KEM を計算できない → ML-KEM の鍵は <b>TPM で封印</b></div>
+</div>
+
+</EnbuStage>
+
+<style>
+.pq {
+  padding: 0.35rem 1rem;
+  border: 2px solid #15803d;
+  border-radius: 10px;
+  background: #f0fdf4;
+  font-size: 1.15rem;
+}
+.pq.tpm { border-color: #1f2937; background: #fff; }
+</style>
+
+<!--
+暗号文は、今盗まれて、将来の量子コンピュータで解かれるかもしれません
+[click:1] だから鍵は、耐量子暗号との二重がけ
+[click:2] その鍵も TPM で封印します
 -->
 
 ---
