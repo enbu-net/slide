@@ -2,7 +2,7 @@
 """decks/sechack のノートを、あかねボイス(aoikane)で読み上げ音声にして、est を実測値に合わせる。
 
   aoikane serve --listen 127.0.0.1:18080   # 別の端末で(複数立てると並列で速い)
-  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--gap 0.6] [--total 585]
+  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--gap 0.6] [--total 600]
 
 - ノートを [click:N] ごとに区切り、public/voice/sNN_J.mp3(NN = ページ、J = 何個目のセリフ)に書く。
   合成した wav は文章のハッシュで .cache/ に置くので、同じ文章は(ページが動いても)作り直さない。
@@ -33,7 +33,7 @@ DEMO_TITLE = 'デモ'
 ap = argparse.ArgumentParser()
 ap.add_argument('--url', action='append', help='aoikane serve の URL(複数可)')
 ap.add_argument('--gap', type=float, default=0.6, help='区切りごとの間(秒)。BiimVoice の自動送りと合わせる')
-ap.add_argument('--total', type=int, default=585, help='合計の秒数。動画は持ち時間 10 分から 1 分以内なので、少し余裕を残す')
+ap.add_argument('--total', type=int, default=600, help='合計の秒数(オートモードで通すと毎回この長さになる)')
 args = ap.parse_args()
 urls = args.url or ['http://127.0.0.1:18080']
 
