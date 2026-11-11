@@ -166,7 +166,7 @@ est: 0:00
 
 <div class="lead">機密情報の渡し方は、<span class="hl" :class="{ on: $clicks >= 1 }">大きく 3 つ</span></div>
 
-<EnbuWays big />
+<EnbuWays />
 
 </EnbuStage>
 
@@ -176,13 +176,12 @@ est: 0:00
 -->
 
 ---
-title: チャットで送る
+title: ① チャットに貼る:ずっと残る
 est: 0:27
 ---
 
 <EnbuStage :zoom="1.15">
 
-<EnbuWays :now="1" />
 
 <div class="lead">チャットに貼ると、<span class="hl" :class="{ on: $clicks >= 2 }">ずっと残る</span></div>
 
@@ -212,13 +211,12 @@ est: 0:27
 -->
 
 ---
-title: チャットは値が化ける
+title: ① チャットに貼る:化ける・古くなる
 est: 0:18
 ---
 
 <EnbuStage :zoom="1.12">
 
-<EnbuWays :now="1" />
 
 <div class="lead">チャットだと、値が<span class="hl" :class="{ on: $clicks >= 1 }">化ける</span>し、<span class="hl" :class="{ on: $clicks >= 2 }">古くなる</span></div>
 
@@ -253,13 +251,12 @@ est: 0:18
 -->
 
 ---
-title: SOPS ですり替え
+title: ② 暗号化して Git:すり替え
 est: 0:32
 ---
 
 <EnbuStage :zoom="1.15">
 
-<EnbuWays :now="2" />
 
 <div class="lead">Git で暗号化しても、<span class="hl" :class="{ on: $clicks >= 2 }">中身をすり替えられる</span><span class="sub flex items-center justify-center gap-2"><img src="./images/logos/sops.svg" class="logo-chip" alt="SOPS">SOPS:値を暗号化して <img src="./images/logos/git.svg" class="logo-chip" alt="Git"> Git にコミットする道具</span></div>
 
@@ -293,13 +290,12 @@ est: 0:32
 -->
 
 ---
-title: SOPS は手作業が多い
+title: ② 暗号化して Git:手作業
 est: 0:16
 ---
 
 <EnbuStage :zoom="1.12">
 
-<EnbuWays :now="2" />
 
 <div class="lead">メンバーが変わるたびに、<span class="hl" :class="{ on: $clicks >= 2 }">全部手作業</span></div>
 
@@ -343,13 +339,12 @@ est: 0:16
 -->
 
 ---
-title: 専用サービス
+title: ③ 専用サービス:お金
 est: 0:19
 ---
 
 <EnbuStage :zoom="1.1">
 
-<EnbuWays :now="3" />
 
 <div class="lead">専用サービスは安全。でも、<span class="hl" :class="{ on: $clicks >= 2 }">人数分のお金</span>がかかる</div>
 
@@ -409,7 +404,7 @@ est: 0:19
 -->
 
 ---
-title: 今のやり方のまとめ
+title: 3 つを比べる
 est: 0:18
 ---
 
@@ -453,49 +448,6 @@ est: 0:18
 
 </EnbuStage>
 
-<style>
-.cmp {
-  display: grid;
-  grid-template-columns: auto repeat(4, 8.2rem);
-  gap: 0.35rem;
-  justify-content: center;
-  align-items: stretch;
-}
-.ch {
-  padding: 0.2rem 0.3rem 0.35rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  line-height: 1.25;
-  text-align: center;
-  color: #1f2937;
-}
-.ci { font-size: 1.6rem; line-height: 1.2; }
-.rh {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0 0.9rem 0 0.4rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  white-space: nowrap;
-}
-.c {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.6rem;
-  border-radius: 10px;
-  line-height: 1.1;
-}
-.c b { font-size: 1.8rem; }
-.c small { font-size: 1rem; font-weight: bold; }
-.ok { background: #dcfce7; color: #166534; }
-.ng { background: #fee2e2; color: #991b1b; }
-.mid { background: #fef3c7; color: #92400e; }
-.rh.want { margin-top: 0.35rem; font-size: 1.35rem; }
-.c.want { margin-top: 0.35rem; outline: 3px solid #15803d; outline-offset: -3px; }
-</style>
 
 <!--
 どれも、どこかに丸がつきません
@@ -614,13 +566,13 @@ est: 0:03
 -->
 
 ---
-title: 個人開発者
+title: 🧑‍💻 個人開発者・初学者
 est: 0:22
 ---
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">🧑‍💻 個人開発者・初学者:<span class="hl" :class="{ on: $clicks >= 1 }">消しても戻せる、漏らさない</span></div>
+<div class="lead"><span class="hl" :class="{ on: $clicks >= 1 }">消しても戻せる、漏らさない</span></div>
 
 <div class="persona">
   <div class="col now"><div class="h">😩 今</div><div>.env は今の PC の中だけ</div><div>消したら作り直し</div><div>うっかり Git にコミット</div></div>
@@ -637,13 +589,13 @@ est: 0:22
 -->
 
 ---
-title: 学生チーム
+title: 🎓 学生チーム
 est: 0:21
 ---
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">🎓 学生チーム:<span class="hl" :class="{ on: $clicks >= 1 }">無料で、いつも最新</span></div>
+<div class="lead"><span class="hl" :class="{ on: $clicks >= 1 }">無料で、いつも最新</span></div>
 
 <div class="persona">
   <div class="col now"><div class="h">😩 今</div><div>Slack や Discord に貼る</div><div>どれが最新か分からない</div><div>卒業生もずっと読める</div></div>
@@ -660,13 +612,13 @@ est: 0:21
 -->
 
 ---
-title: 企業
+title: 🏢 企業
 est: 0:21
 ---
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">🏢 企業:<span class="hl" :class="{ on: $clicks >= 1 }">今の基盤のまま、社外の人とも</span></div>
+<div class="lead"><span class="hl" :class="{ on: $clicks >= 1 }">今の基盤のまま、社外の人とも</span></div>
 
 <div class="persona">
   <div class="col now"><div class="h">😩 今</div><div>社外の人にも席を買う</div><div>zip + パスワード別送</div><div>終わっても外し忘れる</div></div>
@@ -1388,6 +1340,54 @@ est: 0:18
 暗号文は、今盗まれて、将来の量子コンピュータで解かれるかもしれません
 [click:1] だから鍵は、耐量子暗号との二重がけ
 [click:2] TPM に鍵を作った場合は、その鍵も TPM で封印します
+-->
+
+---
+title: enbu だけの組み合わせ
+est: 0:20
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">4 つ全部そろうのは、<span class="hl" :class="{ on: $clicks >= 1 }">世界で enbu だけ</span><span class="sub">2026 年 11 月時点、公開されている道具を調べた範囲で</span></div>
+
+<div class="cmp">
+  <div />
+  <div class="ch"><div class="ci">🏠</div>専用の<br>サーバー不要</div>
+  <div class="ch"><div class="ci">🛡️</div>すり替えに<br>気づく</div>
+  <div class="ch"><div class="ci">🔑</div>鍵が PC から<br>出ない</div>
+  <div class="ch"><div class="ci">⚛️</div>耐量子<br>暗号</div>
+
+  <div class="rh"><img src="./images/logos/sops.svg" class="logo-chip" alt="">SOPS + age</div>
+  <div class="c ok"><b>✓</b></div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c mid"><b>△</b><small>別プラグイン</small></div>
+  <div class="c mid"><b>△</b><small>age 1.3 から</small></div>
+
+  <div class="rh">🔒 dotenvx</div>
+  <div class="c ok"><b>✓</b></div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c ng"><b>✗</b><small>鍵ファイル</small></div>
+  <div class="c ng"><b>✗</b></div>
+
+  <div class="rh"><img src="./images/logos/1password.svg" class="logo-chip" alt="">専用サービス</div>
+  <div class="c ng"><b>✗</b></div>
+  <div class="c mid"><b>△</b><small>会社を信じる</small></div>
+  <div class="c mid"><b>△</b></div>
+  <div class="c mid"><b>△</b><small>通信だけ</small></div>
+
+  <div class="rh want"><img src="./images/enbu.png" class="logo-chip" alt="">enbu</div>
+  <div class="c ok want"><b>✓</b></div>
+  <div class="c ok want"><b>✓</b></div>
+  <div class="c ok want"><b>✓</b></div>
+  <div class="c ok want"><b>✓</b></div>
+</div>
+
+</EnbuStage>
+
+<!--
+ここまでの工夫を、ほかの道具と比べます
+[click:1] サーバーなしで、すり替えに気づけて、鍵が PC から出ず、量子コンピュータにも備える。4 つ全部そろう道具は、調べた限り、世界で enbu だけでした
 -->
 
 ---

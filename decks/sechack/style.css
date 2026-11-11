@@ -107,3 +107,46 @@ html.dark {
 .persona .now { border-color: #9ca3af; }
 .persona .good { border-color: #15803d; background: #f0fdf4; }
 .persona .bad { border-color: #b91c1c; background: #fef2f2; }
+
+/* 星取表(3 つを比べる / enbu だけ) */
+.cmp {
+  display: grid;
+  grid-template-columns: auto repeat(4, 8.2rem);
+  gap: 0.35rem;
+  justify-content: center;
+  align-items: stretch;
+}
+.ch {
+  padding: 0.2rem 0.3rem 0.35rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  line-height: 1.25;
+  text-align: center;
+  color: #1f2937;
+}
+.ci { font-size: 1.6rem; line-height: 1.2; }
+.rh {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0.9rem 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  border-radius: 10px;
+  line-height: 1.1;
+}
+.c b { font-size: 1.8rem; }
+.c small { font-size: 1rem; font-weight: bold; }
+.ok { background: #dcfce7; color: #166534; }
+.ng { background: #fee2e2; color: #991b1b; }
+.mid { background: #fef3c7; color: #92400e; }
+.rh.want { margin-top: 0.35rem; font-size: 1.35rem; }
+.c.want { margin-top: 0.35rem; outline: 3px solid #15803d; outline-offset: -3px; }
