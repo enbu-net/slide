@@ -2,11 +2,11 @@
 """decks/sechack のノートを、あかねボイス(aoikane)で読み上げ音声にして、est を実測値に合わせる。
 
   aoikane serve --listen 127.0.0.1:18080   # 別の端末で(複数立てると並列で速い)
-  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--gap 0.6] [--total 600]
+  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--total 600]
 
 - ノートを [click:N] ごとに区切り、public/voice/sNN_J.mp3(NN = ページ、J = 何個目のセリフ)に書く。
   合成した wav は文章のハッシュで .cache/ に置くので、同じ文章は(ページが動いても)作り直さない。
-- 各スライドの est を「セリフの長さ + 区切りごとの間(--gap 秒)」にし、
+- 各スライドの est を「セリフの長さ + 区切りごとの間(GAP 秒)」にし、
   デモのスライドに残りを割り当てて、合計をちょうど --total 秒にする。
 - 要るもの: aoikane(github.com/a-kaibu/aoikane)と ffmpeg。
 """
@@ -29,10 +29,11 @@ OUT = os.path.join(DECK, 'public', 'voice')
 CACHE = os.path.join(ROOT, '.cache', 'sechack-voice')
 VOICE = 'KotonohaAkane_ns_48'
 DEMO_TITLE = 'デモ'
+# 区切りごとの間(秒)。BiimVoice.vue の自動送りの待ち(600 ms)と同じ値にしておく
+GAP = 0.6
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--url', action='append', help='aoikane serve の URL(複数可)')
-ap.add_argument('--gap', type=float, default=0.6, help='区切りごとの間(秒)。BiimVoice の自動送りと合わせる')
 ap.add_argument('--total', type=int, default=600, help='合計の秒数(オートモードで通すと毎回この長さになる)')
 args = ap.parse_args()
 urls = args.url or ['http://127.0.0.1:18080']
@@ -102,7 +103,7 @@ demo = None
 for i, part in enumerate(parts):
     title = re.search(r'^title: (.*)$', part, re.M).group(1) if i else ''
     segs = segments(part)
-    sec = sum(durations[f's{i + 1:02d}_{j}'] for j in range(len(segs))) + args.gap * len(segs)
+    sec = sum(durations[f's{i + 1:02d}_{j}'] for j in range(len(segs))) + GAP * len(segs)
     if title == DEMO_TITLE:
         demo = i
         ests.append(0)

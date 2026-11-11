@@ -9,6 +9,8 @@ export const splits = reactive<Record<number, number>>({})
 
 let startedAt = 0
 let base = 0
+// 停止したときに確定したスライド(再開したら、そのスライドだけ進行中に戻す)
+let pausedNo: number | null = null
 let frameId = 0
 
 function tick() {
@@ -18,23 +20,29 @@ function tick() {
 
 /**
  * そのスライドを終えた瞬間のタイマー値を確定する。
- * 一度確定したスライドは、戻ってからもう一度進んでも上書きしない(force は停止したとき)
+ * 一度確定したスライドは、戻ってからもう一度進んでも上書きしない
  */
-export function recordSplit(no: number, force = false) {
-  if (elapsed.value > 0 && (force || splits[no] == null))
+export function recordSplit(no: number) {
+  if (elapsed.value > 0 && splits[no] == null)
     splits[no] = elapsed.value
 }
 
-/** 開始/停止。停止した瞬間は、いまのスライドを終えたものとして確定する */
+/**
+ * 開始/停止。停止した瞬間は、いまのスライドを終えたものとして確定する。
+ * ただし、戻ってきた確定済みのスライドで止めたときは、元の値を残す
+ */
 export function toggle(currentNo: number) {
   if (running.value) {
     cancelAnimationFrame(frameId)
     running.value = false
-    recordSplit(currentNo, true)
+    pausedNo = splits[currentNo] == null && elapsed.value > 0 ? currentNo : null
+    recordSplit(currentNo)
     return
   }
-  // 止めて再開したら、いまのスライドは進行中に戻す
-  delete splits[currentNo]
+  // 止めて再開したら、停止で確定したスライドだけ進行中に戻す
+  if (pausedNo != null)
+    delete splits[pausedNo]
+  pausedNo = null
   base = elapsed.value
   startedAt = performance.now()
   running.value = true
@@ -52,6 +60,7 @@ export function reset() {
   base = 0
   startedAt = performance.now()
   elapsed.value = 0
+  pausedNo = null
   for (const k of Object.keys(splits))
     delete splits[Number(k)]
 }

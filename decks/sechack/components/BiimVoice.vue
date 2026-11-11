@@ -59,7 +59,7 @@ audio.addEventListener('ended', () => {
   if (!auto.value)
     return
   const isLast = !hasNext.value
-  // est はセリフの長さ + 0.6 秒で計算している。voiceHold のページは est まで待つ
+  // est はセリフの長さ + 0.6 秒(scripts/sechack-voice.py の GAP)で計算している。voiceHold のページは est まで待つ
   let wait = 600
   if (frontmatter.value.voiceHold && clicks.value === comments.value.at(-1)?.click) {
     const est = parseEst(frontmatter.value.est) ?? 0
@@ -109,6 +109,9 @@ function onKey(e: KeyboardEvent) {
 }
 onMounted(() => {
   window.addEventListener('keydown', onKey)
+  // ?voice=auto で開いたときも、a キーと同じくタイマーを動かす
+  if (auto.value && !running.value)
+    toggle(currentPage.value)
   play()
 })
 onBeforeUnmount(() => {
