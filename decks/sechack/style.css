@@ -1,0 +1,109 @@
+/*
+ * biim レイアウトの寸法。すべて 980x552 の画面(キャンバス)上の px なので、
+ * Slidev が画面全体を一様に拡大縮小する限り、どのデバイスでも同じ見た目になる。
+ */
+:root {
+  --biim-s: 0.8; /* 左上の枠(メイン)の縮尺 */
+  --biim-gap: 10px;
+  --biim-border: 2px;
+
+  /* メインの内側(スライド本文が見える範囲) */
+  --biim-main-w: calc(980px * var(--biim-s));
+  --biim-main-h: calc(552px * var(--biim-s));
+  --biim-hole-l: calc(var(--biim-gap) + var(--biim-border));
+  --biim-hole-t: calc(var(--biim-gap) + var(--biim-border));
+  --biim-hole-r: calc(var(--biim-hole-l) + var(--biim-main-w));
+  --biim-hole-b: calc(var(--biim-hole-t) + var(--biim-main-h));
+
+  /* スライドの背景色(枠の外を覆うマスクと吹き出しの尻尾に使う) */
+  --biim-bg: #fff;
+
+  /* 外枠の文字色。WCAG 2.2 AA(4.5:1)を、白と、いまのスライドの行の灰色の両方で満たす */
+  --biim-good: #166534; /* 予定より早い */
+  --biim-bad: #b91c1c;  /* 予定より遅い */
+  --biim-muted: #4b5563; /* 補足の灰色 */
+}
+
+html.dark {
+  --biim-bg: #121212;
+  --biim-good: #4ade80;
+  --biim-bad: #f87171;
+  --biim-muted: #9ca3af;
+}
+
+/* 言い切りの一部に引く下線 */
+.hl {
+  background: linear-gradient(transparent 62%, #fecdd3 62%) no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.6s ease;
+}
+.hl.on { background-size: 100% 100%; }
+
+/* 1 ページ 1 メッセージ: 上に大きく言い切り、下に図を 1 つ */
+.lead {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.35;
+  margin-bottom: 1.6rem;
+}
+.lead .sub {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 1.15rem;
+  font-weight: normal;
+  color: #4b5563;
+}
+.card {
+  padding: 0.6rem 0.9rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+.big-emoji { font-size: 3.2rem; line-height: 1.1; }
+.ok-mark { color: #15803d; font-weight: bold; }
+.ng-mark { color: #dc2626; font-weight: bold; }
+
+/* ロゴ(サービス名の横に小さく) */
+.logo-chip { display: inline-block; width: 1.2em; height: 1.2em; object-fit: contain; vertical-align: -0.2em; }
+
+/* チャット画面のモック */
+.chat { width: 27rem; border: 2px solid #d1d5db; border-radius: 12px; overflow: hidden; background: #fff; color: #111827; }
+.chat-head { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 1rem; font-weight: bold; background: #3f0e40; color: #fff; }
+.chat-head .logo-chip { padding: 2px; border-radius: 4px; background: #fff; }
+.chat.dc { width: 23rem; }
+.chat.dc .chat-head { background: #313338; }
+.chat .search { padding: 0 0.5rem; font-size: 1.1rem; border-radius: 6px; background: #fff; color: #111827; }
+.chat .search b { color: #b91c1c; }
+.chat .day { padding: 0.2rem 1rem; font-size: 1.1rem; color: #4b5563; text-align: center; border-top: 1px solid #f3f4f6; }
+.chat .msg { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.4rem 1rem; border-top: 1px solid #f3f4f6; font-size: 1.15rem; line-height: 1.4; }
+.chat .msg b { font-size: 1.1rem; }
+.chat .msg.found { background: #fef3c7; outline: 3px solid #b91c1c; outline-offset: -3px; }
+.chat .msg.join { color: #4b5563; font-size: 1.15rem; }
+.chat code, .steps code { font-size: 1.05em; }
+.chat .file { align-self: flex-start; padding: 0.1rem 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; }
+
+/* 実際に動かした結果を見せるターミナル */
+.term { width: 31rem; padding: 0.6rem 1rem 0.8rem; border-radius: 10px; background: #111827; color: #f9fafb; font-family: var(--slidev-code-font-family, monospace); font-size: 1.15rem; line-height: 1.5; }
+.term-head { display: flex; gap: 0.35rem; margin-bottom: 0.3rem; }
+.term-head i { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: #6b7280; }
+.term .ps { color: #86efac; }
+.term .out { color: #d1d5db; }
+.term .cm { color: #9ca3af; }
+.term .leak { display: inline-block; padding: 0 0.4rem; font-weight: bold; color: #fecaca; background: #7f1d1d; border-radius: 4px; }
+
+/* 数字で裏付ける箱 */
+.stat { width: 13rem; padding: 0.8rem 1rem; border: 2px solid #b91c1c; border-radius: 12px; background: #fff; color: #111827; font-size: 1.1rem; line-height: 1.45; }
+.stat .num { font-size: 2.2rem; font-weight: bold; color: #b91c1c; line-height: 1.1; }
+.stat .src { margin-top: 0.4rem; font-size: 0.95rem; color: #4b5563; }
+
+/* ターゲットごとの 今 / enbu / 困るところ */
+.persona { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin: 0 auto; }
+.persona .col { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.7rem 0.9rem; border: 2px solid #e5e7eb; border-radius: 12px; background: #fff; color: #111827; font-size: 1.15rem; line-height: 1.4; }
+.persona .h { font-weight: bold; font-size: 1.25rem; }
+.persona .now { border-color: #9ca3af; }
+.persona .good { border-color: #15803d; background: #f0fdf4; }
+.persona .bad { border-color: #b91c1c; background: #fef2f2; }

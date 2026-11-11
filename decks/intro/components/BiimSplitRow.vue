@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useNav } from '@slidev/client'
-import { elapsed, formatDelta, formatSeconds, splits } from '../composables/biimTimer'
+import { elapsed, formatDelta, formatSeconds, running, splits } from '../composables/biimTimer'
 
 // 予定の何 ms 前からカウントダウンを始めるか
 const COUNTDOWN_MS = 5000
 
 // 1 スライド分の行: ページ番号 / 予定との差 / 予定時間(累計)。
 // 差は累計の予定とタイマー値の差。いまのスライドは、予定の 5 秒前からカウントダウンし(緑の -)、
-// 超えたらそのままカウントアップする(赤の +)。スライドを終えると、その時点の差で確定する。
+// 超えたらそのままカウントアップする(赤の +)。色は style.css の --biim-good / --biim-bad。スライドを終えると、その時点の差で確定する。
 const props = defineProps<{
   no: number
   /** このスライドまでの予定時間の累計(秒) */
@@ -21,8 +21,9 @@ const isCurrent = computed(() => currentSlideNo.value === props.no)
 // 予定との差(ms)。正ならオーバー。表示しないときは null
 const delta = computed(() => {
   const split = splits[props.no]
-  if (split != null)
-    return split - props.cumulative * 1000 // 終えたスライド: 確定した値
+  // 終えたスライドは確定した値。止めて再開した、いまのスライドは進行中の値に戻す
+  if (split != null && !(isCurrent.value && running.value))
+    return split - props.cumulative * 1000
   if (!isCurrent.value)
     return null
   const live = elapsed.value - props.cumulative * 1000 // いまのスライド: 進行中
@@ -63,10 +64,10 @@ const delta = computed(() => {
   font-size: 0.85rem; /* 予定時間は白 */
 }
 .over {
-  color: #f87171;
+  color: var(--biim-bad);
 }
 .under {
-  color: #4ade80;
+  color: var(--biim-good);
 }
 .current {
   background: rgba(156, 163, 175, 0.25);
