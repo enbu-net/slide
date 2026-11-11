@@ -38,7 +38,7 @@ withDefaults(defineProps<{
   /* 線の色のままだと明るい色で文字が読みにくいので、黒を混ぜて WCAG AA(4.5:1)を満たす */
   color: color-mix(in srgb, var(--c), #000 30%);
   font-family: var(--slidev-code-font-family, monospace);
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   white-space: nowrap;
 }
 .track {

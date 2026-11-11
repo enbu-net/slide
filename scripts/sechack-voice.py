@@ -2,15 +2,16 @@
 """decks/sechack のノートを、あかねボイス(aoikane)で読み上げ音声にして、est を実測値に合わせる。
 
   aoikane serve --listen 127.0.0.1:18080   # 別の端末で(複数立てると並列で速い)
-  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--gap 0.6] [--total 600]
+  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--gap 0.6] [--total 585]
 
 - ノートを [click:N] ごとに区切り、public/voice/sNN_J.mp3(NN = ページ、J = 何個目のセリフ)に書く。
-  文章が前回と同じ区切りは作り直さない(.cache/ に wav と文章を置く)。
+  合成した wav は文章のハッシュで .cache/ に置くので、同じ文章は(ページが動いても)作り直さない。
 - 各スライドの est を「セリフの長さ + 区切りごとの間(--gap 秒)」にし、
   デモのスライドに残りを割り当てて、合計をちょうど --total 秒にする。
 - 要るもの: aoikane(github.com/a-kaibu/aoikane)と ffmpeg。
 """
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -32,7 +33,7 @@ DEMO_TITLE = 'デモ'
 ap = argparse.ArgumentParser()
 ap.add_argument('--url', action='append', help='aoikane serve の URL(複数可)')
 ap.add_argument('--gap', type=float, default=0.6, help='区切りごとの間(秒)。BiimVoice の自動送りと合わせる')
-ap.add_argument('--total', type=int, default=600, help='合計の秒数')
+ap.add_argument('--total', type=int, default=585, help='合計の秒数。動画は持ち時間 10 分から 1 分以内なので、少し余裕を残す')
 args = ap.parse_args()
 urls = args.url or ['http://127.0.0.1:18080']
 
@@ -64,9 +65,8 @@ counter = iter(range(10 ** 9))
 def synth(job):
     """1 セリフを合成して(前回と同じ文章なら使い回し)mp3 にし、長さ(秒)を返す。"""
     name, seg = job
-    wav = os.path.join(CACHE, name + '.wav')
-    txt = wav + '.txt'
-    if not (os.path.exists(wav) and os.path.exists(txt) and open(txt, encoding='utf-8').read() == seg):
+    wav = os.path.join(CACHE, hashlib.sha256(seg.encode()).hexdigest()[:16] + '.wav')
+    if not os.path.exists(wav):
         with lock:
             url = urls[next(counter) % len(urls)]
         req = urllib.request.Request(
@@ -75,8 +75,8 @@ def synth(job):
             headers={'Content-Type': 'application/json'},
         )
         data = opener.open(req, timeout=1800).read()
-        open(wav, 'wb').write(data)
-        open(txt, 'w', encoding='utf-8').write(seg)
+        open(wav + '.tmp', 'wb').write(data)
+        os.replace(wav + '.tmp', wav)
         print('synth', name, flush=True)
     mp3 = os.path.join(OUT, name + '.mp3')
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', wav, '-ac', '1', '-ar', '24000',

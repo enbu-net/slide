@@ -64,7 +64,7 @@ const extraClicks = computed(() => Math.max(0, ...comments.value.map(c => c.clic
   transform: scale(var(--biim-s));
   transform-origin: top left;
   box-sizing: border-box;
-  padding: 2.5rem 3.5rem; /* Slidev 標準レイアウトの余白 */
+  padding: 1.5rem 2rem; /* 文字を大きくできるよう、Slidev 標準より余白を狭くする */
 }
 .has-bg .biim-screen {
   display: flex;

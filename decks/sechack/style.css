@@ -50,9 +50,9 @@ html.dark {
 .lead .sub {
   display: block;
   margin-top: 0.3rem;
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: normal;
-  color: #6b7280;
+  color: #4b5563;
 }
 .card {
   padding: 0.6rem 0.9rem;
@@ -60,6 +60,7 @@ html.dark {
   border-radius: 12px;
   background: #fff;
   text-align: center;
+  font-size: 1.15rem;
   line-height: 1.35;
 }
 .big-emoji { font-size: 3.2rem; line-height: 1.1; }
@@ -70,22 +71,23 @@ html.dark {
 .logo-chip { display: inline-block; width: 1.2em; height: 1.2em; object-fit: contain; vertical-align: -0.2em; }
 
 /* チャット画面のモック */
-.chat { width: 24rem; border: 2px solid #d1d5db; border-radius: 12px; overflow: hidden; background: #fff; color: #111827; }
+.chat { width: 27rem; border: 2px solid #d1d5db; border-radius: 12px; overflow: hidden; background: #fff; color: #111827; }
 .chat-head { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 1rem; font-weight: bold; background: #3f0e40; color: #fff; }
 .chat-head .logo-chip { padding: 2px; border-radius: 4px; background: #fff; }
-.chat.dc { width: 20rem; }
+.chat.dc { width: 23rem; }
 .chat.dc .chat-head { background: #313338; }
-.chat .search { padding: 0 0.5rem; font-size: 0.8rem; border-radius: 6px; background: #fff; color: #111827; }
+.chat .search { padding: 0 0.5rem; font-size: 1.1rem; border-radius: 6px; background: #fff; color: #111827; }
 .chat .search b { color: #b91c1c; }
-.chat .day { padding: 0.2rem 1rem; font-size: 0.75rem; color: #4b5563; text-align: center; border-top: 1px solid #f3f4f6; }
-.chat .msg { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.45rem 1rem; border-top: 1px solid #f3f4f6; font-size: 0.9rem; }
-.chat .msg b { font-size: 0.8rem; }
+.chat .day { padding: 0.2rem 1rem; font-size: 1.1rem; color: #4b5563; text-align: center; border-top: 1px solid #f3f4f6; }
+.chat .msg { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.4rem 1rem; border-top: 1px solid #f3f4f6; font-size: 1.15rem; line-height: 1.4; }
+.chat .msg b { font-size: 1.1rem; }
 .chat .msg.found { background: #fef3c7; outline: 3px solid #b91c1c; outline-offset: -3px; }
-.chat .msg.join { color: #4b5563; font-size: 0.8rem; }
+.chat .msg.join { color: #4b5563; font-size: 1.15rem; }
+.chat code, .steps code { font-size: 1.05em; }
 .chat .file { align-self: flex-start; padding: 0.1rem 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; }
 
 /* 実際に動かした結果を見せるターミナル */
-.term { width: 27rem; padding: 0.6rem 1rem 0.8rem; border-radius: 10px; background: #111827; color: #f9fafb; font-family: var(--slidev-code-font-family, monospace); font-size: 0.8rem; line-height: 1.7; }
+.term { width: 31rem; padding: 0.6rem 1rem 0.8rem; border-radius: 10px; background: #111827; color: #f9fafb; font-family: var(--slidev-code-font-family, monospace); font-size: 1.15rem; line-height: 1.5; }
 .term-head { display: flex; gap: 0.35rem; margin-bottom: 0.3rem; }
 .term-head i { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: #6b7280; }
 .term .ps { color: #86efac; }
@@ -94,14 +96,14 @@ html.dark {
 .term .leak { display: inline-block; padding: 0 0.4rem; font-weight: bold; color: #fecaca; background: #7f1d1d; border-radius: 4px; }
 
 /* 数字で裏付ける箱 */
-.stat { width: 14rem; padding: 0.8rem 1rem; border: 2px solid #b91c1c; border-radius: 12px; background: #fff; color: #111827; font-size: 0.85rem; line-height: 1.5; }
+.stat { width: 13rem; padding: 0.8rem 1rem; border: 2px solid #b91c1c; border-radius: 12px; background: #fff; color: #111827; font-size: 1.1rem; line-height: 1.45; }
 .stat .num { font-size: 2.2rem; font-weight: bold; color: #b91c1c; line-height: 1.1; }
-.stat .src { margin-top: 0.4rem; font-size: 0.7rem; color: #4b5563; }
+.stat .src { margin-top: 0.4rem; font-size: 0.95rem; color: #4b5563; }
 
 /* ターゲットごとの 今 / enbu / 困るところ */
-.persona { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; max-width: 52rem; margin: 0 auto; }
-.persona .col { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.7rem 0.9rem; border: 2px solid #e5e7eb; border-radius: 12px; background: #fff; color: #111827; font-size: 0.9rem; line-height: 1.45; }
-.persona .h { font-weight: bold; font-size: 1rem; }
+.persona { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin: 0 auto; }
+.persona .col { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.7rem 0.9rem; border: 2px solid #e5e7eb; border-radius: 12px; background: #fff; color: #111827; font-size: 1.15rem; line-height: 1.4; }
+.persona .h { font-weight: bold; font-size: 1.25rem; }
 .persona .now { border-color: #9ca3af; }
 .persona .good { border-color: #15803d; background: #f0fdf4; }
 .persona .bad { border-color: #b91c1c; background: #fef2f2; }

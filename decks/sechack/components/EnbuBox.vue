@@ -39,10 +39,10 @@ withDefaults(defineProps<{
 }
 .title {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 .sub {
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   color: #4b5563; /* 色付きの箱の上でも 4.5:1 以上 */
 }
 .accent { border-color: #dd2e44; background: #fff1f2; }

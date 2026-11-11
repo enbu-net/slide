@@ -15,7 +15,7 @@ est: 0:07
   <div>
     <div class="text-8xl font-bold tracking-wide">enbu</div>
     <div class="text-2xl mt-4">チームの機密情報を、仕組みで安全に</div>
-    <div class="mt-8 text-sm op-60 font-mono">github.com/enbu-net/enbu</div>
+    <div class="mt-8 text-lg op-80 font-mono">github.com/enbu-net/enbu</div>
   </div>
 </div>
 
@@ -58,10 +58,10 @@ est: 0:18
 <div class="lead">機密情報 = <span class="hl" :class="{ on: $clicks >= 1 }">知られたら困る</span>もの</div>
 
 <div class="grid grid-cols-4 gap-4">
-  <div class="card"><div class="big-emoji">🔑</div><div class="font-bold mt-1">API キー</div><div class="text-sm op-80">使い放題にされる</div></div>
-  <div class="card"><div class="big-emoji">🗝️</div><div class="font-bold mt-1">パスワード</div><div class="text-sm op-80">DB を丸ごと</div></div>
-  <div class="card"><div class="big-emoji">⚙️</div><div class="font-bold mt-1">設定ファイル</div><div class="text-sm op-80">.env など</div></div>
-  <div class="card"><div class="big-emoji">📄</div><div class="font-bold mt-1">機密文書</div><div class="text-sm op-80">顧客情報など</div></div>
+  <div class="card"><div class="big-emoji">🔑</div><div class="font-bold mt-1">API キー</div><div class="text-lg">使い放題にされる</div></div>
+  <div class="card"><div class="big-emoji">🗝️</div><div class="font-bold mt-1">パスワード</div><div class="text-lg">DB を丸ごと</div></div>
+  <div class="card"><div class="big-emoji">⚙️</div><div class="font-bold mt-1">設定ファイル</div><div class="text-lg">.env など</div></div>
+  <div class="card"><div class="big-emoji">📄</div><div class="font-bold mt-1">機密文書</div><div class="text-lg">顧客情報など</div></div>
 </div>
 
 <div v-click="1" class="flex justify-center mt-6">
@@ -73,6 +73,7 @@ est: 0:18
 <style>
 .warn {
   padding: 0.4rem 1rem;
+  font-size: 1.15rem;
   font-weight: bold;
   border-radius: 8px;
   background: #fee2e2;
@@ -202,7 +203,7 @@ est: 0:18
 <div class="flex items-start justify-center gap-5">
   <div class="chat dc">
     <div class="chat-head"><span class="flex items-center gap-2"><img src="./images/logos/discord.svg" class="logo-chip" alt="Discord"># dev</span></div>
-    <div class="typed"><span class="text-xs">送ったテキスト</span><code>DB_PASSWORD=pa__ss__word</code></div>
+    <div class="typed"><span>送ったテキスト</span><code>DB_PASSWORD=pa__ss__word</code></div>
     <div class="msg"><b>Alice</b><span class="mono">DB_PASSWORD=pa<u>ss</u>word</span></div>
     <div v-click="1" class="msg"><b>Bob</b>コピーしたけど <span class="mono bad">password</span> で入れない…</div>
   </div>
@@ -218,8 +219,8 @@ est: 0:18
 </EnbuStage>
 
 <style>
-.typed { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.4rem 1rem; background: #f3f4f6; color: #374151; }
-.mono { font-family: var(--slidev-code-font-family, monospace); font-size: 0.85rem; }
+.typed { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.4rem 1rem; font-size: 1.15rem; background: #f3f4f6; color: #374151; }
+.mono { font-family: var(--slidev-code-font-family, monospace); font-size: 1.2rem; }
 .mono.bad { color: #b91c1c; font-weight: bold; }
 </style>
 
@@ -234,14 +235,14 @@ title: SOPS ですり替え
 est: 0:32
 ---
 
-<EnbuStage :zoom="1.08">
+<EnbuStage :zoom="1.15">
 
 <div class="lead">Git で暗号化しても、<span class="hl" :class="{ on: $clicks >= 2 }">中身をすり替えられる</span><span class="sub flex items-center justify-center gap-2"><img src="./images/logos/sops.png" class="logo-chip" alt="SOPS">SOPS:値を暗号化して <img src="./images/logos/git.svg" class="logo-chip" alt="Git"> Git にコミットする道具</span></div>
 
 <div class="flex items-start justify-center gap-5">
   <div class="term">
     <div class="term-head"><i /><i /><i /></div>
-    <div class="cm"># 😈 Mallory: 鍵はない。リポジトリに書き込めるだけ</div>
+    <div class="cm"># 😈 Mallory: 書き込めるだけ。鍵はない</div>
     <div><span class="ps">$</span> cat .sops.yaml</div>
     <div class="out">  - age: age1w39g…, age1a4ft… <span class="cm"># 公開鍵は丸見え</span></div>
     <div v-click="1"><span class="ps">$</span> echo 'API_URL=https://evil.example' \</div>
@@ -278,19 +279,19 @@ est: 0:16
 
 <div class="flex items-start justify-center gap-6">
   <div class="steps">
-    <div class="text-sm font-bold mb-1">👋 1 人入る・抜けるたびに</div>
+    <div class="font-bold mb-1">👋 1 人入る・抜けるたびに</div>
     <div>① 公開鍵を集める(チャットで…)</div>
     <div>② .sops.yaml を書き換える</div>
     <div>③ 全部のファイルで <code>sops updatekeys</code></div>
     <div>④ 抜けた人が見た値を全部変える</div>
     <div>⑤ コミットして、全員に pull してもらう</div>
   </div>
-  <div v-click="1" class="term w-80">
+  <div v-click="1" class="term w-76">
     <div class="term-head"><i /><i /><i /></div>
-    <div class="cm"># 2 人が別々のキーを変えただけ</div>
+    <div class="cm"># 2 人が別々に値を変えた</div>
     <div><span class="ps">$</span> git merge bob</div>
-    <div class="out leak">CONFLICT (content): Merge conflict in .env.enc</div>
-    <div class="cm"># 暗号文どうしを手で直すことになる</div>
+    <div class="out leak">CONFLICT … in .env.enc</div>
+    <div class="cm"># 暗号文を手で直す</div>
   </div>
 </div>
 
@@ -305,7 +306,7 @@ est: 0:16
   border: 2px solid #e5e7eb;
   border-radius: 12px;
   background: #fff;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
 }
 </style>
 
@@ -326,11 +327,11 @@ est: 0:19
 
 <div class="flex items-start justify-center gap-5">
   <div class="quote">
-    <div class="quote-head">🧾 5 人のチームで 1 年使うと(1 ドル = 150 円)</div>
+    <div class="quote-head">🧾 5 人で 1 年使うと(1 ドル = 150 円)</div>
     <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/1password.svg" class="logo-chip" alt=""><span>1Password Teams<small>10 人まで定額</small></span></span><b>約 4.5 万円</b></div>
     <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/1password.svg" class="logo-chip" alt=""><span>1Password Business<small>1 人 $8.99/月</small></span></span><b>約 8.1 万円</b></div>
     <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/doppler.svg" class="logo-chip" alt=""><span>Doppler Team<small>1 人 $21/月</small></span></span><b>約 19 万円</b></div>
-    <div class="note">2026 年 11 月時点、各社公式サイトの価格</div>
+    <div class="note">2026 年 11 月、各社公式サイトの価格</div>
   </div>
   <div class="flex flex-col gap-3">
     <div v-click="1" class="member">🤝 社外の人を 1 人足すと<br><b>+1.6 万〜3.8 万円/年</b></div>
@@ -342,29 +343,30 @@ est: 0:19
 
 <style>
 .quote {
-  width: 25rem;
+  width: 28rem;
   border: 2px solid #1f2937;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
   color: #111827;
 }
-.quote-head { padding: 0.4rem 1rem; font-weight: bold; font-size: 0.9rem; background: #f3f4f6; }
+.quote-head { padding: 0.4rem 1rem; font-weight: bold; font-size: 1.15rem; background: #f3f4f6; }
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 0.45rem 1rem;
+  padding: 0.4rem 1rem;
+  font-size: 1.2rem;
   border-top: 1px solid #e5e7eb;
 }
-.row small { display: block; font-size: 0.75rem; color: #4b5563; }
-.row b { font-size: 1.2rem; white-space: nowrap; }
-.note { padding: 0.3rem 1rem; font-size: 0.7rem; color: #4b5563; border-top: 1px solid #e5e7eb; }
+.row small { display: block; font-size: 1.15rem; color: #4b5563; }
+.row b { font-size: 1.4rem; white-space: nowrap; }
+.note { padding: 0.3rem 1rem; font-size: 1rem; color: #4b5563; border-top: 1px solid #e5e7eb; }
 .member {
   padding: 0.45rem 0.9rem;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 1.2rem;
+  line-height: 1.45;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   background: #fff;
@@ -388,7 +390,7 @@ est: 0:18
 <div class="lead">安全と手軽さが、<span class="hl" :class="{ on: $clicks >= 1 }">両立していない</span></div>
 
 <table class="cmp">
-  <thead><tr><th></th><th>後から入った人・<br>抜けた人に見えない</th><th>勝手に<br>すり替えられない</th><th>手間が少ない</th><th>お金・<br>アカウントが要らない</th></tr></thead>
+  <thead><tr><th></th><th>抜けた人に<br>見えない</th><th>すり替え<br>られない</th><th>手間が<br>少ない</th><th>無料・<br>アカウント不要</th></tr></thead>
   <tbody>
     <tr><td><img src="./images/logos/slack.svg" class="logo-chip" alt=""> チャット</td><td class="ng">✗</td><td class="ng">✗</td><td class="ng">✗ 貼り直し</td><td class="ok">○</td></tr>
     <tr><td><img src="./images/logos/sops.png" class="logo-chip" alt=""> SOPS + Git</td><td class="ng">△ 手作業</td><td class="ng">✗</td><td class="ng">✗</td><td class="ok">○</td></tr>
@@ -400,9 +402,9 @@ est: 0:18
 </EnbuStage>
 
 <style>
-.cmp { margin: 0 auto; border-collapse: collapse; background: #fff; font-size: 0.95rem; }
-.cmp th, .cmp td { padding: 0.4rem 0.8rem; border: 1px solid #d1d5db; text-align: center; }
-.cmp th { font-size: 0.8rem; line-height: 1.3; background: #f3f4f6; }
+.cmp { margin: 0 auto; border-collapse: collapse; background: #fff; font-size: 1.2rem; }
+.cmp th, .cmp td { padding: 0.3rem 0.7rem; border: 1px solid #d1d5db; text-align: center; }
+.cmp th { font-size: 1.15rem; line-height: 1.3; background: #f3f4f6; }
 .cmp td:first-child { text-align: left; font-weight: bold; white-space: nowrap; }
 .cmp .ok { color: #15803d; font-weight: bold; }
 .cmp .ng { color: #b91c1c; font-weight: bold; }
@@ -457,7 +459,7 @@ est: 0:19
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   background: #fff;
-  font-size: 1rem;
+  font-size: 1.15rem;
 }
 .feat.goal { border-color: #dd2e44; background: #fff1f2; font-weight: bold; }
 </style>
@@ -478,12 +480,12 @@ est: 0:16
 
 <div class="flex items-center justify-center gap-4">
   <div class="flex flex-col gap-2">
-    <EnbuBox icon="🧑‍💻" title="Alice" sub="🔑 Alice の鍵" class="w-32 py-1" />
-    <EnbuBox icon="👩‍💻" title="Bob" sub="🔑 Bob の鍵" class="w-32 py-1" />
+    <EnbuBox icon="🧑‍💻" title="Alice" sub="🔑 Alice の鍵" class="w-40 py-1" />
+    <EnbuBox icon="👩‍💻" title="Bob" sub="🔑 Bob の鍵" class="w-40 py-1" />
   </div>
   <EnbuArrow v-click="1" label="🔒 暗号文" flow color="#dd2e44" size="6rem" />
   <div v-click="1" class="store">
-    <div class="text-sm font-bold mb-2">☁️ 今ある置き場所</div>
+    <div class="text-lg font-bold mb-2">☁️ 今ある置き場所</div>
     <div class="flex gap-2">
       <EnbuBox icon="📦" title="GitHub" class="w-24 py-1" />
       <EnbuBox icon="🪣" title="S3" class="w-24 py-1" />
@@ -535,9 +537,9 @@ est: 0:22
 <div class="lead">🧑‍💻 個人開発者・初学者:<span class="hl" :class="{ on: $clicks >= 1 }">消しても戻せる、漏らさない</span></div>
 
 <div class="persona">
-  <div class="col now"><div class="h">😩 今</div><div>.env は今の PC の中だけ</div><div>消したら、作り直し</div><div>うっかり Git にコミット</div></div>
-  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>消しても、クラウドから戻せる</div><div>変更の履歴が自動で残る</div><div>.gitignore を自動で設定し、うっかり公開を防ぐ</div><div>GUI で簡単。CLI もあるので AI でも操作できる</div></div>
-  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>合鍵がない。<b>全部の PC を同時に失うと誰も開けない</b></div><div>→ 2 台以上登録しておく</div></div>
+  <div class="col now"><div class="h">😩 今</div><div>.env は今の PC の中だけ</div><div>消したら作り直し</div><div>うっかり Git にコミット</div></div>
+  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>消してもクラウドから戻せる</div><div>履歴が自動で残る</div><div>.gitignore も自動で、うっかり公開を防ぐ</div><div>GUI で簡単。CLI なら AI も使える</div></div>
+  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>合鍵がない。<b>全部の PC を失うと開けない</b></div><div>→ 2 台以上登録しておく</div></div>
 </div>
 
 </EnbuStage>
@@ -559,8 +561,8 @@ est: 0:21
 
 <div class="persona">
   <div class="col now"><div class="h">😩 今</div><div>Slack や Discord に貼る</div><div>どれが最新か分からない</div><div>卒業生もずっと読める</div></div>
-  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>チャットに貼る代わりに、安全に手軽に共有</div><div>enbu が唯一の正(SSoT)→ どれが最新か迷わない</div><div>無料で使える</div><div>卒業したら外せる</div></div>
-  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>全員がアプリを入れる</div><div>管理者が 1 台ずつ承認する</div><div>外したら、値は自分で変える</div></div>
+  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>貼らずに、安全に手軽に共有</div><div>enbu が唯一の正 → 迷わない</div><div>無料で使える</div><div>卒業したら外せる</div></div>
+  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>全員がアプリを入れる</div><div>管理者が 1 台ずつ承認</div><div>外したら、値は自分で変える</div></div>
 </div>
 
 </EnbuStage>
@@ -581,9 +583,9 @@ est: 0:21
 <div class="lead">🏢 企業:<span class="hl" :class="{ on: $clicks >= 1 }">今の基盤のまま、社外の人とも</span></div>
 
 <div class="persona">
-  <div class="col now"><div class="h">😩 今</div><div>業務委託にもサービスの席を買う</div><div>zip + パスワード別送のメール</div><div>終わった後に外し忘れる</div></div>
-  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>今あるアカウント基盤で導入できる</div><div>社外とのやり取りに。クラウドストレージの代わりにも</div><div>業務委託やインターンも、承認して、終わったら外す</div></div>
-  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>SSO や環境ごとの細かい権限はまだない</div><div>CI が勝手に読む仕組みはない</div><div>誰が読んだかの記録は取れない</div></div>
+  <div class="col now"><div class="h">😩 今</div><div>社外の人にも席を買う</div><div>zip + パスワード別送</div><div>終わっても外し忘れる</div></div>
+  <div v-click="1" class="col good"><div class="h">✅ enbu だと</div><div>今のアカウント基盤で導入</div><div>社外とのやり取りや、クラウドストレージの代わりに</div><div>委託やインターンも、承認して終わったら外す</div></div>
+  <div v-click="2" class="col bad"><div class="h">⚠️ 困るところ</div><div>SSO や細かい権限はまだない</div><div>CI が自動で読めない</div><div>誰が読んだかは記録できない</div></div>
 </div>
 
 </EnbuStage>
@@ -607,24 +609,25 @@ est: 0:03
 
 ---
 title: デモ
-est: 1:44
+est: 1:10
 voiceHold: true
 ---
 
 <EnbuStage :zoom="1.2">
 
-<div class="lead">見てみましょう 🎬<span class="sub">1 台の PC で、デバイスも GitHub アカウントも別の 2 人</span></div>
+<div class="lead">Alice から Bob に、<span class="hl on">.env を渡します</span> 🎬<span class="sub">1 台の PC で、デバイスも GitHub アカウントも別の 2 人</span></div>
 
 <div class="flex items-center justify-center gap-3">
-  <EnbuBox icon="🧑‍💻" title="Alice" sub="管理者" tone="accent" class="w-28" />
+  <EnbuBox icon="🧑‍💻" title="Alice" sub="管理者" tone="accent" class="w-32" />
   <div class="flow">
-    <div>① 値を入れる</div>
-    <div>② 指紋を口頭で確認</div>
-    <div>③ 承認 → Bob に .env</div>
-    <div>④ 値を変える → 同期だけ</div>
+    <div>① Alice が値を入れる</div>
+    <div>② Bob が参加 → 指紋を確認して承認</div>
+    <div>③ Alice が値を変える</div>
   </div>
-  <EnbuBox icon="👩‍💻" title="Bob" sub="新メンバー" class="w-28" />
+  <EnbuBox icon="👩‍💻" title="Bob" sub="新メンバー" class="w-32" />
 </div>
+
+<div class="watch">👀 見てほしいところ:<b>チャットに 1 回も貼らない</b>/<b>値を変えても、貼り直さない</b></div>
 
 </EnbuStage>
 
@@ -637,12 +640,53 @@ voiceHold: true
   border-radius: 10px;
   background: #f9fafb;
   border: 1px solid #e5e7eb;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
+}
+.watch {
+  margin-top: 1.2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  background: #fff1f2;
+  border: 2px solid #dd2e44;
+  font-size: 1.15rem;
+  text-align: center;
 }
 </style>
 
 <!--
-Alice が値を入れ、Bob が参加して指紋を確認、承認すると Bob に .env が届きます。値を変えても、Bob は同期するだけです
+Alice が Bob に .env を渡します。見てほしいのは、一度も貼らず、変えても貼り直さないところです
+-->
+
+---
+title: いま見たこと
+est: 0:12
+---
+
+<EnbuStage :zoom="1.15">
+
+<div class="lead">いま見たのは、<span class="hl" :class="{ on: $clicks >= 1 }">人の注意に頼らない共有</span></div>
+
+<table class="seen">
+  <tbody>
+    <tr><td>💬 チャットに貼らずに渡せた</td><td>→ 残らない・化けない</td></tr>
+    <tr><td>🔄 値を変えたら同期するだけ</td><td>→ 古い値を使わない</td></tr>
+    <tr><td>👤 GitHub アカウントだけ</td><td>→ お金もアカウントも増えない</td></tr>
+    <tr><td>🔍 指紋を確かめて承認</td><td>→ 偽物のメンバーを入れない</td></tr>
+  </tbody>
+</table>
+
+</EnbuStage>
+
+<style>
+.seen { margin: 0 auto; border-collapse: collapse; background: #fff; font-size: 1.2rem; }
+.seen td { padding: 0.45rem 1rem; border-bottom: 1px solid #e5e7eb; }
+.seen td:first-child { font-weight: bold; }
+.seen td:last-child { color: #15803d; font-weight: bold; }
+</style>
+
+<!--
+貼らずに渡せて、変えても同期だけ。アカウントも増えません
+[click:1] 全部、人の注意に頼らずに起きています
 -->
 
 ---
@@ -653,7 +697,7 @@ est: 0:03
 <EnbuSection :n="6" />
 
 <!--
-デモの裏側
+その裏側です
 -->
 
 ---
@@ -669,7 +713,7 @@ est: 0:09
   <div class="zone trust">
     <div class="zone-label">🏠 自分の PC</div>
     <div class="text-center text-3xl mt-2">🔑 🔓</div>
-    <div class="text-center text-sm mt-1">開けるのはここだけ</div>
+    <div class="text-center text-lg mt-1">開けるのはここだけ</div>
   </div>
   <div class="flex items-center">
     <EnbuArrow label="🔒 + ㊞" flow color="#dd2e44" size="6rem" />
@@ -677,7 +721,7 @@ est: 0:09
   <div v-click="1" class="zone untrust">
     <div class="zone-label">☁️ 置き場所</div>
     <div class="text-center text-3xl mt-2">🔒 🔒 🔒</div>
-    <div class="text-center text-sm mt-1">中身は読めない</div>
+    <div class="text-center text-lg mt-1">中身は読めない</div>
   </div>
 </div>
 
@@ -692,7 +736,7 @@ est: 0:09
 }
 .trust { border: 3px solid #16a34a; background: #f0fdf4; }
 .untrust { border: 3px dashed #9ca3af; background: #f9fafb; }
-.zone-label { position: absolute; top: 0.5rem; left: 1rem; font-weight: bold; font-size: 0.95rem; }
+.zone-label { position: absolute; top: 0.5rem; left: 1rem; font-weight: bold; font-size: 1.15rem; }
 </style>
 
 <!--
@@ -727,6 +771,7 @@ est: 0:18
   border: 2px solid #1f2937;
   border-radius: 8px;
   background: #fff;
+  font-size: 1.1rem;
   line-height: 1.6;
 }
 .stamp {
@@ -767,7 +812,7 @@ est: 0:13
 
 <div class="flex items-center justify-center gap-6">
   <div class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div class="stamp">㊞</div></div>
-  <div class="ctl evil" :class="{ out: $clicks >= 1 }"><div>😈 Mallory</div><div class="text-xs">「私もメンバー」</div></div>
+  <div class="ctl evil" :class="{ out: $clicks >= 1 }"><div>😈 Mallory</div><div>「私もメンバー」</div></div>
   <div v-click="1" class="text-2xl ng-mark">✗ 無視</div>
 </div>
 
@@ -781,6 +826,7 @@ est: 0:13
   border: 2px solid #1f2937;
   border-radius: 8px;
   background: #fff;
+  font-size: 1.1rem;
   line-height: 1.6;
   transition: opacity 0.4s;
 }
@@ -827,7 +873,7 @@ est: 0:08
   font-weight: bold;
 }
 .ver.now { border-color: #16a34a; background: #f0fdf4; }
-.pin { position: absolute; top: -1.6rem; left: 50%; transform: translateX(-50%); font-size: 0.8rem; white-space: nowrap; font-weight: normal; }
+.pin { position: absolute; top: -1.6rem; left: 50%; transform: translateX(-50%); font-size: 1.05rem; white-space: nowrap; font-weight: normal; }
 .link { width: 1.6rem; height: 3px; background: #1f2937; }
 </style>
 
@@ -846,9 +892,9 @@ est: 0:13
 <div class="lead">メンバー本人が裏切ったら、<span class="hl" :class="{ on: $clicks >= 1 }">止められない</span><span class="sub">内部の攻撃者や、乗っ取られたメンバーの PC</span></div>
 
 <div class="flex items-center justify-center gap-4">
-  <EnbuBox icon="👩‍💻" title="Bob(メンバー)" sub="正しく復号できる" class="w-40" />
+  <EnbuBox icon="👩‍💻" title="Bob(メンバー)" sub="正しく復号できる" class="w-48" />
   <EnbuArrow label="値をコピー" color="#b91c1c" size="5rem" />
-  <EnbuBox icon="😈" title="外へ持ち出す" tone="bad" class="w-36" />
+  <EnbuBox icon="😈" title="外へ持ち出す" tone="bad" class="w-44" />
 </div>
 
 <div v-click="2" class="flex justify-center gap-6 mt-6">
@@ -859,7 +905,7 @@ est: 0:13
 </EnbuStage>
 
 <style>
-.can { padding: 0.5rem 1rem; border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; text-align: center; line-height: 1.6; }
+.can { padding: 0.5rem 1rem; font-size: 1.15rem; border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; text-align: center; line-height: 1.6; }
 </style>
 
 <!--
@@ -921,7 +967,7 @@ est: 0:14
 
 <style>
 .ver { padding: 0.5rem 1rem; border: 2px solid #1f2937; border-radius: 8px; background: #fff; font-weight: bold; text-align: center; }
-.who { font-size: 0.8rem; font-weight: normal; color: #b91c1c; }
+.who { font-size: 1.1rem; font-weight: normal; color: #b91c1c; }
 .link { width: 2rem; height: 3px; background: #1f2937; }
 </style>
 
@@ -941,14 +987,14 @@ est: 0:18
 
 <div class="flex items-center justify-center gap-10">
   <div class="text-center">
-    <div class="text-sm font-bold mb-2">☁️ 専用サービス</div>
+    <div class="text-lg font-bold mb-2">☁️ 専用サービス</div>
     <div class="hub">
       <div class="node">🧑‍💻</div><div class="node">👩‍💻</div><div class="node">🧑‍🎓</div>
       <div class="center">🖥️ サーバーが<br>順番を決める</div>
     </div>
   </div>
   <div v-click="1" class="text-center">
-    <div class="text-sm font-bold mb-2">💃 enbu</div>
+    <div class="text-lg font-bold mb-2">💃 enbu</div>
     <div class="hub p2p">
       <div class="node">🧑‍💻</div><div class="node">👩‍💻</div><div class="node">🧑‍🎓</div>
       <div class="center dumb">📦 置くだけ<br>(信用しない)</div>
@@ -972,7 +1018,7 @@ est: 0:18
   background: #fff;
 }
 .node { font-size: 2rem; text-align: center; }
-.center { grid-column: 1 / 4; padding: 0.4rem; border: 2px solid #1f2937; border-radius: 8px; font-size: 0.9rem; font-weight: bold; }
+.center { grid-column: 1 / 4; padding: 0.4rem; border: 2px solid #1f2937; border-radius: 8px; font-size: 1.15rem; font-weight: bold; }
 .center.dumb { border-style: dashed; border-color: #6b7280; color: #374151; font-weight: normal; }
 </style>
 
@@ -1009,8 +1055,9 @@ est: 0:14
 <style>
 .rev {
   position: absolute;
-  width: 170px;
-  padding: 0.5rem 0.8rem;
+  width: 190px;
+  padding: 0.5rem 0.6rem;
+  font-size: 1.15rem;
   border: 2px solid #1f2937;
   border-radius: 10px;
   background: #fff;
@@ -1042,7 +1089,7 @@ est: 0:13
     <div class="grid-dots">
       <span v-for="i in 48" :key="i" class="d" :class="{ red: i === 37 && $clicks >= 1, tried: [1, 2, 3].includes(i) }" />
     </div>
-    <div class="text-sm mt-2">書く・読む・承認・通信が切れる…の並び方</div>
+    <div class="text-lg mt-2">書く・読む・承認・通信切れ…の並び方</div>
   </div>
   <div class="flex flex-col gap-2 text-lg">
     <div><span class="sw tried" /> 手で試せるのは数通り</div>
@@ -1078,7 +1125,7 @@ est: 0:16
 
 <div class="flex justify-center">
   <div class="world">
-    <div class="text-sm font-bold mb-2">🌐 仮想の世界</div>
+    <div class="text-lg font-bold mb-2">🌐 仮想の世界</div>
     <div class="flex gap-2 justify-center">
       <div class="real">🧩 enbu 本体</div>
       <div class="real">🔒 暗号</div>
@@ -1088,7 +1135,7 @@ est: 0:16
       <div class="fake">⏰ 時計</div>
       <div class="fake">💻 PC</div>
     </div>
-    <div class="flex gap-4 justify-center mt-3 text-sm">
+    <div class="flex gap-4 justify-center mt-3 text-lg">
       <span class="real-k">本物</span><span v-click="1" class="fake-k">作り物</span>
     </div>
   </div>
@@ -1104,7 +1151,7 @@ est: 0:16
   background: #fff;
   text-align: center;
 }
-.real, .fake { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 1rem; }
+.real, .fake { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 1.15rem; }
 .real { border: 2px solid #16a34a; background: #f0fdf4; }
 .fake { border: 2px dashed #d97706; background: #fffbeb; }
 .real-k { color: #15803d; font-weight: bold; }
@@ -1175,16 +1222,16 @@ est: 0:14
 
 <div class="flex items-center justify-center gap-8">
   <div class="device">
-    <div class="text-sm font-bold mb-2">💻 PC</div>
+    <div class="text-lg font-bold mb-2">💻 PC</div>
     <div class="chip">
-      <div class="text-xs">セキュリティチップ</div>
+      <div class="text-base">セキュリティチップ</div>
       <div class="text-3xl mt-1">🔑</div>
     </div>
   </div>
   <div v-click="1" class="flex items-center gap-3">
     <EnbuArrow label="ディスクを丸ごとコピー" color="#dc2626" size="7rem" />
     <div class="copy">
-      <div class="text-sm font-bold mb-2">😈 コピー</div>
+      <div class="text-lg font-bold mb-2">😈 コピー</div>
       <div class="chip empty"><div class="text-3xl">∅</div></div>
     </div>
   </div>
@@ -1229,23 +1276,23 @@ est: 0:02
 
 ---
 title: これから
-est: 0:14
+est: 0:21
 ---
 
 <EnbuStage :zoom="1.25">
 
-<div class="lead">次は、<span class="hl" :class="{ on: $clicks >= 1 }">使う時だけ有効</span>なシークレットへ</div>
+<div class="lead">目指すのは、<span class="hl" :class="{ on: $clicks >= 2 }">気をつけなくても漏れない世界</span></div>
 
-<div class="flex items-center justify-center gap-3">
-  <EnbuBox icon="📥" title="今の .env" sub="enbu import 1 回" class="w-36" />
-  <EnbuArrow size="3rem" />
-  <EnbuBox icon="💃" title="enbu" sub="いまここ" tone="accent" class="w-32" />
-  <EnbuArrow v-click="1" size="3rem" />
+<div class="flex items-center justify-center gap-2">
+  <EnbuBox icon="💃" title="今回" sub=".env をチームで共有" tone="accent" class="w-40" />
+  <EnbuArrow v-click="1" size="2.5rem" />
   <div v-click="1" class="flex flex-col gap-2">
     <div class="pill">⏳ 使う時だけ有効</div>
     <div class="pill">🕵️ 怪しい動きを見つける</div>
     <div class="pill">🚨 漏えいスキャン</div>
   </div>
+  <EnbuArrow v-click="2" size="2.5rem" />
+  <EnbuBox v-click="2" icon="🌏" title="夢" sub="文書や顧客情報も、だれでも" class="w-40" />
 </div>
 
 </EnbuStage>
@@ -1256,13 +1303,14 @@ est: 0:14
   border-radius: 999px;
   background: #fff;
   border: 1px dashed #6b7280;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
 }
 </style>
 
 <!--
-今の .env は、enbu import 1 回で移せます
-[click:1] 次は、使う時だけ有効なシークレットや監査を作ります
+今回作ったのは、チームで .env を共有するところまで
+[click:1] 次は、使う時だけ有効な鍵や、怪しい動きの検知
+[click:2] 夢は、どんな機密情報も、気をつけずに扱える世界です
 -->
 
 ---
@@ -1274,7 +1322,7 @@ est: 0:11
   <img src="./images/enbu.png" class="w-36" alt="">
   <div class="flex flex-col gap-3">
     <div class="text-3xl font-bold leading-snug">見せてはいけないものを、<br>仕組みで、限られた人にだけ</div>
-    <div class="mt-4 text-base font-mono op-70">github.com/enbu-net/enbu</div>
+    <div class="mt-4 text-xl font-mono op-80">github.com/enbu-net/enbu</div>
   </div>
 </div>
 

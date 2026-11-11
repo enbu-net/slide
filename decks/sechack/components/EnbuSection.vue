@@ -60,8 +60,8 @@ const title = sections[props.n - 1]
   margin: 0;
   padding: 0 0 0 1.6rem;
   border-left: 2px solid #475569;
-  font-size: 1.05rem;
-  line-height: 2;
+  font-size: 1.45rem;
+  line-height: 1.6;
   color: #cbd5e1;
 }
 .toc li { display: flex; gap: 0.6rem; }
