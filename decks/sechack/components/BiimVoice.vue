@@ -2,16 +2,22 @@
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNav } from '@slidev/client'
 import { useLiveSlide } from '../composables/liveSlide'
+import { parseEst, running, toggle } from '../composables/biimTimer'
 
 // あかねボイスの読み上げ(public/voice/sNN_J.mp3、NN = ページ、J = そのページの何個目のセリフか)。
-// URL に ?voice を付けるか v キーで ON / OFF。?voice=auto なら読み終わったら次へ進む(自動再生)。
+// - v キーか URL の ?voice で読み上げを ON / OFF
+// - a キーか ?voice=auto でオートモード: 読み終わったら次へ進み、タイマーも自動で動かして、最後まで通す。
+//   最後のスライドを読み終えたらタイマーを止める
+// - デモ動画のように読み上げより長く見せるページ(frontmatter に voiceHold: true)は、est の時間が経つまで待つ
 // 発表者の画面だけで鳴らすため、発表者ビューやエクスポートでは何もしない。
-const { currentPage, clicks, next, isPresenter, isPrintMode } = useNav()
+const { currentPage, clicks, next, hasNext, isPresenter, isPrintMode } = useNav()
 const { comments, frontmatter } = useLiveSlide(currentPage)
 
 const params = new URLSearchParams(location.search || location.hash.split('?')[1] || '')
 const enabled = ref(params.has('voice'))
-const auto = params.get('voice') === 'auto'
+const auto = ref(params.get('voice') === 'auto')
+// いまのページに来た時刻(voiceHold のページで est まで待つため)
+let pageStartedAt = performance.now()
 const audio = new Audio()
 // ブラウザが操作前の再生を止めたとき、押して始めるボタンを出す
 const blocked = ref(false)
@@ -50,18 +56,56 @@ function play() {
 }
 
 audio.addEventListener('ended', () => {
-  // デモ動画のように、読み終わっても進めたくないページは frontmatter に voiceHold: true
-  if (auto && !frontmatter.value.voiceHold)
-    timer = setTimeout(() => next(), 600) // est はセリフの長さ + 0.6 秒で計算している
+  if (!auto.value)
+    return
+  const isLast = !hasNext.value
+  // est はセリフの長さ + 0.6 秒で計算している。voiceHold のページは est まで待つ
+  let wait = 600
+  if (frontmatter.value.voiceHold && clicks.value === comments.value.at(-1)?.click) {
+    const est = parseEst(frontmatter.value.est) ?? 0
+    wait = Math.max(wait, est * 1000 - (performance.now() - pageStartedAt))
+  }
+  timer = setTimeout(() => {
+    if (isLast) {
+      if (running.value)
+        toggle(currentPage.value) // 最後まで読んだら止めて確定する
+      auto.value = false
+      return
+    }
+    next()
+  }, wait)
 })
 
+watch(currentPage, () => {
+  pageStartedAt = performance.now()
+})
 watch([currentPage, clicks], play)
 
 function onKey(e: KeyboardEvent) {
-  if (e.key !== 'v' || e.ctrlKey || e.metaKey || e.altKey)
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat)
     return
-  enabled.value = !enabled.value
-  enabled.value ? play() : stop()
+  const el = e.target as HTMLElement | null
+  if (el?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el?.tagName ?? ''))
+    return
+  if (e.key === 'v') {
+    enabled.value = !enabled.value
+    if (!enabled.value)
+      auto.value = false
+    enabled.value ? play() : stop()
+  }
+  else if (e.key === 'a') {
+    auto.value = !auto.value
+    if (auto.value) {
+      enabled.value = true
+      pageStartedAt = performance.now()
+      if (!running.value)
+        toggle(currentPage.value) // タイマーも動かす(止めていたら続きから)
+      play()
+    }
+    else {
+      stop()
+    }
+  }
 }
 onMounted(() => {
   window.addEventListener('keydown', onKey)
@@ -75,7 +119,7 @@ onBeforeUnmount(() => {
 
 <template>
   <button v-if="enabled && blocked" class="biim-voice start" @click="play">▶ 読み上げを始める</button>
-  <span v-else-if="enabled" class="biim-voice" :title="auto ? '読み上げ(自動送り)' : '読み上げ'">🔊</span>
+  <span v-else-if="enabled" class="biim-voice" :title="auto ? '読み上げ(オートモード)' : '読み上げ'">{{ auto ? '▶︎🔊' : '🔊' }}</span>
 </template>
 
 <style scoped>

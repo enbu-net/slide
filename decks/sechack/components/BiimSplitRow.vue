@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useNav } from '@slidev/client'
-import { elapsed, formatDelta, formatSeconds, running, splits } from '../composables/biimTimer'
+import { elapsed, formatDelta, formatSeconds, splits } from '../composables/biimTimer'
 
 // 予定の何 ms 前からカウントダウンを始めるか
 const COUNTDOWN_MS = 5000
@@ -21,8 +21,8 @@ const isCurrent = computed(() => currentSlideNo.value === props.no)
 // 予定との差(ms)。正ならオーバー。表示しないときは null
 const delta = computed(() => {
   const split = splits[props.no]
-  // 終えたスライドは確定した値。止めて再開した、いまのスライドは進行中の値に戻す
-  if (split != null && !(isCurrent.value && running.value))
+  // 終えたスライドは確定した値。前のスライドに戻っても、確定した値のまま動かさない
+  if (split != null)
     return split - props.cumulative * 1000
   if (!isCurrent.value)
     return null

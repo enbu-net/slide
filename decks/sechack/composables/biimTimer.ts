@@ -16,9 +16,12 @@ function tick() {
   frameId = requestAnimationFrame(tick)
 }
 
-/** そのスライドを終えた瞬間のタイマー値を確定する */
-export function recordSplit(no: number) {
-  if (elapsed.value > 0)
+/**
+ * そのスライドを終えた瞬間のタイマー値を確定する。
+ * 一度確定したスライドは、戻ってからもう一度進んでも上書きしない(force は停止したとき)
+ */
+export function recordSplit(no: number, force = false) {
+  if (elapsed.value > 0 && (force || splits[no] == null))
     splits[no] = elapsed.value
 }
 
@@ -27,9 +30,11 @@ export function toggle(currentNo: number) {
   if (running.value) {
     cancelAnimationFrame(frameId)
     running.value = false
-    recordSplit(currentNo)
+    recordSplit(currentNo, true)
     return
   }
+  // 止めて再開したら、いまのスライドは進行中に戻す
+  delete splits[currentNo]
   base = elapsed.value
   startedAt = performance.now()
   running.value = true
