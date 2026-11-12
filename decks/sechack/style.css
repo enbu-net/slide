@@ -100,10 +100,6 @@ html.dark {
 .stat .num { font-size: 2.2rem; font-weight: bold; color: #b91c1c; line-height: 1.1; }
 .stat .src { margin-top: 0.4rem; font-size: 0.95rem; color: #4b5563; }
 
-/* ターゲットごとの 今 / enbu / 困るところ */
-.persona { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin: 0 auto; }
-.persona .col { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.7rem 0.9rem; border: 2px solid #e5e7eb; border-radius: 12px; background: #fff; color: #111827; font-size: 1.15rem; line-height: 1.4; }
-.persona .h { font-weight: bold; font-size: 1.25rem; }
-.persona .now { border-color: #9ca3af; }
-.persona .good { border-color: #15803d; background: #f0fdf4; }
-.persona .bad { border-color: #b91c1c; background: #fef2f2; }
+
+/* 見出しは意味のまとまりで折り返す。 */
+.lead { text-wrap: balance; }

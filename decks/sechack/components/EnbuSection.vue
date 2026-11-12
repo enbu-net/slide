@@ -1,18 +1,8 @@
 <script setup lang="ts">
 // セクションの区切り。暗い背景に番号と見出しを大きく出し、右に全体の目次を出して今どこかを示す
-const props = defineProps<{ n: number }>()
+import { sections } from '../composables/sections'
 
-const sections = [
-  'シークレットの話',
-  '今のやり方',
-  'enbu',
-  '誰に役立つ？',
-  'デモ',
-  'デモの裏側',
-  '攻撃にどう耐えるか',
-  '作るときの工夫',
-  'これから',
-]
+const props = defineProps<{ n: number }>()
 const title = sections[props.n - 1]
 </script>
 
