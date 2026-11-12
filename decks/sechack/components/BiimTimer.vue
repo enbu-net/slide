@@ -5,8 +5,8 @@ import { elapsed, reset, toggle } from '../composables/biimTimer'
 
 // 表示と、クリックでの操作(クリックで開始/停止、ダブルクリックでリセット)だけを担当する。
 // キー操作とスプリットの確定は composables/biimControls.ts。
-const { currentSlideNo } = useNav()
-const toggleTimer = () => toggle(currentSlideNo.value)
+const { currentSlideNo, clicks } = useNav()
+const toggleTimer = () => toggle(currentSlideNo.value, clicks.value)
 
 const pad = (n: number) => String(n).padStart(2, '0')
 

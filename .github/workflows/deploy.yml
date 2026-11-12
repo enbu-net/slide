@@ -41,6 +41,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - run: pnpm test
+
       - run: pnpm run build --base /slide/
 
       - run: node scripts/collect-previews.mjs

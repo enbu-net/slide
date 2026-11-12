@@ -68,7 +68,7 @@ audio.addEventListener('ended', () => {
   timer = setTimeout(() => {
     if (isLast) {
       if (running.value)
-        toggle(currentPage.value) // 最後まで読んだら止めて確定する
+        toggle(currentPage.value, clicks.value) // 最後まで読んだら止めて確定する
       auto.value = false
       return
     }
@@ -99,7 +99,7 @@ function onKey(e: KeyboardEvent) {
       enabled.value = true
       pageStartedAt = performance.now()
       if (!running.value)
-        toggle(currentPage.value) // タイマーも動かす(止めていたら続きから)
+        toggle(currentPage.value, clicks.value) // タイマーも動かす(止めていたら続きから)
       play()
     }
     else {
@@ -111,7 +111,7 @@ onMounted(() => {
   window.addEventListener('keydown', onKey)
   // ?voice=auto で開いたときも、a キーと同じくタイマーを動かす
   if (auto.value && !running.value)
-    toggle(currentPage.value)
+    toggle(currentPage.value, clicks.value)
   play()
 })
 onBeforeUnmount(() => {

@@ -51,6 +51,25 @@ def segments(part):
     return [re.sub(r'^\[click(?::\d+|\+\d+)?\]\s*', '', line) for line in lines if line]
 
 
+def segment_clicks(part):
+    """セリフが出るクリック番号。liveSlide.ts の parseComments と同じ規則。"""
+    notes = re.findall(r'<!--\n(.*?)\n-->', part, re.S)
+    note = notes[-1] if notes else ''
+    clicks = []
+    previous = -1
+    for line in note.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        marker = re.match(r'^\[click(?::(\d+)|\+(\d+))?\]\s*', line)
+        click = (int(marker[1]) if marker and marker[1] is not None else
+                 previous + int(marker[2]) if marker and marker[2] is not None else previous + 1)
+        click = max(0, click)
+        clicks.append(click)
+        previous = click
+    return clicks
+
+
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(CACHE, exist_ok=True)
 jobs = []
@@ -120,10 +139,26 @@ if ests[demo] <= 0:
     raise SystemExit(f'デモを除いても {non_demo_total} 秒あり、{args.total} 秒に収まりません')
 
 out = []
-for part, est in zip(parts, ests):
+for i, (part, est) in enumerate(zip(parts, ests)):
     new, n = re.subn(r'^est: .*$', f'est: {est // 60}:{est % 60:02d}', part, count=1, flags=re.M)
     if n != 1:
         raise SystemExit('est のないスライドがあります: ' + part.split('\n', 3)[1])
+    clicks = segment_clicks(part)
+    weights = [0.0] * (max(clicks, default=0) + 1)
+    for j, click in enumerate(clicks):
+        weights[click] += durations[f's{i + 1:02d}_{j}'] + GAP
+    # ページ全体の丸め済み est と最終段階を一致させる。デモの待ち時間は末尾へ。
+    if i == demo:
+        weights[-1] += max(0, est - sum(weights))
+    weight_total = sum(weights)
+    ends = []
+    elapsed = 0
+    for weight in weights:
+        elapsed += weight
+        ends.append(round(elapsed / weight_total * est, 3) if weight_total else est)
+    ends[-1] = est
+    new = re.sub(r'^clickEst: .*\n?', '', new, flags=re.M)
+    new = re.sub(r'^(est: .*)$', lambda m: m[0] + '\nclickEst: ' + json.dumps(ends), new, count=1, flags=re.M)
     out.append(new)
 # 途中で失敗しても slides.md を壊さないよう、同じフォルダの一時ファイルに書いてから置き換える
 fd, tmp = tempfile.mkstemp(dir=DECK, prefix='.slides-', suffix='.md')

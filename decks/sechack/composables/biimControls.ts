@@ -22,22 +22,18 @@ export function useBiimControls() {
   const markInteracted = () => {
     interacted = true
   }
-  const autoStart = (no: number) => {
+  const autoStart = (no: number, click: number) => {
     if (interacted)
-      startIfIdle(no)
+      startIfIdle(no, click)
   }
 
-  watch(currentSlideNo, (now, prev) => {
-    if (prev != null && now > prev) {
-      recordSplit(prev)
-      autoStart(now)
-    }
-  })
-
-  // 同じスライドの中でクリックを進めたとき(前のスライドへ戻るとクリックが増えるので、スライドが同じときだけ)
+  // ページ送りと同じように、各クリック段階を離れた時点でも記録する。
+  // 戻る操作や途中へのジャンプで、未通過の段階の記録を作らない。
   watch([currentSlideNo, clicks], ([no, now], [prevNo, prev]) => {
-    if (no === prevNo && prev != null && now > prev)
-      autoStart(no)
+    if (prevNo != null && (no > prevNo || (no === prevNo && now > prev))) {
+      recordSplit(prevNo, prev)
+      autoStart(no, now)
+    }
   })
 
   function onKeydown(e: KeyboardEvent) {
@@ -48,11 +44,11 @@ export function useBiimControls() {
     if (el?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el?.tagName ?? ''))
       return
     if (e.key === 's')
-      toggle(currentSlideNo.value)
+      toggle(currentSlideNo.value, clicks.value)
     else if (e.key === 'r' && !running.value)
       reset()
     else if (isNextKey(e) && !hasNext.value && running.value)
-      toggle(currentSlideNo.value)
+      toggle(currentSlideNo.value, clicks.value)
   }
 
   const pointerEvents = ['pointerdown', 'wheel', 'touchstart'] as const

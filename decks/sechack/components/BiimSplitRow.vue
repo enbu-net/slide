@@ -1,43 +1,46 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useNav } from '@slidev/client'
-import { elapsed, formatDelta, formatSeconds, splits } from '../composables/biimTimer'
+import { elapsed, formatDelta, formatSeconds, splits, splitKey } from '../composables/biimTimer'
 
 // 予定の何 ms 前からカウントダウンを始めるか
 const COUNTDOWN_MS = 5000
 
-// 1 スライド分の行: ページ番号 / 予定との差 / 予定時間(累計)。
-// 差は累計の予定とタイマー値の差。いまのスライドは、予定の 5 秒前からカウントダウンし(緑の -)、
-// 超えたらそのままカウントアップする(赤の +)。色は style.css の --biim-good / --biim-bad。スライドを終えると、その時点の差で確定する。
+// 1 クリック段階分の行: ページ番号 / 予定との差 / 予定時間(累計)。
+// 差は累計の予定とタイマー値の差。いまの段階は、予定の 5 秒前からカウントダウンし(緑の -)、
+// 超えたらそのままカウントアップする(赤の +)。色は style.css の --biim-good / --biim-bad。段階を終えると、その時点の差で確定する。
 const props = defineProps<{
   no: number
-  /** このスライドまでの予定時間の累計(秒) */
+  click: number
+  label: string
+  /** この段階までの予定時間の累計(秒) */
   cumulative: number
 }>()
 
-const { currentSlideNo } = useNav()
-const isCurrent = computed(() => currentSlideNo.value === props.no)
+const { currentSlideNo, clicks } = useNav()
+const isCurrent = computed(() => currentSlideNo.value === props.no && clicks.value === props.click)
 
 // 予定との差(ms)。正ならオーバー。表示しないときは null
 const delta = computed(() => {
-  const split = splits[props.no]
-  // 終えたスライドは確定した値。前のスライドに戻っても、確定した値のまま動かさない
+  const split = splits[splitKey(props.no, props.click)]
+  // 終えた段階は確定した値。前の段階に戻っても、確定した値のまま動かさない
   if (split != null)
     return split - props.cumulative * 1000
   if (!isCurrent.value)
     return null
-  const live = elapsed.value - props.cumulative * 1000 // いまのスライド: 進行中
+  const live = elapsed.value - props.cumulative * 1000 // いまの段階: 進行中
   return live >= -COUNTDOWN_MS ? live : null
 })
 </script>
 
 <template>
-  <div class="biim-split-row" :class="{ current: isCurrent }">
-    <span class="no">{{ no }}</span>
+  <div class="biim-split-row" :class="{ current: isCurrent }" :aria-current="isCurrent ? 'step' : undefined">
+    <span class="no">{{ label }}</span>
     <span
+      v-if="delta != null"
       class="delta font-mono"
-      :class="delta == null ? '' : delta > 0 ? 'over' : 'under'"
-    >{{ delta != null ? formatDelta(delta) : '' }}</span>
+      :class="delta > 0 ? 'over' : 'under'"
+    >{{ formatDelta(delta) }}</span>
     <span class="est font-mono">{{ formatSeconds(cumulative) }}</span>
   </div>
 </template>
@@ -45,7 +48,7 @@ const delta = computed(() => {
 <style scoped>
 .biim-split-row {
   display: grid;
-  grid-template-columns: 1.6em 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 4px;
   align-items: baseline;
   padding: 1px 3px;
@@ -53,14 +56,18 @@ const delta = computed(() => {
   white-space: nowrap;
 }
 .no {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: bold;
 }
 .delta {
-  font-size: 0.62rem;
+  grid-row: 2;
+  grid-column: 1 / -1;
+  font-size: 0.75rem;
   text-align: right;
 }
 .est {
+  grid-row: 1;
+  grid-column: 2;
   font-size: 0.85rem; /* 予定時間は白 */
 }
 .over {

@@ -1,16 +1,17 @@
 import { reactive, ref } from 'vue'
 
-// タイマーと、スライドごとのスプリット(そのスライドを終えた瞬間のタイマー値)。
+// タイマーと、クリック段階ごとのスプリット(その段階を終えた瞬間のタイマー値)。
 // 外枠(global-top)は 1 つだけなので、状態はモジュールで共有する。
 export const elapsed = ref(0) // ms
 export const running = ref(false)
-/** スライド番号 -> 終えた瞬間のタイマー値(ms) */
-export const splits = reactive<Record<number, number>>({})
+/** "ページ番号:クリック番号" -> 終えた瞬間のタイマー値(ms) */
+export const splits = reactive<Record<string, number>>({})
+export const splitKey = (page: number, click: number) => `${page}:${click}`
 
 let startedAt = 0
 let base = 0
-// 停止したときに確定したスライド(再開したら、そのスライドだけ進行中に戻す)
-let pausedNo: number | null = null
+// 停止で確定した段階(再開したら、その段階だけ進行中に戻す)
+let pausedKey: string | null = null
 let frameId = 0
 
 function tick() {
@@ -19,30 +20,32 @@ function tick() {
 }
 
 /**
- * そのスライドを終えた瞬間のタイマー値を確定する。
- * 一度確定したスライドは、戻ってからもう一度進んでも上書きしない
+ * その段階を終えた瞬間のタイマー値を確定する。
+ * 一度確定した段階は、戻ってからもう一度進んでも上書きしない
  */
-export function recordSplit(no: number) {
-  if (elapsed.value > 0 && splits[no] == null)
-    splits[no] = elapsed.value
+export function recordSplit(no: number, click = 0) {
+  const key = splitKey(no, click)
+  if (elapsed.value > 0 && splits[key] == null)
+    splits[key] = elapsed.value
 }
 
 /**
- * 開始/停止。停止した瞬間は、いまのスライドを終えたものとして確定する。
- * ただし、戻ってきた確定済みのスライドで止めたときは、元の値を残す
+ * 開始/停止。停止した瞬間は、いまの段階を終えたものとして確定する。
+ * ただし、戻ってきた確定済みの段階で止めたときは、元の値を残す
  */
-export function toggle(currentNo: number) {
+export function toggle(currentNo: number, click = 0) {
+  const key = splitKey(currentNo, click)
   if (running.value) {
     cancelAnimationFrame(frameId)
     running.value = false
-    pausedNo = splits[currentNo] == null && elapsed.value > 0 ? currentNo : null
-    recordSplit(currentNo)
+    pausedKey = splits[key] == null && elapsed.value > 0 ? key : null
+    recordSplit(currentNo, click)
     return
   }
-  // 止めて再開したら、停止で確定したスライドだけ進行中に戻す
-  if (pausedNo != null)
-    delete splits[pausedNo]
-  pausedNo = null
+  // 再開したら、停止で確定した段階だけ進行中に戻す
+  if (pausedKey != null)
+    delete splits[pausedKey]
+  pausedKey = null
   base = elapsed.value
   startedAt = performance.now()
   running.value = true
@@ -50,9 +53,9 @@ export function toggle(currentNo: number) {
 }
 
 /** まだ一度も動かしていない(またはリセット直後の)ときだけ開始する */
-export function startIfIdle(currentNo: number) {
+export function startIfIdle(currentNo: number, click = 0) {
   if (!running.value && elapsed.value === 0)
-    toggle(currentNo)
+    toggle(currentNo, click)
 }
 
 /** タイマーとスプリットを 0 に戻す */
@@ -60,9 +63,9 @@ export function reset() {
   base = 0
   startedAt = performance.now()
   elapsed.value = 0
-  pausedNo = null
+  pausedKey = null
   for (const k of Object.keys(splits))
-    delete splits[Number(k)]
+    delete splits[k]
 }
 
 /** est(予定時間)を秒にする。数値は秒、文字列は "m:ss" か "h:mm:ss" */
