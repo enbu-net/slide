@@ -1,20 +1,21 @@
 ---
 theme: seriph
-title: enbu 10 分発表(SecHack365)
+title: enbu - 機密情報を安全・手軽・柔軟に共有・管理するツール
 genre: Any%
 colorSchema: light
 defaults:
   layout: biim
 fonts:
   mono: JetBrains Mono
-est: 0:06
+est: 0:12
 ---
 
-<div class="h-full flex items-center justify-center gap-12" style="zoom: 1.25">
-  <img src="./images/enbu.png" class="w-52 dance" alt="enbu">
+<div class="h-full flex items-center justify-center gap-8" style="zoom: 1.15">
+  <img src="./images/enbu.png" class="w-36 dance" alt="enbu">
   <div>
-    <div class="text-8xl font-bold tracking-wide">enbu</div>
-    <div class="text-2xl mt-4">チームの機密情報を、仕組みで安全に</div>
+    <div class="text-6xl font-bold tracking-wide">enbu -</div>
+    <div class="text-2xl font-bold mt-4 leading-snug">機密情報を安全・手軽・柔軟に<br>共有・管理するツール</div>
+    <div class="text-xl mt-6 leading-relaxed">人が頑張らなくていい<br>機密情報共有・管理を目指して</div>
     <div class="mt-8 text-lg op-80 font-mono">github.com/enbu-net/enbu</div>
   </div>
 </div>
@@ -34,7 +35,7 @@ est: 0:06
 </style>
 
 <!--
-enbu という、チームで機密情報を共有する道具の話をします
+enbu、機密情報を安全、手軽、柔軟に共有、管理するツール。人が頑張らなくていい機密情報共有、管理を目指して
 -->
 
 ---
@@ -703,7 +704,7 @@ est: 0:03
 
 ---
 title: デモ
-est: 0:45
+est: 0:39
 voiceHold: true
 ---
 
