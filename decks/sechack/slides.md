@@ -7,7 +7,7 @@ defaults:
   layout: biim
 fonts:
   mono: JetBrains Mono
-est: 0:07
+est: 0:06
 ---
 
 <div class="h-full flex items-center justify-center gap-12" style="zoom: 1.25">
@@ -39,7 +39,7 @@ enbu という、チームで機密情報を共有する道具の話をします
 
 ---
 title: §1 シークレットの話
-est: 0:04
+est: 0:03
 ---
 
 <EnbuSection :n="1" />
@@ -89,7 +89,7 @@ API キーやパスワード、設定ファイル、顧客情報。知られた�
 
 ---
 title: でも見せないと開発できない
-est: 0:11
+est: 0:09
 ---
 
 <EnbuStage :zoom="1.2">
@@ -127,7 +127,7 @@ est: 0:11
 
 ---
 title: 安全と共有を両立したい
-est: 0:08
+est: 0:07
 ---
 
 <EnbuStage :zoom="1.3">
@@ -148,7 +148,7 @@ est: 0:08
 
 ---
 title: §2 今のやり方
-est: 0:04
+est: 0:03
 ---
 
 <EnbuSection :n="2" />
@@ -159,7 +159,7 @@ est: 0:04
 
 ---
 title: 今のやり方は 3 つ
-est: 0:00
+est: 0:13
 ---
 
 <EnbuStage :zoom="1.1">
@@ -177,7 +177,7 @@ est: 0:00
 
 ---
 title: チャットで送る
-est: 0:27
+est: 0:28
 ---
 
 <EnbuStage :zoom="1.15">
@@ -213,7 +213,7 @@ est: 0:27
 
 ---
 title: チャットでは値が変わる
-est: 0:18
+est: 0:22
 ---
 
 <EnbuStage :zoom="1.12">
@@ -254,7 +254,7 @@ est: 0:18
 
 ---
 title: SOPS ですり替え
-est: 0:32
+est: 0:29
 ---
 
 <EnbuStage :zoom="1.15">
@@ -344,7 +344,7 @@ est: 0:16
 
 ---
 title: 専用サービス
-est: 0:19
+est: 0:24
 ---
 
 <EnbuStage :zoom="1.1">
@@ -410,7 +410,7 @@ est: 0:19
 
 ---
 title: 今のやり方のまとめ
-est: 0:18
+est: 0:15
 ---
 
 <EnbuStage :zoom="1.15">
@@ -516,7 +516,7 @@ est: 0:03
 
 ---
 title: enbu とは
-est: 0:19
+est: 0:16
 ---
 
 <EnbuStage :zoom="1.15">
@@ -557,7 +557,7 @@ est: 0:19
 
 ---
 title: enbu のやり方
-est: 0:26
+est: 0:32
 ---
 
 <EnbuStage :zoom="1.1">
@@ -623,7 +623,7 @@ est: 0:03
 
 ---
 title: 個人開発者
-est: 0:22
+est: 0:21
 ---
 
 <EnbuStage :zoom="1.15">
@@ -646,7 +646,7 @@ est: 0:22
 
 ---
 title: 学生チーム
-est: 0:21
+est: 0:22
 ---
 
 <EnbuStage :zoom="1.15">
@@ -669,7 +669,7 @@ est: 0:21
 
 ---
 title: 企業
-est: 0:21
+est: 0:20
 ---
 
 <EnbuStage :zoom="1.15">
@@ -703,7 +703,7 @@ est: 0:03
 
 ---
 title: デモ
-est: 0:56
+est: 0:45
 voiceHold: true
 ---
 
@@ -753,7 +753,7 @@ Alice が Bob に .env を渡します。見てほしいのは、一度も貼ら
 
 ---
 title: 今見たこと
-est: 0:13
+est: 0:12
 ---
 
 <EnbuStage :zoom="1.15">
@@ -796,7 +796,7 @@ est: 0:03
 
 ---
 title: 置き場所は信用しない
-est: 0:09
+est: 0:08
 ---
 
 <EnbuStage :zoom="1.25">
@@ -840,7 +840,7 @@ est: 0:09
 
 ---
 title: メンバー表にはハンコ
-est: 0:18
+est: 0:17
 ---
 
 <EnbuStage :zoom="1.25">
@@ -886,7 +886,7 @@ est: 0:18
 
 ---
 title: §7 攻撃にどう耐えるか
-est: 0:04
+est: 0:03
 ---
 
 <EnbuSection :n="7" />
@@ -936,7 +936,7 @@ SOPS ではすり替えが通りました。enbu では、Mallory が偽のメ�
 
 ---
 title: 巻き戻しに気づく
-est: 0:08
+est: 0:09
 ---
 
 <EnbuStage :zoom="1.3">
@@ -1042,7 +1042,7 @@ est: 0:03
 
 ---
 title: すべての版にハンコ
-est: 0:14
+est: 0:13
 ---
 
 <EnbuStage :zoom="1.2">
@@ -1072,7 +1072,7 @@ est: 0:14
 
 ---
 title: enbu は分散システム
-est: 0:18
+est: 0:17
 ---
 
 <EnbuStage :zoom="1.15">
@@ -1124,7 +1124,7 @@ est: 0:18
 
 ---
 title: 同時に書いても消えない
-est: 0:14
+est: 0:16
 ---
 
 <EnbuStage :zoom="1.15">
@@ -1210,7 +1210,7 @@ est: 0:13
 
 ---
 title: DST とは
-est: 0:16
+est: 0:15
 ---
 
 <EnbuStage :zoom="1.2">
@@ -1259,7 +1259,7 @@ DST は、決定的シミュレーションテストです
 
 ---
 title: 失敗を再現できる
-est: 0:16
+est: 0:17
 ---
 
 <EnbuStage :zoom="1.25">
@@ -1307,7 +1307,7 @@ est: 0:16
 
 ---
 title: 鍵は PC から出ない
-est: 0:14
+est: 0:13
 ---
 
 <EnbuStage :zoom="1.3">
@@ -1359,7 +1359,7 @@ est: 0:14
 
 ---
 title: 量子コンピュータにも備える
-est: 0:18
+est: 0:21
 ---
 
 <EnbuStage :zoom="1.15">
@@ -1450,7 +1450,7 @@ est: 0:21
 
 ---
 title: まとめ
-est: 0:11
+est: 0:10
 ---
 
 <div class="h-full flex items-center justify-center gap-10" style="zoom: 1.3">
