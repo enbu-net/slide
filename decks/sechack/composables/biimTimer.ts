@@ -15,8 +15,13 @@ let pausedKey: string | null = null
 let frameId = 0
 
 function tick() {
-  elapsed.value = base + (performance.now() - startedAt)
+  elapsed.value = getElapsed()
   frameId = requestAnimationFrame(tick)
+}
+
+/** 送り・停止の時刻は、直前の描画フレームではなく実際の時計で計る。 */
+export function getElapsed() {
+  return running.value ? base + (performance.now() - startedAt) : elapsed.value
 }
 
 /**
@@ -25,8 +30,9 @@ function tick() {
  */
 export function recordSplit(no: number, click = 0) {
   const key = splitKey(no, click)
-  if (elapsed.value > 0 && splits[key] == null)
-    splits[key] = elapsed.value
+  const now = getElapsed()
+  if (now > 0 && splits[key] == null)
+    splits[key] = now
 }
 
 /**
@@ -36,6 +42,7 @@ export function recordSplit(no: number, click = 0) {
 export function toggle(currentNo: number, click = 0) {
   const key = splitKey(currentNo, click)
   if (running.value) {
+    elapsed.value = getElapsed()
     cancelAnimationFrame(frameId)
     running.value = false
     pausedKey = splits[key] == null && elapsed.value > 0 ? key : null

@@ -29,7 +29,7 @@ OUT = os.path.join(DECK, 'public', 'voice')
 CACHE = os.path.join(ROOT, '.cache', 'sechack-voice')
 VOICE = 'KotonohaAkane_ns_48'
 DEMO_TITLE = 'デモ'
-# 区切りごとの間(秒)。BiimVoice.vue の自動送りの待ち(600 ms)と同じ値にしておく
+# 区切りごとの間の予算(秒)。自動送りでは読み込み等の遅れをこの間から吸収する。
 GAP = 0.6
 
 ap = argparse.ArgumentParser()

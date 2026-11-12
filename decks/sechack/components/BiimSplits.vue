@@ -1,26 +1,12 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { useNav } from '@slidev/client'
-import { useLiveSlide } from '../composables/liveSlide'
-import { parseEst } from '../composables/biimTimer'
-import { slideSteps } from '../composables/splitSteps'
+import { useSplitPlan } from '../composables/useSplitPlan'
 
 // スプリット表(RTA のスプリットのように、予定時間は累計)。いまのスライドが見える位置にスクロールする。
-const { total, currentSlideNo, clicks } = useNav()
+const { currentSlideNo, clicks } = useNav()
 const list = ref<HTMLElement>()
-
-// 各スライドの est を読み、先頭からの累計(秒)にする。est のないスライドは 0 秒として足す
-const lives = Array.from({ length: total.value }, (_, i) => useLiveSlide(i + 1))
-const rows = computed(() => {
-  let sum = 0
-  return lives.flatMap((l, i) => {
-    const duration = parseEst(l.frontmatter.value.est) ?? 0
-    const steps = slideSteps(i + 1, l.comments.value.map(c => c.click), duration, l.frontmatter.value.clickEst)
-      .map(step => ({ ...step, cumulative: sum + step.end }))
-    sum += duration
-    return steps
-  })
-})
+const { rows } = useSplitPlan()
 
 watch([currentSlideNo, clicks, rows], async () => {
   await nextTick()
