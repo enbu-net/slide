@@ -680,7 +680,7 @@ sectionDivider: true
 
 ---
 title: デモ
-est: 0:32
+est: 0:24
 section: 5
 voiceHold: true
 ---
@@ -882,13 +882,13 @@ sectionDivider: true
 
 ---
 title: すべての版にハンコ
-est: 0:10
+est: 0:12
 section: 7
 ---
 
 <EnbuStage :zoom="1.2">
 
-<div class="lead">すべての版に、<span class="hl" :class="{ on: $clicks >= 1 }">書いた人のハンコ</span></div>
+<div class="lead">受け取るたびの確認を、<span class="hl" :class="{ on: $clicks >= 1 }">署名で自動化</span></div>
 
 <div class="flex items-center justify-center gap-2">
   <div class="ver">v1<div class="who">🧑‍💻 Alice ㊞</div></div><div class="link" />
@@ -896,7 +896,7 @@ section: 7
   <div class="ver">v3<div class="who">🧑‍💻 Alice ㊞</div></div>
 </div>
 
-<div v-click="1" class="text-center mt-8 text-lg">前の版も署名に含める → <b>偽物や差し替え、巻き戻し</b>が分かる</div>
+<div v-click="1" class="text-center mt-8 text-lg">すべての版に書いた人の署名 → <b>手で確かめずに、差し替えを検出</b></div>
 
 </EnbuStage>
 
@@ -908,123 +908,58 @@ section: 7
 
 <!--
 値を更新するたびに書いた人が署名し、前の版とつなげます
-[click:1] だから偽物や巻き戻しが分かります
+[click:1] 受け取るたびに人が確かめなくても、enbu が差し替えを検出します
 -->
 
 ---
 title: 偽物は無視
-est: 0:13
+est: 0:12
 section: 7
 ---
 
-<EnbuStage :zoom="1.3">
-
-<div class="lead">偽物を置かれても、<span class="hl" :class="{ on: $clicks >= 1 }">正しいハンコがなければ無視</span></div>
-
-<div class="flex items-center justify-center gap-6">
-  <div class="ctl"><div>👑 Alice</div><div>👩‍💻 Bob</div><div class="stamp">㊞</div></div>
-  <div class="ctl evil" :class="{ out: $clicks >= 1 }"><div>😈 Mallory</div><div>「私もメンバー」</div></div>
-  <div v-click="1" class="text-2xl ng-mark">✗ 無視</div>
-</div>
-
+<EnbuStage :zoom="1.1">
+<div class="lead">偽のメンバー表では、<br><span class="hl" :class="{ on: $clicks >= 1 }">共有相手は増えない</span></div>
+<EnbuIncident incident="forgery" :clicks="$clicks" />
 </EnbuStage>
 
-<style>
-.ctl {
-  position: relative;
-  min-width: 8rem;
-  padding: 0.5rem 0.8rem;
-  border: 2px solid #1f2937;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  transition: opacity 0.4s;
-}
-.stamp { position: absolute; right: -0.6rem; bottom: -0.7rem; font-size: 1.6rem; color: #dc2626; transform: rotate(-12deg); }
-.evil { border-color: #dc2626; border-style: dashed; background: #fef2f2; }
-.evil.out { color: #4b5563; background: #f3f4f6; border-color: #9ca3af; text-decoration: line-through; }
-</style>
-
 <!--
-SOPS ではすり替えが通りました。enbu では、Mallory が偽のメンバー表を置いても
-[click:1] 正しいハンコがないので、無視されます
+偽のメンバー表を置かれた場合です
+[click:1] 署名が不正なら無視し、共有相手に加えません
+[click:2] 管理者と正しい表を確認します
 -->
 
 ---
 title: 巻き戻しに気づく
-est: 0:09
+est: 0:14
 section: 7
 ---
 
-<EnbuStage :zoom="1.3">
-
-<div class="lead">古い版に戻されても、<span class="hl" :class="{ on: $clicks >= 1 }">気づいて止まる</span></div>
-
-<div class="flex items-center justify-center gap-2">
-  <div class="ver">v1</div><div class="link" />
-  <div class="ver">v2</div><div class="link" />
-  <div class="ver now">v3<div class="pin">📌 手元の記録</div></div>
-</div>
-
-<div v-click="1" class="flex items-center justify-center gap-3 mt-8">
-  <div class="text-lg">😈 置き場所を v1 に</div>
-  <EnbuArrow color="#dc2626" size="3rem" />
-  <div class="text-lg font-bold ng-mark">⛔ v3 より古い → 止める</div>
-</div>
-
+<EnbuStage :zoom="1.1">
+<div class="lead">古い値を、<span class="hl" :class="{ on: $clicks >= 1 }">最新だと思って使わせない</span><span class="sub">手元に、より新しい版を取得した記録がある場合</span></div>
+<EnbuIncident incident="rollback" :clicks="$clicks" />
 </EnbuStage>
 
-<style>
-.ver {
-  position: relative;
-  padding: 0.5rem 1rem;
-  border: 2px solid #1f2937;
-  border-radius: 8px;
-  background: #fff;
-  font-weight: bold;
-}
-.ver.now { border-color: #16a34a; background: #f0fdf4; }
-.pin { position: absolute; top: -1.6rem; left: 50%; transform: translateX(-50%); font-size: 1.05rem; white-space: nowrap; font-weight: normal; }
-.link { width: 1.6rem; height: 3px; background: #1f2937; }
-</style>
-
 <!--
-置き場所のデータを、古い版に戻す攻撃もあります
-[click:1] 手元の記録より古ければ止まります
+手元は v3、置き場所は v1 です
+[click:1] 古い版を検出し、同期を止めます
+[click:2] 記録を消さず、管理者と版を確認します
 -->
 
 ---
 title: 守れないもの
-est: 0:13
+est: 0:15
 section: 7
 ---
 
-<EnbuStage :zoom="1.15">
-
-<div class="lead">メンバー本人が裏切ったら、<span class="hl" :class="{ on: $clicks >= 1 }">止められない</span><span class="sub">内部の攻撃者や、乗っ取られたメンバーの PC</span></div>
-
-<div class="flex items-center justify-center gap-4">
-  <EnbuBox icon="👩‍💻" title="Bob（メンバー）" sub="正しく復号できる" class="w-48" />
-  <EnbuArrow label="値をコピー" color="#b91c1c" size="5rem" />
-  <EnbuBox icon="😈" title="外へ持ち出す" tone="bad" class="w-44" />
-</div>
-
-<div v-click="2" class="flex justify-center gap-6 mt-6">
-  <div class="can"><b class="ok-mark">できること</b><br>メンバーを外す、値を変える、承認を記録</div>
-  <div class="can"><b class="ng-mark">できないこと</b><br>持ち出しを防ぐ、閲覧者を特定する</div>
-</div>
-
+<EnbuStage :zoom="1.1">
+<div class="lead">メンバー本人による持ち出しは、<span class="hl" :class="{ on: $clicks >= 1 }">止められない</span><span class="sub">内部の攻撃者や、乗っ取られたメンバーの PC</span></div>
+<EnbuIncident incident="member" :clicks="$clicks" />
 </EnbuStage>
 
-<style>
-.can { padding: 0.5rem 1rem; font-size: 1.15rem; border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; text-align: center; line-height: 1.6; }
-</style>
-
 <!--
-ただし、読めるメンバー本人が裏切った場合は
-[click:1] 持ち出しは止められません
-[click:2] メンバーを外して値を変え、以後のアクセスに対処します
+メンバーが値を持ち出した場合です
+[click:1] 持ち出しは防げず、閲覧者も特定できません
+[click:2] メンバーを外し、キーやパスワードを変更します。コピーは回収できません
 -->
 
 ---
@@ -1064,13 +999,13 @@ section: 8
 
 ---
 title: enbu は分散システム
-est: 0:18
+est: 0:16
 section: 8
 ---
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">① enbu には、<span class="hl" :class="{ on: $clicks >= 1 }">順番を決めるサーバーがない</span></div>
+<div class="lead">① <span class="hl" :class="{ on: $clicks >= 1 }">専用サーバーを運用せずに共有</span></div>
 
 <div class="flex items-center justify-center gap-10">
   <div class="text-center">
@@ -1089,7 +1024,7 @@ section: 8
   </div>
 </div>
 
-<div v-click="2" class="text-center mt-5 text-lg">各 PC がデータを検証して同期する <b>分散システム</b></div>
+<div v-click="2" class="text-center mt-5 text-lg">各 PC がデータを検証して同期 → <b>既存の置き場所だけで使える</b></div>
 
 </EnbuStage>
 
@@ -1110,20 +1045,20 @@ section: 8
 </style>
 
 <!--
-1 つ目は共同編集です。専用サービスでは、サーバーが順番を決めます
-[click:1] enbu の置き場所は、データを保管するだけです
-[click:2] 各 PC がデータを検証して同期する、分散システムです
+専用サーバーを自分で運用する必要はありません
+[click:1] 今ある置き場所には、データを保管するだけです
+[click:2] 各 PC が検証して同期するので、順番を決める専用サーバーが不要です
 -->
 
 ---
 title: 同時に書いても消えない
-est: 0:16
+est: 0:20
 section: 8
 ---
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">2 人が同時に書いても、<span class="hl" :class="{ on: $clicks >= 2 }">消えない</span></div>
+<div class="lead">同時更新で、<span class="hl" :class="{ on: $clicks >= 2 }">仲間の変更を消さない</span></div>
 
 <div class="relative h-60">
   <svg class="absolute inset-0 w-full h-full" viewBox="0 0 760 240">
@@ -1137,6 +1072,8 @@ section: 8
   <div v-click="1" class="rev bob" style="left: 270px; top: 155px;">👩‍💻 A=1 <b>B=2</b></div>
   <div v-click="2" class="rev merged" style="left: 570px; top: 85px;">✓ <b>A=2 B=2</b></div>
 </div>
+
+<div v-click="3" class="benefit">同じ項目を変えたら → 両方を残し、利用者が採用する値を選ぶ</div>
 
 </EnbuStage>
 
@@ -1160,7 +1097,8 @@ section: 8
 <!--
 2 人が同時に書き込むこともあります
 [click:1] 一方を上書きせず、両方の変更を残します
-[click:2] 別の項目の変更は自動で統合し、同じ項目の変更は人が選びます
+[click:2] 別の項目なら自動で統合し、手で合わせる必要はありません
+[click:3] 同じ項目を変えた場合は、両方を残して人が選びます
 -->
 
 ---
@@ -1205,13 +1143,13 @@ section: 8
 
 ---
 title: DST とは
-est: 0:15
+est: 0:11
 section: 8
 ---
 
 <EnbuStage :zoom="1.2">
 
-<div class="lead">DST = <span class="hl" :class="{ on: $clicks >= 1 }">仮想の世界で何千回もリハーサル</span></div>
+<div class="lead">通信断や同時更新を、<span class="hl" :class="{ on: $clicks >= 1 }">公開前に繰り返し試す</span><span class="sub">DST：決定的シミュレーションテスト</span></div>
 
 <div class="flex justify-center">
   <div class="world">
@@ -1249,13 +1187,13 @@ section: 8
 </style>
 
 <!--
-DST は、決定的シミュレーションテストです
-[click:1] 本体と暗号処理は本物です。置き場所や時計、PC を再現した仮想環境で、何千回も動かします
+公開前に、失敗を見つけるためのテストです
+[click:1] 本体と暗号処理は本物のまま、仮想環境で繰り返し試します
 -->
 
 ---
 title: 失敗を再現できる
-est: 0:17
+est: 0:18
 section: 8
 ---
 
@@ -1299,18 +1237,18 @@ section: 8
 <!--
 操作や通信断の順番は、乱数で決めます
 [click:1] 同じ乱数の種を使えば、同じ失敗を再現できます
-[click:2] 毎晩 1,024 通りを、5 つの OS で回しています
+[click:2] 毎晩、5 つの OS で試し、見つけた失敗を再現して修正します
 -->
 
 ---
 title: 鍵は PC から出ない
-est: 0:13
+est: 0:14
 section: 8
 ---
 
 <EnbuStage :zoom="1.3">
 
-<div class="lead">③ PC ごとの秘密鍵は、<span class="hl" :class="{ on: $clicks >= 1 }">PC から出ない</span><span class="sub">TPM などのチップ内で鍵を作る場合。使えない場合は OS の鍵保管庫へ</span></div>
+<div class="lead">③ 秘密鍵を、<span class="hl" :class="{ on: $clicks >= 1 }">ファイルで配らなくてよい</span><span class="sub">TPM などのチップ内で鍵を作る場合。使えない場合は OS の鍵保管庫へ</span></div>
 
 <div class="flex items-center justify-center gap-8">
   <div class="device">
@@ -1352,7 +1290,7 @@ section: 8
 
 <!--
 3 つ目は秘密鍵です。対応する PC では、セキュリティチップの中で作ります
-[click:1] ディスクを丸ごとコピーされても、鍵はついていきません
+[click:1] 鍵をファイルで配る必要はなく、ディスクのコピーにも鍵はついていきません
 -->
 
 ---
@@ -1363,7 +1301,7 @@ section: 8
 
 <EnbuStage :zoom="1.15">
 
-<div class="lead">今保存した暗号文を、<span class="hl" :class="{ on: $clicks >= 1 }">未来の量子コンピュータ</span>からも守る<span class="sub">今コピーして、将来解読する攻撃（Harvest Now, Decrypt Later）</span></div>
+<div class="lead">長く残る機密情報にも、<span class="hl" :class="{ on: $clicks >= 1 }">将来の解読への備え</span><span class="sub">今コピーして、将来解読する攻撃（Harvest Now, Decrypt Later）</span></div>
 
 <div class="flex items-center justify-center gap-3">
   <EnbuBox icon="😈" title="今" sub="暗号文をコピー" tone="bad" class="w-44" />
@@ -1393,7 +1331,7 @@ section: 8
 
 <!--
 暗号文は、今盗まれて、将来の量子コンピュータで解かれるかもしれません
-[click:1] そこで鍵の共有には、従来の暗号と耐量子暗号を組み合わせます
+[click:1] 長く秘密にしたい情報にも備え、従来の暗号と耐量子暗号を併用します
 [click:2] TPM を使う場合、耐量子暗号の秘密鍵も TPM で封印して保護します
 -->
 

@@ -103,3 +103,14 @@ html.dark {
 
 /* 見出しは意味のまとまりで折り返す。 */
 .lead { text-wrap: balance; }
+.benefit {
+  margin-top: 1rem;
+  padding: 0.5rem 0.8rem;
+  border-left: 3px solid #15803d;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  text-align: center;
+  font-weight: bold;
+}
