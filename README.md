@@ -40,8 +40,10 @@ sechack はノートをあかねボイスで読み上げられる。URL に `?vo
 
 ```sh
 aoikane serve --listen 127.0.0.1:18080   # 別の端末で
-python3 scripts/sechack-voice.py
+python3 scripts/sechack-voice.py --rate 1.25
 ```
+
+読み上げ速度は既定で1.25倍。`--rate` で変更でき、声と速度ごとに音声をキャッシュする。
 
 [yashikota/biim-slide](https://github.com/yashikota/biim-slide) の外枠をそのまま使っている。
 
