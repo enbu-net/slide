@@ -5,14 +5,13 @@ import discord from '../images/logos/discord.svg'
 import sops from '../images/logos/sops.svg'
 import git from '../images/logos/git.svg'
 import onePassword from '../images/logos/1password.svg'
-import doppler from '../images/logos/doppler.svg'
 
 withDefaults(defineProps<{ now?: number, big?: boolean }>(), { now: 0, big: false })
 
 const ways = [
   { icon: '💬', title: 'チャットに貼る', logos: [slack, discord], sub: 'Slack・Discord など' },
   { icon: '🔐', title: '暗号化して Git に置く', logos: [sops, git], sub: 'SOPS など' },
-  { icon: '☁️', title: '専用サービスに預ける', logos: [onePassword, doppler], sub: '1Password・Doppler など' },
+  { icon: '☁️', title: '専用サービスに預ける', logos: [onePassword], sub: '1Password・AWS Secrets Manager など' },
 ]
 </script>
 

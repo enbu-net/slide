@@ -8,6 +8,7 @@ defaults:
 fonts:
   mono: JetBrains Mono
 est: 0:12
+clickEst: [12]
 section: 0
 ---
 
@@ -41,6 +42,7 @@ enbu、機密情報を安全、手軽、柔軟に共有、管理するツール�
 ---
 title: §1 シークレットの話
 est: 0:03
+clickEst: [3]
 section: 1
 sectionDivider: true
 ---
@@ -54,6 +56,7 @@ sectionDivider: true
 ---
 title: シークレットって何？
 est: 0:18
+clickEst: [9.774, 18]
 section: 1
 ---
 
@@ -94,6 +97,7 @@ API キーやパスワード、設定ファイル、顧客情報。知られた�
 ---
 title: でも、仲間との共有は必要
 est: 0:10
+clickEst: [4.354, 10]
 section: 1
 ---
 
@@ -133,6 +137,7 @@ section: 1
 ---
 title: 安全と共有を両立したい
 est: 0:07
+clickEst: [7]
 section: 1
 ---
 
@@ -155,6 +160,7 @@ section: 1
 ---
 title: §2 今のやり方
 est: 0:03
+clickEst: [3]
 section: 2
 sectionDivider: true
 ---
@@ -168,6 +174,7 @@ sectionDivider: true
 ---
 title: 今のやり方は 3 つ
 est: 0:13
+clickEst: [4.751, 13]
 section: 2
 ---
 
@@ -187,6 +194,7 @@ section: 2
 ---
 title: チャットで送る
 est: 0:26
+clickEst: [7.152, 14.189, 20.098, 26]
 section: 2
 ---
 
@@ -222,6 +230,7 @@ Alice と Bob は、キーを見る権限を持ち、チャンネルでやり取
 ---
 title: チャットでは値が変わる
 est: 0:22
+clickEst: [5.831, 15.511, 22]
 section: 2
 ---
 
@@ -231,9 +240,9 @@ section: 2
 <div class="grid grid-cols-2 gap-4">
   <div class="card text-left">
     <div class="font-bold mb-3">① 書式として表示されることがある</div>
-    <div class="text-base">送信した文字列</div><code class="chat-value">pa__ss__word</code>
-    <div class="text-base mt-2">チャットでの表示（下線になる）</div><div class="chat-value">pa<u>ss</u>word</div>
-    <div v-click="1" class="mt-3 ng-mark text-base">記号が値の一部でも、下線の指定に使われる<br>→ コードとして送るなどの配慮が必要</div>
+    <div class="text-base">送信した文字列</div><code class="chat-value">pa_ss_word</code>
+    <div class="text-base mt-2">チャットでの表示（斜体になる）</div><div class="chat-value">pa<i class="italic">ss</i>word</div>
+    <div v-click="1" class="mt-3 ng-mark text-base">記号が値の一部でも、斜体の指定に使われる<br>→ コードとして送るなどの配慮が必要</div>
   </div>
   <div v-click="2" class="card text-left">
     <div class="font-bold mb-3">② 更新のたびに投稿が増える</div>
@@ -250,14 +259,15 @@ section: 2
 </style>
 
 <!--
-チャットは、文字の一部を下線などの書式として表示します
-[click:1] この例では、パスワードのアンダースコアが下線の指定になります。値を正確に渡すには配慮が要ります
+チャットは、文字の一部を斜体などの書式として表示します
+[click:1] この例では、パスワードのアンダースコアが斜体の指定になります。値を正確に渡すには配慮が要ります
 [click:2] 更新するたびに投稿も増え、古い投稿からコピーしてしまうこともあります
 -->
 
 ---
 title: SOPS ですり替え
 est: 0:30
+clickEst: [11.87, 17.459, 23.167, 30]
 section: 2
 ---
 
@@ -299,6 +309,7 @@ section: 2
 ---
 title: SOPS は運用の知識も必要
 est: 0:25
+clickEst: [8.028, 15.635, 25]
 section: 2
 ---
 
@@ -320,170 +331,77 @@ SOPS は暗号化する道具ですが、安全な運用には鍵や履歴の知
 
 ---
 title: 専用サービス
-est: 0:24
+est: 0:28
+clickEst: [11.182, 21.052, 28]
 section: 2
 ---
 
-<EnbuStage :zoom="1.1">
-
+<EnbuStage :zoom="1.05">
 <EnbuWays :now="3" />
-
-<div class="lead">専用サービスは便利。でも、<span class="hl" :class="{ on: $clicks >= 2 }">利用料金</span>がかかる</div>
-
-<div class="flex items-start justify-center gap-5">
-  <div class="quote">
-    <div class="quote-head">🧾 5 人で 1 年使うと(1 ドル = 150 円)</div>
-    <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/1password.svg" class="logo-chip" alt=""><span>1Password Teams<small>10 人まで定額</small></span></span><b>約 4.5 万円</b></div>
-    <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/1password.svg" class="logo-chip" alt=""><span>1Password Business<small>1 人 $8.99/月</small></span></span><b>約 8.1 万円</b></div>
-    <div class="row"><span class="flex items-center gap-2"><img src="./images/logos/doppler.svg" class="logo-chip" alt=""><span>Doppler Team<small>1 人 $21/月</small></span></span><b>約 19 万円</b></div>
-    <div class="note">2026 年 11 月、各社公式サイトの価格</div>
+<div class="lead">専用サービスは、<span class="hl" :class="{ on: $clicks >= 1 }">課金の単位</span>も違う</div>
+<div class="grid grid-cols-2 gap-4">
+  <div class="card text-left">
+    <div class="font-bold text-xl mb-2">1Password</div>
+    <div>Business：1 人あたり月 $8.99<br>年払いで月額換算</div>
+    <div class="mt-3 text-lg font-bold">5 人なら年 約 8.1 万円</div>
+    <div class="text-base mt-2">人数に応じて料金が増える</div>
   </div>
-  <div class="flex flex-col gap-3">
-    <div v-click="1" class="member">🤝 人数課金では、1 人増えると<br><b>+1.6 万〜3.8 万円/年</b></div>
-    <div v-click="2" class="member">🎓 学生 5 人なら<br><b>1 人 9 千〜3.8 万円/年</b></div>
+  <div v-click="1" class="card text-left">
+    <div class="font-bold text-xl mb-2">AWS Secrets Manager</div>
+    <div>1 シークレット：月 $0.40<br>API 1 万回：$0.05</div>
+    <div class="mt-3 text-lg font-bold">10 個・月 1 万回なら年 約 7,300 円</div>
+    <div class="text-base mt-2">人数ではなく、保存数と利用量で課金</div>
   </div>
 </div>
-
+<div v-click="2" class="benefit">AWS は小規模なら低価格。ただし、IAM で誰に何を許可するかの設定が必要</div>
+<div class="text-sm text-center mt-3 text-gray-600">1 ドル = 150 円、通常料金・税別で試算。1Password は年払い。AWS は月額×12、単一リージョンで追加サービスの費用を除く</div>
+<div class="text-sm text-center text-gray-600">2026 年 11 月確認：<a href="https://1password.com/pricing/business" target="_blank" rel="noopener">1Password 公式料金</a> / <a href="https://aws.amazon.com/secrets-manager/pricing/" target="_blank" rel="noopener">AWS 公式料金</a></div>
 </EnbuStage>
 
-<style>
-.quote {
-  width: 28rem;
-  border: 2px solid #1f2937;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-  color: #111827;
-}
-.quote-head { padding: 0.4rem 1rem; font-weight: bold; font-size: 1.15rem; background: #f3f4f6; }
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.4rem 1rem;
-  font-size: 1.2rem;
-  border-top: 1px solid #e5e7eb;
-}
-.row small { display: block; font-size: 1.15rem; color: #4b5563; }
-.row b { font-size: 1.4rem; white-space: nowrap; }
-.note { padding: 0.3rem 1rem; font-size: 1rem; color: #4b5563; border-top: 1px solid #e5e7eb; }
-.member {
-  padding: 0.45rem 0.9rem;
-  font-size: 1.2rem;
-  line-height: 1.45;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
-  background: #fff;
-  color: #111827;
-}
-</style>
-
 <!--
-3 つ目は、1Password のような専用サービスです。表のプランでは、5 人で年に約 4 万 5 千円から 19 万円です
-[click:1] 人数に応じた課金では、社外の人を追加しても料金が増えます
-[click:2] 学生チームには大きな負担です
+専用サービスでも、料金の仕組みは違います。1Password Business は、5 人で年に約 8 万 1 千円です
+[click:1] AWS は保存する数と API 利用量で課金され、この条件なら年に約 7,300 円です
+[click:2] 小規模なら低価格ですが、誰に何を許可するか、権限の設定が必要です
 -->
 
 ---
 title: 今のやり方のまとめ
-est: 0:15
+est: 0:17
+clickEst: [5.709, 11.524, 17]
 section: 2
 ---
 
-<EnbuStage :zoom="1.15">
-
-<div class="lead">安全と手軽さが、<span class="hl" :class="{ on: $clicks >= 1 }">両立していない</span></div>
-
-<div class="cmp">
-  <div />
-  <div class="ch"><div class="ci">🚪</div>抜けた人に<br>見えない</div>
-  <div class="ch"><div class="ci">🛡️</div>すり替え<br>られない</div>
-  <div class="ch"><div class="ci">⚡</div>手間が<br>少ない</div>
-  <div class="ch"><div class="ci">💸</div>無料で<br>追加登録不要</div>
-
-  <div class="rh"><img src="./images/logos/slack.svg" class="logo-chip" alt="">チャット</div>
-  <div class="c ng"><b>✗</b></div>
-  <div class="c ng"><b>✗</b></div>
-  <div class="c ng"><b>✗</b><small>貼り直し</small></div>
-  <div class="c ok"><b>✓</b></div>
-
-  <div class="rh"><img src="./images/logos/sops.svg" class="logo-chip" alt="">SOPS + Git</div>
-  <div class="c mid"><b>△</b><small>手作業</small></div>
-  <div class="c ng"><b>✗</b></div>
-  <div class="c ng"><b>✗</b></div>
-  <div class="c ok"><b>✓</b></div>
-
-  <div class="rh"><img src="./images/logos/1password.svg" class="logo-chip" alt="">専用サービス</div>
-  <div class="c ok"><b>✓</b></div>
-  <div class="c ok"><b>✓</b></div>
-  <div class="c ok"><b>✓</b></div>
-  <div class="c ng"><b>✗</b><small>人数分</small></div>
-
-  <template v-if="$clicks >= 2">
-    <div class="rh want"><img src="./images/enbu.png" class="logo-chip" alt="">enbu</div>
-    <div class="c ok want"><b>✓</b></div>
-    <div class="c ok want"><b>✓</b></div>
-    <div class="c ok want"><b>✓</b></div>
-    <div class="c ok want"><b>✓</b></div>
-  </template>
-</div>
-
+<EnbuStage :zoom="1.05">
+<div class="lead"><span class="hl" :class="{ on: $clicks >= 1 }">安全・手軽・低価格</span>を、そろえたい</div>
+<table class="tradeoffs">
+  <thead><tr><th scope="col">共有の方法</th><th scope="col">安全</th><th scope="col">手軽</th><th scope="col">低価格</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">チャット</th><td>✗ 平文が残る</td><td>△ 更新は貼り直し</td><td>○ 無料枠あり</td></tr>
+    <tr><th scope="row">SOPS + Git</th><td>△ 運用の設計が必要</td><td>△ 鍵と宛先を手作業</td><td>○ ソフトは無料</td></tr>
+    <tr><th scope="row">1Password</th><td>○ 権限で制御</td><td>○ 共有向けの画面</td><td>△ 人数やプラン次第</td></tr>
+    <tr><th scope="row">AWS SM</th><td>○ IAM で制御</td><td>△ IAM の設定が必要</td><td>○ 小規模なら低価格</td></tr>
+    <tr v-if="$clicks >= 2" class="enbu-choice"><th scope="row">enbu</th><td>暗号化と署名</td><td>鍵と共有をアプリで管理</td><td>ソフトは無料</td></tr>
+  </tbody>
+</table>
+<div class="text-sm text-center mt-3 text-gray-600">費用は利用条件による。Git やストレージ等の費用は別途。enbu の守れない範囲は後半で説明</div>
 </EnbuStage>
-
 <style>
-.cmp {
-  display: grid;
-  grid-template-columns: auto repeat(4, 8.2rem);
-  gap: 0.35rem;
-  justify-content: center;
-  align-items: stretch;
-}
-.ch {
-  padding: 0.2rem 0.3rem 0.35rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  line-height: 1.25;
-  text-align: center;
-  color: #1f2937;
-}
-.ci { font-size: 1.6rem; line-height: 1.2; }
-.rh {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0 0.9rem 0 0.4rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  white-space: nowrap;
-}
-.c {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.6rem;
-  border-radius: 10px;
-  line-height: 1.1;
-}
-.c b { font-size: 1.8rem; }
-.c small { font-size: 1rem; font-weight: bold; }
-.ok { background: #dcfce7; color: #166534; }
-.ng { background: #fee2e2; color: #991b1b; }
-.mid { background: #fef3c7; color: #92400e; }
-.rh.want { margin-top: 0.35rem; font-size: 1.35rem; }
-.c.want { margin-top: 0.35rem; outline: 3px solid #15803d; outline-offset: -3px; }
+.tradeoffs { width: 100%; border-collapse: collapse; background: #fff; font-size: 1.05rem; line-height: 1.4; }
+.tradeoffs th, .tradeoffs td { padding: 0.65rem 0.6rem; text-align: left; border-bottom: 1px solid #d1d5db; }
+.tradeoffs thead { color: #4b5563; background: #f3f4f6; }
+.tradeoffs .enbu-choice { color: #166534; background: #f0fdf4; font-weight: bold; }
 </style>
 
 <!--
-どの方法にも、手間や費用の課題があります
-[click:1] 安全と手軽さが両立せず、人の注意と手作業に頼っています
-[click:2] この両立を目指して、enbu を作りました
+比べたいのは、安全、手軽、低価格の 3 つです
+[click:1] 低価格でも運用が難しかったり、手軽でも料金が増えたりします
+[click:2] enbu は、3 つをそろえた共有と管理を目指します
 -->
 
 ---
 title: §3 enbu
 est: 0:03
+clickEst: [3]
 section: 3
 sectionDivider: true
 ---
@@ -497,6 +415,7 @@ sectionDivider: true
 ---
 title: enbu とは
 est: 0:15
+clickEst: [10.095, 15]
 section: 3
 ---
 
@@ -539,6 +458,7 @@ section: 3
 ---
 title: enbu のやり方
 est: 0:29
+clickEst: [11.025, 18.835, 29]
 section: 3
 ---
 
@@ -595,6 +515,7 @@ enbu は、機密情報を暗号化して共有、管理するアプリです。
 ---
 title: §4 誰の役に立つ？
 est: 0:03
+clickEst: [3]
 section: 4
 sectionDivider: true
 ---
@@ -608,6 +529,7 @@ sectionDivider: true
 ---
 title: 個人開発者
 est: 0:21
+clickEst: [7.027, 14.904, 21]
 section: 4
 ---
 
@@ -628,6 +550,7 @@ section: 4
 ---
 title: 学生チーム
 est: 0:22
+clickEst: [5.972, 13.579, 22]
 section: 4
 ---
 
@@ -648,6 +571,7 @@ section: 4
 ---
 title: 企業
 est: 0:20
+clickEst: [7.287, 14.622, 20]
 section: 4
 ---
 
@@ -668,6 +592,7 @@ section: 4
 ---
 title: §5 デモ
 est: 0:03
+clickEst: [3]
 section: 5
 sectionDivider: true
 ---
@@ -680,7 +605,8 @@ sectionDivider: true
 
 ---
 title: デモ
-est: 0:24
+est: 0:18
+clickEst: [18]
 section: 5
 voiceHold: true
 ---
@@ -732,6 +658,7 @@ Alice が Bob に .env を渡します。見てほしいのは、一度も貼ら
 ---
 title: 今見たこと
 est: 0:12
+clickEst: [7.15, 12]
 section: 5
 ---
 
@@ -765,6 +692,7 @@ section: 5
 ---
 title: §6 デモの裏側
 est: 0:03
+clickEst: [3]
 section: 6
 sectionDivider: true
 ---
@@ -778,6 +706,7 @@ sectionDivider: true
 ---
 title: 置き場所は信用しない
 est: 0:08
+clickEst: [4.216, 8]
 section: 6
 ---
 
@@ -823,6 +752,7 @@ section: 6
 ---
 title: メンバー表にはハンコ
 est: 0:17
+clickEst: [5.884, 12.042, 17]
 section: 6
 ---
 
@@ -870,6 +800,7 @@ section: 6
 ---
 title: §7 攻撃にどう耐えるか
 est: 0:03
+clickEst: [3]
 section: 7
 sectionDivider: true
 ---
@@ -883,6 +814,7 @@ sectionDivider: true
 ---
 title: すべての版にハンコ
 est: 0:12
+clickEst: [6.081, 12]
 section: 7
 ---
 
@@ -914,6 +846,7 @@ section: 7
 ---
 title: 偽物は無視
 est: 0:12
+clickEst: [3.596, 8.385, 12]
 section: 7
 ---
 
@@ -931,6 +864,7 @@ section: 7
 ---
 title: 巻き戻しに気づく
 est: 0:14
+clickEst: [5.167, 9.418, 14]
 section: 7
 ---
 
@@ -948,6 +882,7 @@ section: 7
 ---
 title: 守れないもの
 est: 0:15
+clickEst: [3.532, 8.068, 15]
 section: 7
 ---
 
@@ -965,6 +900,7 @@ section: 7
 ---
 title: §8 作るときの工夫
 est: 0:03
+clickEst: [3]
 section: 8
 sectionDivider: true
 ---
@@ -978,6 +914,7 @@ sectionDivider: true
 ---
 title: 工夫は 3 つ
 est: 0:03
+clickEst: [3]
 section: 8
 ---
 
@@ -1000,6 +937,7 @@ section: 8
 ---
 title: enbu は分散システム
 est: 0:16
+clickEst: [4.618, 9.09, 16]
 section: 8
 ---
 
@@ -1053,6 +991,7 @@ section: 8
 ---
 title: 同時に書いても消えない
 est: 0:20
+clickEst: [3.791, 8.496, 14.286, 20]
 section: 8
 ---
 
@@ -1104,6 +1043,7 @@ section: 8
 ---
 title: まれな順番で起きる不具合
 est: 0:13
+clickEst: [5.622, 9.743, 13]
 section: 8
 ---
 
@@ -1144,6 +1084,7 @@ section: 8
 ---
 title: DST とは
 est: 0:11
+clickEst: [4.524, 11]
 section: 8
 ---
 
@@ -1194,6 +1135,7 @@ section: 8
 ---
 title: 失敗を再現できる
 est: 0:18
+clickEst: [4.877, 10.827, 18]
 section: 8
 ---
 
@@ -1243,6 +1185,7 @@ section: 8
 ---
 title: 鍵は PC から出ない
 est: 0:14
+clickEst: [7.937, 14]
 section: 8
 ---
 
@@ -1296,6 +1239,7 @@ section: 8
 ---
 title: 量子コンピュータにも備える
 est: 0:21
+clickEst: [6.529, 13.418, 21]
 section: 8
 ---
 
@@ -1338,6 +1282,7 @@ section: 8
 ---
 title: §9 これから
 est: 0:02
+clickEst: [2]
 section: 9
 sectionDivider: true
 ---
@@ -1351,6 +1296,7 @@ sectionDivider: true
 ---
 title: これから
 est: 0:21
+clickEst: [6.536, 13.621, 21]
 section: 9
 ---
 
@@ -1391,6 +1337,7 @@ section: 9
 ---
 title: まとめ
 est: 0:14
+clickEst: [14]
 section: 9
 ---
 
