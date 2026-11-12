@@ -2,10 +2,10 @@
 """decks/sechack のノートを、あかねボイス(aoikane)で読み上げ音声にして、est を実測値に合わせる。
 
   aoikane serve --listen 127.0.0.1:18080   # 別の端末で(複数立てると並列で速い)
-  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--total 600]
+  python3 scripts/sechack-voice.py [--url http://127.0.0.1:18080 ...] [--total 600] [--rate 1.25]
 
 - ノートを [click:N] ごとに区切り、public/voice/sNN_J.mp3(NN = ページ、J = 何個目のセリフ)に書く。
-  合成した wav は文章のハッシュで .cache/ に置くので、同じ文章は(ページが動いても)作り直さない。
+  合成した wav は文章と合成条件のハッシュで .cache/ に置き、同じ条件なら作り直さない。
 - 各スライドの est を「セリフの長さ + 区切りごとの間(GAP 秒)」にし、
   デモのスライドに残りを割り当てて、合計をちょうど --total 秒にする。
 - 要るもの: aoikane(github.com/a-kaibu/aoikane)と ffmpeg。
@@ -35,6 +35,7 @@ GAP = 0.6
 ap = argparse.ArgumentParser()
 ap.add_argument('--url', action='append', help='aoikane serve の URL(複数可)')
 ap.add_argument('--total', type=int, default=600, help='合計の秒数(オートモードで通すと毎回この長さになる)')
+ap.add_argument('--rate', type=float, default=1.25, help='読み上げ速度(既定: 1.25 倍。説明とデモを10分に収める)')
 args = ap.parse_args()
 urls = args.url or ['http://127.0.0.1:18080']
 
@@ -66,13 +67,15 @@ counter = iter(range(10 ** 9))
 def synth(job):
     """1 セリフを合成して(前回と同じ文章なら使い回し)mp3 にし、長さ(秒)を返す。"""
     name, seg = job
-    wav = os.path.join(CACHE, hashlib.sha256(seg.encode()).hexdigest()[:16] + '.wav')
+    # 声や速度が違う音声を再利用しないよう、合成条件もキャッシュキーに含める。
+    cache_key = json.dumps({'text': seg, 'voice': VOICE, 'rate': args.rate}, ensure_ascii=False, sort_keys=True)
+    wav = os.path.join(CACHE, hashlib.sha256(cache_key.encode()).hexdigest()[:16] + '.wav')
     if not os.path.exists(wav):
         with lock:
             url = urls[next(counter) % len(urls)]
         req = urllib.request.Request(
             url.rstrip('/') + '/v1/synthesize',
-            data=json.dumps({'text': seg, 'voice': VOICE}).encode(),
+            data=json.dumps({'text': seg, 'voice': VOICE, 'rate': args.rate}).encode(),
             headers={'Content-Type': 'application/json'},
         )
         data = opener.open(req, timeout=1800).read()
@@ -111,9 +114,10 @@ for i, part in enumerate(parts):
         ests.append(round(sec))
 if demo is None:
     raise SystemExit(f'title: {DEMO_TITLE} のスライドが見つかりません')
-ests[demo] = args.total - sum(ests)
+non_demo_total = sum(ests)
+ests[demo] = args.total - non_demo_total
 if ests[demo] <= 0:
-    raise SystemExit(f'デモを除いても {sum(ests)} 秒あり、{args.total} 秒に収まりません')
+    raise SystemExit(f'デモを除いても {non_demo_total} 秒あり、{args.total} 秒に収まりません')
 
 out = []
 for part, est in zip(parts, ests):
